@@ -19,9 +19,7 @@ export default {
 	}
   },
   methods: {
-  	back: function(){
-  		this.$router.back()
-  	}
+  	
   }
 }
 

@@ -1,45 +1,45 @@
 <template>
   <div id="login">
-    <div class="top-bg">
-    	<div class="nav-bar">
-    		<div class="back" @click="back"><img src="../assets/images/black-back.png" alt=""></div>
-    	</div>
-    	<div class="login-logo"><img src="../assets/images/login-logo.png" alt=""></div>
-    </div>
-    <div class="login-tabs">
-    	<div class="tab" @click="toggleLoginType">
-    		<div :class="[isMessageCodeLogin?'active-type':'', 'login-type']">手机验证码登录</div>
-    	</div>
-    	<div class="tab" @click="toggleLoginType">
-    		<div :class="[isMessageCodeLogin?'':'active-type', 'login-type ']">账号密码登录</div>
-    	</div>
-    </div>
-    <div class="login-input-contain" v-if="isMessageCodeLogin">
-    	<div class="login-input">
-    		<input type="text" class="input-item" placeholder="请输入手机号" maxlength="11" v-model="sellerName"><input type="button" value="获取验证码" class="get-code">
-    	</div>
-    	<div class="login-input">
-    		<input type="text" class="input-item" placeholder="请输入验证码" v-model="code" maxlength="4">
-    	</div>
-    </div>
-    <div class="login-input-contain" v-if="!isMessageCodeLogin">
-    	<div class="login-input">
-    		<input type="text" class="input-item" placeholder="请输入账号" maxlength="11" v-model="sellerName">
-    	</div>
-    	<div class="login-input">
-    		<input type="password" class="input-item" placeholder="请输入密码" v-model="secretkey">
-    	</div>
-    </div>
-    <div class="login-btn-contain">
-    	<input type="button" value="立即登录" class="login-btn" @click="userLogin">
-    </div>
-    <div class="jump-row">
-    	<router-link to="/regist" class="jump-item regist">新用户注册</router-link>
-    	<router-link to="/forgetPwd" class="jump-item forget-pwd">忘记密码?</router-link>
-    </div>
-    <p class="help-row">
-    	<router-link to="/help" class="help-item">登录遇到问题?</router-link>
-    </p>
+	<div class="top-bg">
+		<div class="nav-bar">
+			<div class="back" @click="back"><img src="../assets/images/black-back.png" alt=""></div>
+		</div>
+		<div class="login-logo"><img src="../assets/images/login-logo.png" alt=""></div>
+	</div>
+	<div class="login-tabs">
+		<div class="tab" @click="toggleLoginType">
+			<div :class="[isMessageCodeLogin?'active-type':'', 'login-type']">手机验证码登录</div>
+		</div>
+		<div class="tab" @click="toggleLoginType">
+			<div :class="[isMessageCodeLogin?'':'active-type', 'login-type ']">账号密码登录</div>
+		</div>
+	</div>
+	<div class="login-input-contain" v-if="isMessageCodeLogin">
+		<div class="login-input">
+			<input type="text" class="input-item" placeholder="请输入手机号" maxlength="11" v-model="sellerName"><input type="button" value="获取验证码" class="get-code">
+		</div>
+		<div class="login-input">
+			<input type="text" class="input-item" placeholder="请输入验证码" v-model="code" maxlength="4">
+		</div>
+	</div>
+	<div class="login-input-contain" v-if="!isMessageCodeLogin">
+		<div class="login-input">
+			<input type="text" class="input-item" placeholder="请输入账号" maxlength="11" v-model="sellerName">
+		</div>
+		<div class="login-input">
+			<input type="password" class="input-item" placeholder="请输入密码" v-model="secretkey">
+		</div>
+	</div>
+	<div class="login-btn-contain">
+		<input type="button" value="立即登录" class="login-btn" @click="userLogin">
+	</div>
+	<div class="jump-row">
+		<router-link to="/regist" class="jump-item regist">新用户注册</router-link>
+		<router-link to="/forgetPwd" class="jump-item forget-pwd">忘记密码?</router-link>
+	</div>
+	<p class="help-row">
+		<router-link to="/help?id=5" class="help-item">登录遇到问题?</router-link>
+	</p>
   </div>
 </template>
 <script>
@@ -47,48 +47,45 @@ import {loginByCode,loginBySecretKey} from '@/api/api'
 export default {
   name: 'login',
   data: function() {
-    return {
-    	code: '',
-    	secretkey: '',
-    	sellerName: '',
-    	isMessageCodeLogin: true
-    }
+	return {
+		code: '',
+		secretkey: '',
+		sellerName: '',
+		isMessageCodeLogin: true
+	}
   },
   methods: {
-  	toggleLoginType: function(){
-  		this.isMessageCodeLogin = !this.isMessageCodeLogin;
-  		this.code = '';
-  		this.secretkey = '';
-  		this.sellerName = '';
-  	},
-  	userLogin: function(){
+	toggleLoginType: function(){
+		this.isMessageCodeLogin = !this.isMessageCodeLogin;
+		this.code = '';
+		this.secretkey = '';
+		this.sellerName = '';
+	},
+	userLogin: function(){
 		var params = {
 			code: this.code,
 			secretkey: this.secretkey,
 			sellerName: this.sellerName
 		}
-  		if(this.isMessageCodeLogin){
-  			this.$indicator.open();
-	  		loginByCode(params).then(res=>{
-	  			this.$indicator.close();
-	  			console.log(res)
-	  			sessionStorage.setItem('jwt',res.jwt)
-	  			sessionStorage.setItem('seller',JSON.stringify(res.seller))
-	  			this.$router.push('/home')
-	  		}).catch(err=>{
-	  			this.$indicator.close();
-	  		})
-  		}else{
-  			this.$indicator.open();
-  			loginBySecretKey(params).then(res=>{
-	  			this.$indicator.close();
-  				console.log(res)
-  			})
-  		}
-  	},
-  	back: function(){
-  		this.$router.back()
-  	}
+		if(this.isMessageCodeLogin){
+			this.$indicator.open();
+			loginByCode(params).then(res=>{
+				this.$indicator.close();
+				console.log(res)
+				sessionStorage.setItem('jwt',res.jwt)
+				sessionStorage.setItem('seller',JSON.stringify(res.seller))
+				this.$router.push('/home')
+			}).catch(err=>{
+				this.$indicator.close();
+			})
+		}else{
+			this.$indicator.open();
+			loginBySecretKey(params).then(res=>{
+				this.$indicator.close();
+				console.log(res)
+			})
+		}
+	}
   }
 }
 
@@ -104,17 +101,17 @@ export default {
 .login-tabs,
 .mint-tab-item-label{
 	display: -webkit-box;
-    display: -moz-box;
-    display: -ms-box;
-    display: box;
-    display: -webkit-flex;
-    display: flex;
-    border-bottom: 1px solid #ccc;
-    font-size: 4vw;
-    margin-top: 4vw;
+	display: -moz-box;
+	display: -ms-box;
+	display: box;
+	display: -webkit-flex;
+	display: flex;
+	border-bottom: 1px solid #ccc;
+	font-size: 4vw;
+	margin-top: 4vw;
 }
 .tab{
-    text-align: center;
+	text-align: center;
 	-webkit-box-flex: 1;
 	-moz-box-flex: 1;
 	-ms-box-flex: 1;
@@ -123,9 +120,9 @@ export default {
 	flex: 1;
 }
 .login-type{
-    display: inline-block;
-    color: #808080;
-    line-height: 2;
+	display: inline-block;
+	color: #808080;
+	line-height: 2;
 }
 .active-type{
 	color: #08983c;

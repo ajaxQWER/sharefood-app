@@ -9,6 +9,7 @@ Vue.use(MintUI);
 Vue.use(VueRouter)
 Vue.config.productionTip = false
 
+
 const router = new VueRouter({
     mode: "history",
     routes: routes,
@@ -16,6 +17,11 @@ const router = new VueRouter({
       return { x: 0, y: 0 }
     }
 })
+
+Vue.prototype.back = function(){
+	router.back()
+}
+
 new Vue({
     router: router,
     render: h => h(App)

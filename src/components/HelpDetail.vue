@@ -5,25 +5,36 @@
 	  <div class="nav-title">登录遇到问题</div>
 	</div>
 	<div class="help-lists">
-		<div class="help-contain">
-			<h3 class="article-title">忘记密码？</h3>
-			<p class="article-content">答：方法一：点击登录页[忘记密码]，进行密码找回<br>方法二：若您为连锁店体系门店，可联系您的公司总部设
-			置新的密码<br>方法三：若您的账号未绑定手机号码，无法自助找回，请联系您的市场经理</p>
+		<div class="help-contain" v-if="article">
+			<h3 class="article-title">{{article.articleTitle}}</h3>
+			<p class="article-content" v-html="formatContent(article.articleContent)"></p>
 		</div>
 	</div>
   </div>
 </template>
 <script>
+import {getArticleById} from '@/api/api'
 export default {
   name: 'help',
   data: function() {
 	return {
-
+		article: null
 	}
   },
   methods: {
-  	back: function(){
-  		this.$router.back()
+  	formatContent: function(content){
+  		return content.replace(/\n/g,'<br>')
+  	}
+  },
+  created: function(){
+  	var articleId = this.$route.query.id;
+  	try{
+  		getArticleById(articleId).then(res => {
+  			console.log(res)
+  			this.article = res;
+  		})
+  	}catch(e){
+  		console.log(e)
   	}
   }
 }

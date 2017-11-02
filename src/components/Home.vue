@@ -49,58 +49,58 @@
 	    	</router-link>
 	    </div>
 	    <div class="column flex">
-	    	<router-link to="/analyze" class="link">
+	    	<!-- <router-link to="/analyze" class="link"> -->
 		    	<div class="column-item flex-1">
 	    			<img src="../assets/images/shop-item4.png" alt="">
 	    			<div class="column-name">营业分析</div>
 		    	</div>
-		    </router-link>
+		    <!-- </router-link> -->
 	    	<router-link to="/shopDetail" class="link">
 		    	<div class="column-item flex-1">
 		    		<img src="../assets/images/shop-item5.png" alt="">
 		    		<div class="column-name">门店信息</div>
 		    	</div>
 		    </router-link>
-	    	<router-link to="/activity" class="link">
+	    	<!-- <router-link to="/activity" class="link"> -->
 		    	<div class="column-item flex-1">
 		    		<img src="../assets/images/shop-item6.png" alt="">
 		    		<div class="column-name">活动</div>
 		    	</div>
-		    </router-link>
+		    <!-- </router-link> -->
 	    </div>
 	    <div class="column flex">
-	    	<router-link to="/goodsCategory" class="link">
+	    	<!-- <router-link to="/goodsCategory" class="link"> -->
 		    	<div class="column-item flex-1">
 	    			<img src="../assets/images/shop-item7.png" alt="">
 	    			<div class="column-name">商品分类</div>
 		    	</div>
-		    </router-link>
-	    	<router-link to="/employee" class="link">
+		    <!-- </router-link> -->
+	    	<!-- <router-link to="/employee" class="link"> -->
 		    	<div class="column-item flex-1">
 		    		<img src="../assets/images/shop-item8.png" alt="">
 		    		<div class="column-name">员工</div>
 		    	</div>
-		    </router-link>
-	    	<router-link to="/sequence" class="link">
+		    <!-- </router-link> -->
+	    	<!-- <router-link to="/sequence" class="link"> -->
 		    	<div class="column-item flex-1">
 		    		<img src="../assets/images/shop-item9.png" alt="">
 		    		<div class="column-name">桌号</div>
 		    	</div>
-		    </router-link>
+		    <!-- </router-link> -->
 	    </div>
 	    <div class="column flex">
-	    	<router-link to="/bills" class="link">
+	    	<!-- <router-link to="/bills" class="link"> -->
 		    	<div class="column-item flex-1">
 	    			<img src="../assets/images/shop-item10.png" alt="">
 	    			<div class="column-name">对账单</div>
 		    	</div>
-		    </router-link>
-	    	<router-link to="/setting" class="link">
+		    <!-- </router-link> -->
+	    	<!-- <router-link to="/setting" class="link"> -->
 		    	<div class="column-item flex-1">
 		    		<img src="../assets/images/shop-item11.png" alt="">
 		    		<div class="column-name">设置</div>
 		    	</div>
-		    </router-link>
+		    <!-- </router-link> -->
 	    	<div class="column-item flex-1 column-null"></div>
 	    </div>
     </div>
@@ -139,6 +139,7 @@ export default {
   width: 16vw;
   border-radius: 50%;
   float: left;
+  background-color: #fff;
 }
 .admin-shop{
 	float: left;
@@ -209,7 +210,7 @@ export default {
 .column-item{
 	width: 33.06vw;
 	padding: 4vw 0;
-	margin: 1px;
+	margin: 0.2666vw 0.1366vw;
 	text-align: center;
 	background-color: #fff;
 }

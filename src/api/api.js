@@ -50,6 +50,13 @@ export const loginBySecretKey = params => {
     return ajax.post('seller/seller/loginBySecretKey', params);
 };
 
+//登录遇到问题文章
+export const getArticleListByCategoryId = id => {
+    return ajax.get('commons/article', id);
+};
+export const getArticleById = id => {
+    return ajax.get('commons/article/' +  id);
+};
 
 //文件上传 前台文件需要设置一个path属性
 export const uploadFiles = params => {

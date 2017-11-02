@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+	<router-view></router-view>
   </div>
 </template>
 <script>
@@ -26,9 +26,9 @@ html {
   -webkit-tap-highlight-color: transparent;
 }
 body {
-    margin: 0;
-    font-size: 14px;
-    font-family: Helvetica Neue,Helvetica,STHeiTi,Arial,sans-serif;
+	margin: 0;
+	font-size: 14px;
+	font-family: Helvetica Neue,Helvetica,STHeiTi,Arial,sans-serif;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -39,21 +39,27 @@ body {
   padding: 0;
 }
 .flex {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-box;
-    display: box;
-    display: -webkit-flex;
-    display: flex;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-box;
+	display: box;
+	display: -webkit-flex;
+	display: flex;
 }
 
 .flex-1 {
-    -webkit-box-flex: 1;
-    -moz-box-flex: 1;
-    -ms-box-flex: 1;
-    box-flex: 1;
-    -webkit-flex: 1;
-    flex: 1;
+	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
+	-ms-box-flex: 1;
+	box-flex: 1;
+	-webkit-flex: 1;
+	flex: 1;
+}
+.hide{
+	display: none;
+}
+.show{
+	display: block;
 }
 .top-bg{
   width: 100vw;
@@ -76,7 +82,6 @@ body {
   float: left;
   width: 82.93vw;
   height: 100%;
-  line-height: 100%;
   text-align: center;
   font-size: 4.66vw;
   color: #fff;
@@ -90,5 +95,27 @@ body {
 }
 .back img{
   height: 100%;
+}
+.add-goods{
+	width: 100%;
+	height: 13.06vw;
+	line-height: 13.06vw;
+	position: fixed;
+	bottom: 0;
+	background: url(assets/images/help-navbar.jpg) repeat-y center center;
+	background-size: contain;
+	text-align: center;
+	color: #fff;
+	font-size: 4.8vw;
+}
+.add-goods:before{
+	content: '';
+	display: inline-block;
+	width: 3.73vw;
+	height: 3.73vw;
+	line-height: 13.06vw;
+	background: url(assets/images/add-icon.png) no-repeat;
+	background-size: contain;
+	margin-right: 2.66vw;
 }
 </style>
