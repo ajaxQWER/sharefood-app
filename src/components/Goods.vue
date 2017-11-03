@@ -3,132 +3,34 @@
 		<div class="nav-bar help-navbar goods-header">
 	  		<div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
 	  		<div class="nav-title">全部商品</div>
-	  		<div class="goods-nav-right">
+	  		<!-- <div class="goods-nav-right">
 	  			<div class="search-bar"><img src="../assets/images/search.png" alt=""></div>
 	  			<div class="menu-bar"><img src="../assets/images/menu.png" alt=""></div>
-	  		</div>
+	  		</div> -->
 		</div>
 		<div class="goods-content">
 			<div class="goods-type">
 				<ul>
-					<li class="goods-type-item current-goods-type">新鲜蔬菜</li>
-					<li class="goods-type-item">新鲜瓜果</li>
-					<li class="goods-type-item">新鲜猪肉</li>
-					<li class="goods-type-item">新鲜猪肉</li>
-					<li class="goods-type-item">新鲜猪肉</li>
-					<li class="goods-type-item">新鲜猪肉</li>
-					<li class="goods-type-item">新鲜猪肉</li>
-					<li class="goods-type-item">新鲜猪肉</li>
-					<li class="goods-type-item">新鲜猪肉</li>
-					<li class="goods-type-item">新鲜猪肉</li>
-					<li class="goods-type-item">新鲜猪肉</li>
-					<li class="goods-type-item">新鲜猪肉</li>
-					<li class="goods-type-item">新鲜猪肉</li>
-					<li class="goods-type-item">11111111</li>
+					<li :class="item.isActiveItem?'goods-type-item current-goods-type':'goods-type-item'" v-for="(item,index) in goodsCategoryLists" @click="getGoodsById(item.goodsCategoryId,index)" :key="index">{{item.goodsCategoryName}}</li>
 				</ul>
 			</div>
 			<div class="goods-details-lists">
 				<ul>
-					<li class="goods-detail">
+					<li class="goods-detail" v-for="(item,index) in goodsList" :key="index">
 						<div class="goods-detail-wrap">
 							<div class="goods-image">
-								<img src="../assets/images/goods-image.jpg" alt="">
+								<img :src="UPLOADURL + item.goodsImgUrl" alt="">
 							</div>
 							<div class="goods-info">
-								<h3 class="goods-name">商品名称商品名称商品</h3>
-								<div class="goods-sales">月售234</div>
-								<div class="goods-price">￥25.00</div>
+								<h3 class="goods-name">{{item.goodsName}}</h3>
+								<div class="goods-sales">月售{{item.goodsSales}}份</div>
+								<div class="goods-price">￥{{item.goodsPrice}}</div>
 							</div>
 						</div>
 						<div class="operate-row">
-							<router-link to="/goodsDetail"><button class="btn edit-btn">编辑</button></router-link>
-							<button class="btn sold-out-btn">估清</button>
-							<button class="btn delete-btn">删除</button>
-						</div>
-					</li>
-					<li class="goods-detail">
-						<div class="goods-detail-wrap">
-							<div class="goods-image">
-								<img src="../assets/images/goods-image.jpg" alt="">
-							</div>
-							<div class="goods-info">
-								<h3 class="goods-name">商品名称</h3>
-								<div class="goods-sales">月售234</div>
-								<div class="goods-price">￥25.00</div>
-							</div>
-						</div>
-						<div class="operate-row">
-							<router-link to="/goodsDetail"><button class="btn edit-btn">编辑</button></router-link>
-							<button class="btn sold-out-btn">估清</button>
-							<button class="btn delete-btn">删除</button>
-						</div>
-					</li>
-					<li class="goods-detail">
-						<div class="goods-detail-wrap">
-							<div class="goods-image">
-								<img src="../assets/images/goods-image.jpg" alt="">
-							</div>
-							<div class="goods-info">
-								<h3 class="goods-name">商品名称</h3>
-								<div class="goods-sales">月售234</div>
-								<div class="goods-price">￥25.00</div>
-							</div>
-						</div>
-						<div class="operate-row">
-							<router-link to="/goodsDetail"><button class="btn edit-btn">编辑</button></router-link>
-							<button class="btn sold-out-btn">估清</button>
-							<button class="btn delete-btn">删除</button>
-						</div>
-					</li>
-					<li class="goods-detail">
-						<div class="goods-detail-wrap">
-							<div class="goods-image">
-								<img src="../assets/images/goods-image.jpg" alt="">
-							</div>
-							<div class="goods-info">
-								<h3 class="goods-name">商品名称</h3>
-								<div class="goods-sales">月售234</div>
-								<div class="goods-price">￥25.00</div>
-							</div>
-						</div>
-						<div class="operate-row">
-							<router-link to="/goodsDetail"><button class="btn edit-btn">编辑</button></router-link>
-							<button class="btn sold-out-btn">估清</button>
-							<button class="btn delete-btn">删除</button>
-						</div>
-					</li>
-					<li class="goods-detail">
-						<div class="goods-detail-wrap">
-							<div class="goods-image">
-								<img src="../assets/images/goods-image.jpg" alt="">
-							</div>
-							<div class="goods-info">
-								<h3 class="goods-name">商品名称</h3>
-								<div class="goods-sales">月售234</div>
-								<div class="goods-price">￥25.00</div>
-							</div>
-						</div>
-						<div class="operate-row">
-							<router-link to="/goodsDetail"><button class="btn edit-btn">编辑</button></router-link>
-							<button class="btn sold-out-btn">估清</button>
-							<button class="btn delete-btn">删除</button>
-						</div>
-					</li>
-					<li class="goods-detail">
-						<div class="goods-detail-wrap">
-							<div class="goods-image">
-								<img src="../assets/images/goods-image.jpg" alt="">
-							</div>
-							<div class="goods-info">
-								<h3 class="goods-name">商品名称</h3>
-								<div class="goods-sales">月售234</div>
-								<div class="goods-price">￥25.00</div>
-							</div>
-						</div>
-						<div class="operate-row">
-							<router-link to="/goodsDetail"><button class="btn edit-btn">编辑</button></router-link>
-							<button class="btn sold-out-btn">估清</button>
-							<button class="btn delete-btn">删除</button>
+							<router-link :to="'/goodsDetail?goodsId='+item.goodsId"><button class="btn edit-btn">编辑</button></router-link>
+							<button class="btn sold-out-btn" @click="soldOut(item.goodsId,index,item.goodsStatus)">{{formatStatus(item.goodsStatus)}}</button>
+							<button class="btn delete-btn" @click="deleteGoods(item.goodsId,index)">删除</button>
 						</div>
 					</li>
 				</ul>
@@ -138,11 +40,81 @@
 	</div>
 </template>
 <script>
+	import {getGoodsCategoryLists,getGoodsLists,deleteGoodsById,soldOutGoods,putAwayGoods} from '@/api/api'
 	export default {
 		name: 'goods',
 		data: function(){
 			return {
-				
+				goodsCategoryLists: null,
+				goodsList: null
+			}
+		},
+		created: function(){
+			getGoodsCategoryLists({params: {pageSize: 999999}}).then(res => {
+				// console.log(res)
+				this.getGoods(res.list[0].goodsCategoryId)
+				this.goodsCategoryLists = res.list;
+				this.goodsCategoryLists.forEach(function(item,index){
+					item['isActiveItem'] = false;
+					if(index == 0){
+						item['isActiveItem'] = true
+					}
+				})
+			})
+		},
+		methods: {
+			getGoods: function(id){
+				this.$indicator.open();
+				getGoodsLists({params: {pageSize: 999999, goodsClassId: id}}).then(res => {
+					// console.log(res.list)
+					this.goodsList = res.list;
+					this.$indicator.close();
+				})
+			},
+			formatStatus: function(status){
+				switch (status) {
+					case 'PUTAWAY':
+						return '估清';
+					case 'SOLD_OUT':
+						return '恢复';
+				}
+			},
+			getGoodsById: function(id,index){
+				this.goodsCategoryLists.forEach(function(item,current){
+					item['isActiveItem'] = false;
+					if(index == current){
+						item['isActiveItem'] = true;
+					}
+				})
+				this.getGoods(id)
+			},
+			deleteGoods: function(id,index){
+				this.$messagebox.confirm('确定删除该商品?').then(action => {
+					deleteGoodsById(id).then(() => {
+							this.$toast({message:'操作成功',duration: 1000})
+							this.goodsList.splice(index,1)
+						})
+				}).catch(() => {
+					this.$toast({message:'已取消',duration: 1000})
+				});
+			},
+			soldOut: function(id,index,status){
+				var soldStatus = this.formatStatus(status);
+				this.$messagebox.confirm('确定'+soldStatus+'该商品?').then(action => {
+					if(status==='PUTAWAY'){
+						soldOutGoods([id]).then(() => {
+							this.$toast({message:'操作成功',duration: 1000})
+							this.goodsList[index].goodsStatus = 'SOLD_OUT'
+						})
+					}else if(status==='SOLD_OUT'){
+						putAwayGoods([id]).then(() => {
+							this.$toast({message:'操作成功',duration: 1000})
+							this.goodsList[index].goodsStatus = 'PUTAWAY'
+						})
+					}
+				}).catch(() => {
+					this.$toast({message:'已取消',duration: 1000})
+				});
 			}
 		}
 	}

@@ -10,6 +10,7 @@ import Order from '@/components/Order.vue'
 import OrderDetail from '@/components/OrderDetail.vue'
 import Comment from '@/components/Comment.vue'
 import ShopDetail from '@/components/ShopDetail.vue'
+import GoodsCategory from '@/components/GoodsCategory.vue'
 let routes = [{
     path: '/login',
     component: Login,
@@ -54,6 +55,10 @@ let routes = [{
     path: '/shopDetail',
     component: ShopDetail,
     name: 'shopDetail'
+},{
+    path: '/goodsCategory',
+    component: GoodsCategory,
+    name: 'goodsCategory'
 }];
 
 export default routes;

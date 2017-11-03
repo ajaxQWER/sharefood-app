@@ -64,7 +64,7 @@ body {
 .top-bg{
   width: 100vw;
   height: 59.73vw;
-  background: url(assets/images/top-bg.png) no-repeat center center;
+  background: url(assets/images/top-bg.jpg) no-repeat center center;
   background-size: 100% 100%;
 }
 .nav-bar{

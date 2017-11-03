@@ -69,12 +69,12 @@
 		    <!-- </router-link> -->
 	    </div>
 	    <div class="column flex">
-	    	<!-- <router-link to="/goodsCategory" class="link"> -->
+	    	<router-link to="/goodsCategory" class="link">
 		    	<div class="column-item flex-1">
 	    			<img src="../assets/images/shop-item7.png" alt="">
 	    			<div class="column-name">商品分类</div>
 		    	</div>
-		    <!-- </router-link> -->
+		    </router-link>
 	    	<!-- <router-link to="/employee" class="link"> -->
 		    	<div class="column-item flex-1">
 		    		<img src="../assets/images/shop-item8.png" alt="">
@@ -95,12 +95,13 @@
 	    			<div class="column-name">对账单</div>
 		    	</div>
 		    <!-- </router-link> -->
+	    	<router-link to="/login" class="link">
 	    	<!-- <router-link to="/setting" class="link"> -->
 		    	<div class="column-item flex-1">
 		    		<img src="../assets/images/shop-item11.png" alt="">
 		    		<div class="column-name">设置</div>
 		    	</div>
-		    <!-- </router-link> -->
+		    </router-link>
 	    	<div class="column-item flex-1 column-null"></div>
 	    </div>
     </div>
@@ -160,7 +161,7 @@ export default {
 	width: 89.33vw;
 	height: 21.33vw;
 	margin:  0 auto;
-	border-radius: 20px;
+	border-radius: 8px;
 	background-color: #fff;
 	-webkit-align-items: center;
 	-ms-flex-align: center;  

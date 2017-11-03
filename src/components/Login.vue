@@ -2,34 +2,34 @@
   <div id="login">
 	<div class="top-bg">
 		<div class="nav-bar">
-			<div class="back" @click="back"><img src="../assets/images/black-back.png" alt=""></div>
+			<div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
 		</div>
 		<div class="login-logo"><img src="../assets/images/login-logo.png" alt=""></div>
 	</div>
-	<div class="login-tabs">
+	<!-- <div class="login-tabs">
 		<div class="tab" @click="toggleLoginType">
 			<div :class="[isMessageCodeLogin?'active-type':'', 'login-type']">手机验证码登录</div>
 		</div>
 		<div class="tab" @click="toggleLoginType">
 			<div :class="[isMessageCodeLogin?'':'active-type', 'login-type ']">账号密码登录</div>
 		</div>
-	</div>
+	</div> -->
 	<div class="login-input-contain" v-if="isMessageCodeLogin">
 		<div class="login-input">
-			<input type="text" class="input-item" placeholder="请输入手机号" maxlength="11" v-model="sellerName"><input type="button" value="获取验证码" class="get-code">
+			<input type="text" class="input-item" placeholder="请输入手机号" maxlength="11" v-model="sellerName"><input type="button" value="获取验证码" class="get-code" @click="getCode" :disabled="isClickGetCode">
 		</div>
 		<div class="login-input">
 			<input type="text" class="input-item" placeholder="请输入验证码" v-model="code" maxlength="4">
 		</div>
 	</div>
-	<div class="login-input-contain" v-if="!isMessageCodeLogin">
+	<!-- <div class="login-input-contain" v-if="!isMessageCodeLogin">
 		<div class="login-input">
 			<input type="text" class="input-item" placeholder="请输入账号" maxlength="11" v-model="sellerName">
 		</div>
 		<div class="login-input">
 			<input type="password" class="input-item" placeholder="请输入密码" v-model="secretkey">
 		</div>
-	</div>
+	</div> -->
 	<div class="login-btn-contain">
 		<input type="button" value="立即登录" class="login-btn" @click="userLogin">
 	</div>
@@ -43,7 +43,7 @@
   </div>
 </template>
 <script>
-import {loginByCode,loginBySecretKey} from '@/api/api'
+import {loginByCode,loginBySecretKey,getPhoneCode} from '@/api/api'
 export default {
   name: 'login',
   data: function() {
@@ -51,6 +51,7 @@ export default {
 		code: '',
 		secretkey: '',
 		sellerName: '',
+		isClickGetCode: false,
 		isMessageCodeLogin: true
 	}
   },
@@ -61,30 +62,88 @@ export default {
 		this.secretkey = '';
 		this.sellerName = '';
 	},
+	getCode: function(e){
+		var _this = this;
+  		if(this.sellerName.length == 11){
+			_this.isClickGetCode = true;
+  			getPhoneCode(this.sellerName).then(()=>{
+  			})
+  		}else{
+  			this.$toast({message:'请输入正确的手机号码',duration: 1000})
+  			return;
+  		}
+  		var i = 60;
+  		var codeInterval = setInterval(function() {
+  		  	i--;
+		  	if(i == 0){
+		  		clearInterval(codeInterval)
+		  		_this.isClickGetCode = false;
+		  		e.target.value = '获取验证码';
+		  		return;
+		  	}
+		  	e.target.value = i + 's后重发'
+  		}, 1000)
+	},
 	userLogin: function(){
 		var params = {
 			code: this.code,
-			secretkey: this.secretkey,
+			// secretkey: this.secretkey,
 			sellerName: this.sellerName
 		}
-		if(this.isMessageCodeLogin){
-			this.$indicator.open();
-			loginByCode(params).then(res=>{
-				this.$indicator.close();
-				console.log(res)
-				sessionStorage.setItem('jwt',res.jwt)
-				sessionStorage.setItem('seller',JSON.stringify(res.seller))
-				this.$router.push('/home')
-			}).catch(err=>{
-				this.$indicator.close();
-			})
-		}else{
-			this.$indicator.open();
-			loginBySecretKey(params).then(res=>{
-				this.$indicator.close();
-				console.log(res)
-			})
+
+		if(!this.sellerName){
+  			this.$toast({message:'请输入手机号',duration: 1000})
+			return
 		}
+		if(!this.code){
+  			this.$toast({message:'请输入验证码',duration: 1000})
+			return
+		}
+		this.$indicator.open();
+		loginByCode(params).then(res=>{
+			this.$indicator.close();
+			console.log(res)
+			sessionStorage.setItem('jwt',res.jwt)
+			sessionStorage.setItem('seller',JSON.stringify(res.seller))
+			this.$router.push('/home')
+		}).catch(err=>{
+			this.$indicator.close();
+		})
+
+		// if(this.isMessageCodeLogin){
+		// 	if(!this.sellerName){
+		// 		this.$toast('请输入手机号');
+		// 		return
+		// 	}
+		// 	if(!this.code){
+		// 		this.$toast('请输入验证码');
+		// 		return
+		// 	}
+		// 	this.$indicator.open();
+		// 	loginByCode(params).then(res=>{
+		// 		this.$indicator.close();
+		// 		console.log(res)
+		// 		sessionStorage.setItem('jwt',res.jwt)
+		// 		sessionStorage.setItem('seller',JSON.stringify(res.seller))
+		// 		this.$router.push('/home')
+		// 	}).catch(err=>{
+		// 		this.$indicator.close();
+		// 	})
+		// }else{
+		// 	if(!this.sellerName){
+		// 		this.$toast('请输入账号');
+		// 		return
+		// 	}
+		// 	if(!this.secretkey){
+		// 		this.$toast('请输入密码');
+		// 		return
+		// 	}
+		// 	this.$indicator.open();
+		// 	loginBySecretKey(params).then(res=>{
+		// 		this.$indicator.close();
+		// 		console.log(res)
+		// 	})
+		// }
 	}
   }
 }
@@ -146,7 +205,7 @@ export default {
 	border-radius:30px;
 	border: none;
 	outline: none;
-	padding: 2%;
+	padding: 2% 4%;
 	box-sizing: border-box;
 	font-size: 3.73vw;
 }
@@ -173,6 +232,7 @@ export default {
 	color: #fff;
 	font-size: 4.26vw;
 	border: none;
+	outline: none;
 	border-radius: 30px;
 	-moz-box-shadow: 2px 3px 10px 2px #beeccc;
 	-webkit-box-shadow: 2px 3px 10px 2px #beeccc;
