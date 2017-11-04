@@ -36,7 +36,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="add-goods">添加商品</div>
+		<div class="add-goods" @click="addGoods">添加商品</div>
 	</div>
 </template>
 <script>
@@ -50,6 +50,7 @@
 			}
 		},
 		created: function(){
+			this.$indicator.open();
 			getGoodsCategoryLists({params: {pageSize: 999999}}).then(res => {
 				// console.log(res)
 				this.getGoods(res.list[0].goodsCategoryId)
@@ -64,7 +65,6 @@
 		},
 		methods: {
 			getGoods: function(id){
-				this.$indicator.open();
 				getGoodsLists({params: {pageSize: 999999, goodsClassId: id}}).then(res => {
 					// console.log(res.list)
 					this.goodsList = res.list;
@@ -80,6 +80,7 @@
 				}
 			},
 			getGoodsById: function(id,index){
+				this.$indicator.open();
 				this.goodsCategoryLists.forEach(function(item,current){
 					item['isActiveItem'] = false;
 					if(index == current){

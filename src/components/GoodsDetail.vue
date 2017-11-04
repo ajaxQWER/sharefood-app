@@ -46,6 +46,46 @@
 			</div>
 			<div class="save-goods" @click="updateGoods">保存</div>
 		</div>
+		<div class="goodsDetail-content" v-else>
+			<div class="goods-item">
+				<div class="row-title">商品图片</div>
+				<div class="row-value upload-img">
+					<img class="goods-imgage" :src="headerImage?headerImage:''" alt="商品图片">
+				</div>
+				<div class="row-value upload-img upload">
+						<img class="goods-imgage" src="" alt="点击上传" @click="popupVisible=true">
+				</div>
+			</div>
+			<div class="goods-item">
+				<div class="row-title">商品名称</div>
+				<div class="row-value">
+					<input type="text" placeholder="请输入商品名称" v-model="newGoods.goods.goodsName" maxlength="12">
+				</div>
+			</div>
+			<div class="goods-item">
+				<div class="row-title">商品分类</div>
+				<div class="row-value value-after">火锅、火锅、火锅、火锅、火锅</div>
+			</div>
+			<div class="goods-item">
+				<div class="row-title">商品价格</div>
+				<div class="row-value">
+					<input type="text" placeholder="请输入商品价格" v-model.number="newGoods.goods.goodsPrice">
+				</div>
+			</div>
+			<div class="goods-item">
+				<div class="row-title">餐盒费</div>
+				<div class="row-value">
+					<input type="text" placeholder="请输入餐盒费" v-model.number="newGoods.goods.feeMeals">
+				</div>
+			</div>
+			<div class="goods-item">
+				<div class="row-title">商品简介</div>
+				<div class="row-value">
+					<textarea class="goods-intro" placeholder="最多255字" name="" id="" maxlength="255" v-model="newGoods.goods.goodsContent"></textarea>
+				</div>
+			</div>
+			<div class="save-goods" @click="updateGoods">保存</div>
+		</div>
 
 		<mt-popup
 		  v-model="popupVisible"
@@ -70,7 +110,7 @@
 </template>
 <script>
 	import Cropper from 'cropperjs'
-	import {getGoodsById,updateGoodsById,uploadFiles} from '@/api/api'
+	import {getGoodsById,updateGoodsById,addGoods,uploadFiles} from '@/api/api'
 	export default {
 		name: 'goodsDetail',
 		data: function(){
@@ -82,11 +122,25 @@
 				cropper: '',
 				croppable: false,
 				panel: false,
-				url: ''
+				url: '',
+				newGoods: {
+					goods: {
+					    feeMeals: '',
+					    goodsClassNames: "",
+					    goodsContent: "",
+					    goodsImgUrl: "",
+					    goodsName: "",
+					    goodsPrice: '',
+					    goodsStatus: "SOLD_OUT",
+				  	},
+				  	goodsCategoryIdList: [0]
+				},
+				goodsId: ''
 			}
 		},
 		created: function(){
 			var goodsId = this.$route.query.goodsId;
+			this.goodsId = goodsId;
 			if(goodsId){
 				this.$indicator.open();
 				getGoodsById(goodsId).then(res => {
@@ -176,7 +230,31 @@
 			  //这边写图片的上传
 			  // console.log(this.headerImage)
 			  console.log(this.url)
-			  this.cancel()
+			  console.log(this.picValue)
+			  // console.log(this.headerImage)
+			  var fd = new FormData();
+              fd.append('file', this.picValue);
+              fd.path = '/goods'
+              uploadFiles(fd).then(data => {
+              		this.cancel()
+	              	console.log(data)
+	              	this.$toast({
+	                  	message: '上传成功',
+	                  	duration: 1000
+              		})
+			  		if(this.goodsId){
+			  			this.goodsInfo.goods.goodsImgUrl =  data.originalUrl;
+			  		}else{
+			  			this.newGoods.goods.goodsImgUrl = data.originalUrl;
+			  		}
+                  	
+              	}).catch(err => {
+                  	console.log(err)
+                  	this.$toast({
+	                  	message: err,
+	                  	duration: 1000
+              		})
+              	})
 			},
 			closePopup: function(){
 				this.cancel()
@@ -191,15 +269,26 @@
 				this.$refs.uploads.value = '';
 			},
 			updateGoods: function(){
-				console.log(this.goodsInfo)
 				this.$indicator.open();
-				updateGoodsById(this.goodsInfo.goods.goodsId,this.goodsInfo).then(() => {
-					this.$toast({message:'操作成功',duration: 1000})
-					this.$indicator.close();
-					setTimeout(() => {
-						this.$router.back()
-					}, 1500)
-				})
+				//编辑
+				if(this.goodsId){
+					updateGoodsById(this.goodsInfo.goods.goodsId,this.goodsInfo).then(() => {
+						this.$toast({message:'操作成功',duration: 1000})
+						this.$indicator.close();
+						setTimeout(() => {
+							this.$router.back()
+						}, 1500)
+					})
+				}else{
+					//新增
+					addGoods(this.newGoods).then(() => {
+						this.$toast({message:'操作成功',duration: 1000})
+						this.$indicator.close();
+						setTimeout(() => {
+							this.$router.back()
+						}, 1500)
+					})
+				}
 			}
 		}
 	}
@@ -270,9 +359,9 @@
 }
 .goods-intro{
 	width: 100%;
-	height: 30vw;
+	height: 35vw;
 	font-size: 3.73vw;
-	padding: 0.66vw;
+	padding: 0.26vw;
 	resize: none;
 	vertical-align: middle;
 	box-sizing: border-box;

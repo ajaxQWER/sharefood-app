@@ -35,9 +35,11 @@
 		},
 		methods: {
 			getGoodsCategoryList: function(){
+				this.$indicator.open();
 				getGoodsCategoryLists({params:{pageSize:99999999}}).then(res=>{
 					console.log(res)
 					this.goodsCategoryList = res.list;
+					this.$indicator.close();
 				})
 			},
 			deleteCategory: function(id){

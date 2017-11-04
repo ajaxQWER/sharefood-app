@@ -20,13 +20,23 @@ const router = new VueRouter({
       return { x: 0, y: 0 }
     }
 })
-Object.defineProperty(Vue.prototype, 'UPLOADURL', {value: 'http://uploads.sf.chinagjgx.com'});
-Object.defineProperty(Vue.prototype, 'BASEURL', {value: 'http://api.sf.chinagjgx.com'});
+
+
+//正式
+// Object.defineProperty(Vue.prototype, 'UPLOADURL', {value: 'http://uploads.sf.chinagjgx.com'});
+// Object.defineProperty(Vue.prototype, 'BASEURL', {value: 'http://api.sf.chinagjgx.com'});
+
+//测试
+Object.defineProperty(Vue.prototype, 'UPLOADURL', {value: 'http://uploadstest.gongxiangdiancan.com'});
+Object.defineProperty(Vue.prototype, 'BASEURL', {value: 'http://apitest.sf.chinagjgx.com'});
 
 Vue.prototype.back = function(){
+	router.isBack = true;
 	router.back()
 }
-
+Vue.prototype.addGoods = function(){
+	router.push('/goodsDetail')
+}
 new Vue({
     router: router,
     render: h => h(App)

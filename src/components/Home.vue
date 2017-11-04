@@ -1,111 +1,111 @@
 <template>
-  <div id="home">
-    <div class="top-bg">
-      <div class="nav-bar bar-title">门店管理</div>
-      <div class="admin-info">
-        <img src="../assets/images/login-logo.png" alt="" class="admin-icon">
-        <div class="admin-shop">
-        	<h3 class="shop-name">冬季的樱花</h3>
-        	<router-link to="/shopDetail?shopId=1" class="shop-detail">点击查看门店详情</router-link>
-        </div>
-      </div>
-      <div class="sales-info flex">
-      	<div class="flex-1 sales-item">
-      		<div class="sales-title">今日营业额</div>
-      		<div class="sales-money">7,291.20</div>
-  			<div class="sales-title-small">昨日6,820.31</div>
+  	<div id="home">
+    	<div class="top-bg">
+	      	<div class="nav-bar bar-title">门店管理</div>
+	      	<div class="admin-info">
+		        <img src="../assets/images/login-logo.png" alt="" class="admin-icon">
+		        <div class="admin-shop">
+		        	<h3 class="shop-name">冬季的樱花</h3>
+		        	<router-link to="/shopDetail?shopId=1" class="shop-detail">点击查看门店详情</router-link>
+		        </div>
+	      	</div>
+	      	<div class="sales-info flex">
+		      	<div class="flex-1 sales-item">
+		      		<div class="sales-title">今日营业额</div>
+		      		<div class="sales-money">7,291.20</div>
+		  			<div class="sales-title-small">昨日6,820.31</div>
+		      	</div>
+		      	<div class="flex-1 sales-item">
+		      		<div class="sales-title">今日订单</div>
+		      		<div class="sales-money">130</div>
+		  			<div class="sales-title-small">昨日120</div>
+		      	</div>
+		      	<div class="flex-1 sales-item">
+					<div class="sales-title">可用余额</div>
+					<div class="sales-money">56,700.20</div>
+					<div class="sales-title-small">可提现32,190.31</div>
+		      	</div>
+	      	</div>
       	</div>
-      	<div class="flex-1 sales-item">
-      		<div class="sales-title">今日订单</div>
-      		<div class="sales-money">130</div>
-  			<div class="sales-title-small">昨日120</div>
-      	</div>
-      	<div class="flex-1 sales-item">
-			<div class="sales-title">可用余额</div>
-			<div class="sales-money">56,700.20</div>
-			<div class="sales-title-small">可提现32,190.31</div>
-      	</div>
-      </div>
-    </div>
-    <div class="column-wrap">
-	    <div class="column flex">
-	    	<router-link to="/goods" class="link">
-		    	<div class="column-item flex-1">
-	    			<img src="../assets/images/shop-item1.png" alt="">
-	    			<div class="column-name">商品</div>
-		    	</div>
-	    	</router-link>
-	    	<router-link to="/order" class="link">
-		    	<div class="column-item flex-1">
-		    		<img src="../assets/images/shop-item2.png" alt="">
-		    		<div class="column-name">订单</div>
-		    	</div>
-	    	</router-link>
-	    	<router-link to="/comment" class="link">
-		    	<div class="column-item flex-1">
-		    		<img src="../assets/images/shop-item3.png" alt="">
-		    		<div class="column-name">评价</div>
-		    	</div>
-	    	</router-link>
+	    <div class="column-wrap">
+		    <div class="column flex">
+		    	<router-link to="/goods" class="link">
+			    	<div class="column-item flex-1">
+		    			<img src="../assets/images/shop-item1.png" alt="">
+		    			<div class="column-name">商品</div>
+			    	</div>
+		    	</router-link>
+		    	<router-link to="/order" class="link">
+			    	<div class="column-item flex-1">
+			    		<img src="../assets/images/shop-item2.png" alt="">
+			    		<div class="column-name">订单</div>
+			    	</div>
+		    	</router-link>
+		    	<router-link to="/comment" class="link">
+			    	<div class="column-item flex-1">
+			    		<img src="../assets/images/shop-item3.png" alt="">
+			    		<div class="column-name">评价</div>
+			    	</div>
+		    	</router-link>
+		    </div>
+		    <div class="column flex">
+		    	<!-- <router-link to="/analyze" class="link"> -->
+			    	<div class="column-item flex-1">
+		    			<img src="../assets/images/shop-item4.png" alt="">
+		    			<div class="column-name">营业分析</div>
+			    	</div>
+			    <!-- </router-link> -->
+		    	<router-link to="/shopDetail" class="link">
+			    	<div class="column-item flex-1">
+			    		<img src="../assets/images/shop-item5.png" alt="">
+			    		<div class="column-name">门店信息</div>
+			    	</div>
+			    </router-link>
+		    	<!-- <router-link to="/activity" class="link"> -->
+			    	<div class="column-item flex-1">
+			    		<img src="../assets/images/shop-item6.png" alt="">
+			    		<div class="column-name">活动</div>
+			    	</div>
+			    <!-- </router-link> -->
+		    </div>
+		    <div class="column flex">
+		    	<router-link to="/goodsCategory" class="link">
+			    	<div class="column-item flex-1">
+		    			<img src="../assets/images/shop-item7.png" alt="">
+		    			<div class="column-name">商品分类</div>
+			    	</div>
+			    </router-link>
+		    	<!-- <router-link to="/employee" class="link"> -->
+			    	<div class="column-item flex-1">
+			    		<img src="../assets/images/shop-item8.png" alt="">
+			    		<div class="column-name">员工</div>
+			    	</div>
+			    <!-- </router-link> -->
+		    	<!-- <router-link to="/sequence" class="link"> -->
+			    	<div class="column-item flex-1">
+			    		<img src="../assets/images/shop-item9.png" alt="">
+			    		<div class="column-name">桌号</div>
+			    	</div>
+			    <!-- </router-link> -->
+		    </div>
+		    <div class="column flex">
+		    	<!-- <router-link to="/bills" class="link"> -->
+			    	<div class="column-item flex-1">
+		    			<img src="../assets/images/shop-item10.png" alt="">
+		    			<div class="column-name">对账单</div>
+			    	</div>
+			    <!-- </router-link> -->
+		    	<router-link to="/login" class="link">
+		    	<!-- <router-link to="/setting" class="link"> -->
+			    	<div class="column-item flex-1">
+			    		<img src="../assets/images/shop-item11.png" alt="">
+			    		<div class="column-name">设置</div>
+			    	</div>
+			    </router-link>
+		    	<div class="column-item flex-1 column-null"></div>
+		    </div>
 	    </div>
-	    <div class="column flex">
-	    	<!-- <router-link to="/analyze" class="link"> -->
-		    	<div class="column-item flex-1">
-	    			<img src="../assets/images/shop-item4.png" alt="">
-	    			<div class="column-name">营业分析</div>
-		    	</div>
-		    <!-- </router-link> -->
-	    	<router-link to="/shopDetail" class="link">
-		    	<div class="column-item flex-1">
-		    		<img src="../assets/images/shop-item5.png" alt="">
-		    		<div class="column-name">门店信息</div>
-		    	</div>
-		    </router-link>
-	    	<!-- <router-link to="/activity" class="link"> -->
-		    	<div class="column-item flex-1">
-		    		<img src="../assets/images/shop-item6.png" alt="">
-		    		<div class="column-name">活动</div>
-		    	</div>
-		    <!-- </router-link> -->
-	    </div>
-	    <div class="column flex">
-	    	<router-link to="/goodsCategory" class="link">
-		    	<div class="column-item flex-1">
-	    			<img src="../assets/images/shop-item7.png" alt="">
-	    			<div class="column-name">商品分类</div>
-		    	</div>
-		    </router-link>
-	    	<!-- <router-link to="/employee" class="link"> -->
-		    	<div class="column-item flex-1">
-		    		<img src="../assets/images/shop-item8.png" alt="">
-		    		<div class="column-name">员工</div>
-		    	</div>
-		    <!-- </router-link> -->
-	    	<!-- <router-link to="/sequence" class="link"> -->
-		    	<div class="column-item flex-1">
-		    		<img src="../assets/images/shop-item9.png" alt="">
-		    		<div class="column-name">桌号</div>
-		    	</div>
-		    <!-- </router-link> -->
-	    </div>
-	    <div class="column flex">
-	    	<!-- <router-link to="/bills" class="link"> -->
-		    	<div class="column-item flex-1">
-	    			<img src="../assets/images/shop-item10.png" alt="">
-	    			<div class="column-name">对账单</div>
-		    	</div>
-		    <!-- </router-link> -->
-	    	<router-link to="/login" class="link">
-	    	<!-- <router-link to="/setting" class="link"> -->
-		    	<div class="column-item flex-1">
-		    		<img src="../assets/images/shop-item11.png" alt="">
-		    		<div class="column-name">设置</div>
-		    	</div>
-		    </router-link>
-	    	<div class="column-item flex-1 column-null"></div>
-	    </div>
-    </div>
-  </div>
+  	</div>
 </template>
 <script>
 import { loginByCode, loginBySecretKey } from '@/api/api'
@@ -200,6 +200,7 @@ export default {
 	text-decoration: none;
 }
 .column-wrap{
+	background-color: #f2f2f2;
 	margin-top: 9.33vw;
 	padding-bottom: 9.33vw;
 }

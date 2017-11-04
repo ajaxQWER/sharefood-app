@@ -100,6 +100,16 @@ export const getGoodsById = id => {
 export const updateGoodsById = (goodsId,params) => {
     return ajax.post('seller/goods/' + goodsId, params);
 };
+//添加商品
+export const addGoods = params => {
+    return ajax.put('seller/goods/', params);
+};
+
+
+//获取订单
+export const getOrderList = params => {
+    return ajax.get('seller/order/', params);
+};
 
 
 

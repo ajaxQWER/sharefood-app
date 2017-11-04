@@ -9,120 +9,94 @@
 		  		</div>
 			</div>
 			<div class="order-nav flex">
-				<div class="order-nav-item flex-1 current-order-item">全部</div>
-				<div class="order-nav-item flex-1">新订单</div>
-				<div class="order-nav-item flex-1">配送中</div>
-				<div class="order-nav-item flex-1">已完成</div>
-				<div class="order-nav-item flex-1">已取消</div>
+				<div v-for="(item,index) in navObj" :key="index" :class="['order-nav-item', 'flex-1',(current==item.index)?'current-order-item':'']" @click="toggle(item.index)">{{item.name}}</div>
 			</div>
 		</div>
 		<div class="order-content">
 			<div class="order-lists">
 				<mt-loadmore :bottom-method="loadBottom" ref="loadmore":bottom-all-loaded="allLoaded" bottomPullText="加载更多" bottomDropText="加载更多">
-				<ul class="order-lists">
-					<li @click="jump">
-						<div class="order-row">
-							<div class="order-number">20170927112536195</div>
-							<div class="order-type">新订单</div>
-						</div>
-						<div class="order-row order-owner">
-							<div class="order-item">薛将军先生<span>13679085354</span></div>
-							<div class="order-address">锦江区东大街1号</div>
-							<a @click.stop="stopEvent" href="tel:13679085354" class="phone"><img src="../assets/images/phone.png" alt=""></a>
-						</div>
-						<div class="order-row">
-							<div class="order-detail">
-								<div class="order-item order-time">下单时间<span>2017-09-27 11:25:36</span></div>
-								<div class="order-item order-money">订单金额<span>￥235.00</span></div>
-							</div>
-							<div class="operate-btn">
-								<button class="btn">取消订单</button>
-								<button class="btn deal-btn">接单</button>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="order-row">
-							<div class="order-number">20170927112536195</div>
-							<div class="order-type">配送中</div>
-						</div>
-						<div class="order-row order-owner">
-							<div class="order-item">薛将军先生<span>13679085354</span></div>
-							<div class="order-address">锦江区东大街1号</div>
-							<a href="tel:13679085354" class="phone"><img src="../assets/images/phone.png" alt=""></a>
-						</div>
-						<div class="order-row">
-							<div class="order-detail">
-								<div class="order-item order-time">下单时间<span>2017-09-27 11:25:36</span></div>
-								<div class="order-item order-money">订单金额<span>￥235.00</span></div>
-							</div>
-							<div class="operate-btn hide">
-								<button class="btn">取消订单</button>
-								<button class="btn deal-btn">接单</button>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="order-row">
-							<div class="order-number">20170927112536195</div>
-							<div class="order-type">已完成</div>
-						</div>
-						<div class="order-row order-owner">
-							<div class="order-item">薛将军先生<span>13679085354</span></div>
-							<div class="order-address">锦江区东大街1号</div>
-							<a href="tel:13679085354" class="phone"><img src="../assets/images/phone.png" alt=""></a>
-						</div>
-						<div class="order-row">
-							<div class="order-detail">
-								<div class="order-item order-time">下单时间<span>2017-09-27 11:25:36</span></div>
-								<div class="order-item order-money">订单金额<span>￥235.00</span></div>
-							</div>
-							<div class="operate-btn hide">
-								<button class="btn">取消订单</button>
-								<button class="btn deal-btn">接单</button>
-							</div>
-						</div>
-					</li>
-					<li>
-						<div class="order-row">
-							<div class="order-number">20170927112536195</div>
-							<div class="order-type cancel">已取消</div>
-						</div>
-						<div class="order-row order-owner">
-							<div class="order-item">薛将军先生<span>13679085354</span></div>
-							<div class="order-address">锦江区东大街1号</div>
-							<a href="tel:13679085354" class="phone"><img src="../assets/images/phone.png" alt=""></a>
-						</div>
-						<div class="order-row">
-							<div class="order-detail">
-								<div class="order-item order-time">下单时间<span>2017-09-27 11:25:36</span></div>
-								<div class="order-item order-money">订单金额<span>￥235.00</span></div>
-							</div>
-							<div class="operate-btn hide">
-								<button class="btn">取消订单</button>
-								<button class="btn deal-btn">接单</button>
-							</div>
-						</div>
-					</li>
-				</ul>
+		    		<ul class="order-lists">
+		    			<li @click="jump" v-for="(item,index) in orderList">
+		    				<div class="order-row">
+		    					<div class="order-number">20170927112536195</div>
+		    					<div class="order-type">新订单1</div>
+		    				</div>
+		    				<div class="order-row order-owner">
+		    					<div class="order-item">薛将军先生<span>13679085354</span></div>
+		    					<div class="order-address">锦江区东大街1号</div>
+		    					<a @click.stop="stopEvent" href="tel:13679085354" class="phone"><img src="../assets/images/phone.png" alt=""></a>
+		    				</div>
+		    				<div class="order-row">
+		    					<div class="order-detail">
+		    						<div class="order-item order-time">下单时间<span>2017-09-27 11:25:36</span></div>
+		    						<div class="order-item order-money">订单金额<span>￥235.00</span></div>
+		    					</div>
+		    					<div class="operate-btn">
+		    						<button class="btn">取消订单</button>
+		    						<button class="btn deal-btn">接单</button>
+		    					</div>
+		    				</div>
+		    			</li>
+		    		</ul>
 				</mt-loadmore>
 			</div>
 		</div>
-		<div class="add-goods">添加商品</div>
+		<div class="add-goods" @click="addGoods">添加商品</div>
 	</div>
 </template>
 <script>
+	import {getOrderList} from '@/api/api'
 	export default {
 		name: 'order',
 		data: function(){
 			return {
-				allLoaded: false
+				navObj: [{
+					name: '全部',
+					orderStatus: '',
+					index: 1
+				},{
+					name: '新订单',
+					orderStatus: '',
+					index: 2
+				},{
+					name: '配送中',
+					orderStatus: '',
+					index: 3
+				},{
+					name: '已完成',
+					orderStatus: '',
+					index: 4
+				},{
+					name: '已取消',
+					orderStatus: '',
+					index: 5
+				},],
+				allLoaded: false,
+				active: 'order_1',
+				current: 1,
+				pageId: 1,
+				counts: 0,
+				orderList: []
+			}	
+		},
+		created: function(){
+			var params = {
+				pageId: this.pageId,
+				orderStatus: ''
 			}
+			this.getOrders(params)
 		},
 		methods: {
+			getOrders: function(order){
+				getOrderList({params: {pageSize: 10, pageId: order.pageId, orderStatus: order.orderStatus}}).then(res => {
+					console.log(res)
+					this.counts = res.count;
+					this.orderList.push(res.list)
+				})
+			},
 			loadBottom: function(){
 				this.allLoaded = true;
-				this.$toast('上拉加载更多')
+				// this.$toast('上拉加载更多')
 				this.allLoaded = false;
 			},
 			jump: function(){
@@ -130,6 +104,11 @@
 			},
 			stopEvent: function(){
 				return;
+			},
+			toggle: function(index){
+				this.current = index;
+				this.active = 'order_' + index;
+
 			}
 		}
 	}

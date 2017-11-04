@@ -1,11 +1,29 @@
 <template>
-  <div id="app">
-	<router-view></router-view>
-  </div>
+    <div id="app">
+        <transition :name="transitionName" :appear="true">
+            <router-view class="child-view"></router-view>
+        </transition>
+    </div>
 </template>
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  data: function(){
+    return {
+        transitionName: 'slide-left'
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+        let isBack = this.$router.isBack  //  监听路由变化时的状态为前进还是后退
+        if(isBack) {
+            this.transitionName = 'slide-right'
+        }else{
+            this.transitionName = 'slide-left'
+        }
+        this.$router.isBack = false
+    }
+  }
 }
 
 </script>
@@ -118,4 +136,23 @@ body {
 	background-size: contain;
 	margin-right: 2.66vw;
 }
+
+.child-view {  
+  position: absolute;  
+  left: 0;  
+  top: 0;  
+  width: 100%;  
+  height: 100%;  
+  transition: all .4s ease;  
+}  
+.slide-left-enter, .slide-right-leave-active {  
+  opacity: 1;  
+  -webkit-transform: translate(100vw, 0);  
+  transform: translate(100vw, 0);  
+}  
+.slide-left-leave-active, .slide-right-enter {  
+  opacity: 1;  
+  -webkit-transform: translate(-100vw, 0);  
+  transform: translate(-100vw, 0);  
+}  
 </style>
