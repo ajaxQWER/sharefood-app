@@ -24,7 +24,7 @@
 			</div>
 			<div class="goods-item">
 				<div class="row-title">商品分类</div>
-				<div class="row-value value-after">火锅、火锅、火锅、火锅、火锅</div>
+				<div class="row-value value-after"></div>
 			</div>
 			<div class="goods-item">
 				<div class="row-title">商品价格</div>

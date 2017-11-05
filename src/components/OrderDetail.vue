@@ -8,11 +8,11 @@
 		</div>
 		<div class="order-content">
 			<div class="order-lists">
-				<ul class="order-lists">
+				<ul class="order-lists" v-if="orderDetail">
 					<li>
 						<div class="order-row">
-							<div class="order-number">20170927112536195</div>
-							<div class="order-type">新订单</div>
+							<div class="order-number">{{orderDetail.orderNum}}</div>
+							<div :class="['order-type',orderDetail.orderStatus=='CANCELLATION'?'cancel':'']">{{formatOrderStatus(orderDetail.orderStatus)}}</div>
 						</div>
 						<!-- <div class="order-row order-owner">
 							<div class="order-item">薛将军先生<span>13679085354</span></div>
@@ -21,8 +21,8 @@
 						</div> -->
 						<div class="order-row">
 							<div class="order-detail">
-								<div class="order-item order-time">下单时间<span>2017-09-27 11:25:36</span></div>
-								<div class="order-item order-money">订单金额<span>￥235.00</span></div>
+								<div class="order-item order-time">下单时间<span>{{moment(orderDetail.addTime).format('YYYY-MM-DD HH:mm:ss')}}</span></div>
+								<div class="order-item order-money">订单金额<span>￥{{orderDetail.orderPrice}}</span></div>
 							</div>
 						</div>
 					</li>
@@ -33,64 +33,97 @@
 						<div class="order-row">
 							<div class="order-item goods-name">收货地址</div>
 							<div class="goods-number">
-								<div class="goods-address">通威国际中心天府大道中段588号</div>
-								<div class="goods-contact">宁肖嘉(女士)<span class="phone">1398000000</span></div>
+								<div class="goods-address">{{orderDetail.orderContact.address}}</div>
+								<div class="phone">{{orderDetail.orderContact.contactName}}({{formatGender(orderDetail.orderContact.gender)}})&emsp;{{orderDetail.orderContact.contactPhone}}</div>
 							</div>
 						</div>
 						<div class="order-row">
 							<div class="order-item goods-name">送达时间</div>
-							<div class="goods-number"><span>尽快送达[17:30]</span></div>
+							<div class="goods-number"><span>尽快送达[{{moment(orderDetail.orderTakeout.deliveryTime).format('HH:mm:ss')}}]</span></div>
 						</div>
 					</li>
 					<li>
 						<div class="order-row">
 							<div class="order-item">商品列表</div>
 						</div>
-						<div class="order-row">
-							<div class="order-item goods-name">湘西霸王蛙</div>
-							<div class="goods-number"><span>x1</span><span>￥42</span></div>
-						</div>
-						<div class="order-row">
-							<div class="order-item goods-name">泡椒酸汤肥牛</div>
-							<div class="goods-number"><span>x2</span><span>￥42</span></div>
-						</div>
-						<div class="order-row">
-							<div class="order-item goods-name">浓香番茄鱼片</div>
-							<div class="goods-number"><span>x2</span><span>￥42</span></div>
-						</div>
-						<div class="order-row">
-							<div class="order-item goods-name">干锅花菜</div>
-							<div class="goods-number"><span>x3</span><span>￥42</span></div>
+						<div class="order-row" v-for="(item,index) in orderDetail.orderGoods" :key="index">
+							<div class="order-item goods-name">{{item.goodsName}}</div>
+							<div class="goods-number"><span>x{{item.goodsCount}}</span><span>￥{{item.amount}}</span></div>
 						</div>
 						<div class="order-row">
 							<div class="order-item goods-name">饭盒费</div>
-							<div class="goods-number"><span>￥5</span></div>
+							<div class="goods-number"><span>￥{{orderDetail.orderTakeout.mealFee}}</span></div>
 						</div>
 						<div class="order-row">
 							<div class="order-item goods-name">配送费</div>
-							<div class="goods-number"><span>￥5</span></div>
+							<div class="goods-number"><span>￥{{orderDetail.orderTakeout.shippingFee}}</span></div>
 						</div>
-						<div class="order-row">
-							<div class="order-item goods-name">【8.8元清凉一夏】</div>
-							<div class="goods-number"><span class="discount">￥-13.00</span></div>
+						<div class="order-row" v-for="(item,index) in orderDetail.orderActivitys" :key="index">
+							<div class="order-item goods-name">{{item.activityContent}}</div>
+							<div class="goods-number"><span class="discount">￥-{{item.activityReduced}}</span></div>
 						</div>
 					</li>
 				</ul>
 			</div>
 		</div>
-		<div class="add-goods">添加商品</div>
+		<div class="add-goods" @click="addGoods">添加商品</div>
 	</div>
 </template>
 <script>
+	import {getOrderById} from '@/api/api'
 	export default {
 		name: 'order',
 		data: function(){
 			return {
-				allLoaded: false
+				orderId: '',
+				orderDetail: null
+			}
+		},
+		created: function(){
+			var orderId = this.$route.query.orderId;
+			this.orderId = orderId;
+			if(orderId){
+				this.$indicator.open();
+				getOrderById(orderId).then(res => {
+					console.log(res)
+					this.orderDetail = res;
+					this.$indicator.close();
+				})
 			}
 		},
 		methods: {
-
+			formatOrderStatus: function(status){
+	            switch(status){
+	                case 'PAYED':
+	                    return '新订单';
+	                case 'SHIPPING':
+	                    return '配送中';
+	                case 'CANCELLATION':
+	                    return '已取消';
+	                case 'TRANSACT_FINISHED':
+	                    return '已完成';
+	                default:
+	                    break;
+	            }
+	        },
+			formatOrderType: function(type){
+	            switch(type){
+	                case 'TAKEOUT':
+	                    return '外卖订单';
+	                case 'RESERVE':
+	                    return '预定订单';
+	                default:
+	                    break;
+	            }
+	        },
+			formatGender: function(gender){
+				switch (gender) {
+					case 'MALE':
+						return '先生';
+					case 'FEMALE':
+						return '女士';
+				}
+			},
 		}
 	}
 </script>
@@ -177,7 +210,7 @@
 		position: relative;
 		text-decoration: none;
 	}
-	.order-detail:after{
+	/* .order-detail:after{
 		content: '';
 		display: inline-block;
 		position: absolute;
@@ -188,7 +221,7 @@
 		right: 2.66vw;
 		top: 50%;
 		margin-top: -1.86vw;
-	}
+	} */
 	.goods-name{
 		float: left;
 		display: inline-block;
@@ -205,5 +238,14 @@
 	}
 	.goods-number .discount{
 		color: #ff0000;
+	}
+	.goods-address{
+		width: 58vw;
+		color: #808080;
+	}
+	.phone{
+		font-size: 3.73vw;
+		color: #808080;
+		/* text-align: right; */
 	}
 </style>

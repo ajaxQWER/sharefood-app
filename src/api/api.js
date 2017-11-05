@@ -11,8 +11,8 @@ var ajax = axios.create({
 //添加一个请求拦截器
 ajax.interceptors.request.use(function(config) {
     //在请求发出之前进行一些操作
-    if (sessionStorage.getItem('jwt')) {
-        config.headers.TOKEN = sessionStorage.getItem('jwt');
+    if (localStorage.getItem('jwt')) {
+        config.headers.TOKEN = localStorage.getItem('jwt');
     }
     return config;
 }, function(err) {
@@ -109,6 +109,23 @@ export const addGoods = params => {
 //获取订单
 export const getOrderList = params => {
     return ajax.get('seller/order/', params);
+};
+//取消订单
+export const cancelOrderById = orderId => {
+    return ajax.put('seller/order/orderCancel/' + orderId);
+};
+//完成订单
+export const finishOrderById = orderId => {
+    return ajax.put('seller/order/setFinished/' + orderId);
+};
+//设置订单为配送
+export const acceptOrderById = orderId => {
+    return ajax.put('seller/order/setShipping/' + orderId);
+};
+
+//获取订单详情
+export const getOrderById = orderId => {
+    return ajax.get('seller/order/' + orderId);
 };
 
 

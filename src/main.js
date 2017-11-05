@@ -4,6 +4,7 @@ import 'mint-ui/lib/style.css'
 import App from './App'
 import VueRouter from 'vue-router'
 import routes from './router'
+import moment from 'moment'
 // import Scrollactive from 'vue-scrollactive'
 
 Vue.use(MintUI);
@@ -17,6 +18,7 @@ const router = new VueRouter({
     mode: "history",
     routes: routes,
     scrollBehavior (to, from, savedPosition) {
+    	console.log(to)
       return { x: 0, y: 0 }
     }
 })
@@ -30,7 +32,13 @@ const router = new VueRouter({
 Object.defineProperty(Vue.prototype, 'UPLOADURL', {value: 'http://uploadstest.gongxiangdiancan.com'});
 Object.defineProperty(Vue.prototype, 'BASEURL', {value: 'http://apitest.sf.chinagjgx.com'});
 
+Object.defineProperty(Vue.prototype, 'moment', {value: moment});
+
 Vue.prototype.back = function(){
+	router.isBack = true;
+	router.back()
+}
+window.goBack = function(){
 	router.isBack = true;
 	router.back()
 }

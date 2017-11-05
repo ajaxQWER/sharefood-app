@@ -103,8 +103,8 @@ export default {
 		loginByCode(params).then(res=>{
 			this.$indicator.close();
 			console.log(res)
-			sessionStorage.setItem('jwt',res.jwt)
-			sessionStorage.setItem('seller',JSON.stringify(res.seller))
+			localStorage.setItem('jwt',res.jwt)
+			localStorage.setItem('seller',JSON.stringify(res.seller))
 			this.$router.push('/home')
 		}).catch(err=>{
 			this.$indicator.close();

@@ -4,48 +4,50 @@
 			<div class="nav-bar help-navbar">
 		  		<div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
 		  		<div class="nav-title">订单列表</div>
-		  		<div class="order-nav-right">
+		  		<!-- <div class="order-nav-right">
 		  			<div class="search-bar"><img src="../assets/images/search.png" alt=""></div>
-		  		</div>
+		  		</div> -->
 			</div>
 			<div class="order-nav flex">
-				<div v-for="(item,index) in navObj" :key="index" :class="['order-nav-item', 'flex-1',(current==item.index)?'current-order-item':'']" @click="toggle(item.index)">{{item.name}}</div>
+				<div v-for="(item,index) in navObj" :key="index" :class="['order-nav-item', 'flex-1',(current==item.index)?'current-order-item':'']" @click="toggle(item.index,item.orderStatus)">{{item.name}}</div>
 			</div>
 		</div>
 		<div class="order-content">
-			<div class="order-lists">
-				<mt-loadmore :bottom-method="loadBottom" ref="loadmore":bottom-all-loaded="allLoaded" bottomPullText="加载更多" bottomDropText="加载更多">
-		    		<ul class="order-lists">
-		    			<li @click="jump" v-for="(item,index) in orderList">
-		    				<div class="order-row">
-		    					<div class="order-number">20170927112536195</div>
-		    					<div class="order-type">新订单1</div>
-		    				</div>
-		    				<div class="order-row order-owner">
-		    					<div class="order-item">薛将军先生<span>13679085354</span></div>
-		    					<div class="order-address">锦江区东大街1号</div>
-		    					<a @click.stop="stopEvent" href="tel:13679085354" class="phone"><img src="../assets/images/phone.png" alt=""></a>
-		    				</div>
-		    				<div class="order-row">
-		    					<div class="order-detail">
-		    						<div class="order-item order-time">下单时间<span>2017-09-27 11:25:36</span></div>
-		    						<div class="order-item order-money">订单金额<span>￥235.00</span></div>
-		    					</div>
-		    					<div class="operate-btn">
-		    						<button class="btn">取消订单</button>
-		    						<button class="btn deal-btn">接单</button>
-		    					</div>
-		    				</div>
-		    			</li>
-		    		</ul>
-				</mt-loadmore>
+			<div class="order-lists" v-if="orderList">
+	    		<ul>
+	    			<li v-for="(item,index) in orderList" :key="index">
+	    				<router-link :to="'/orderDetail?orderId='+item.orderId" class="link">
+	    				<div class="order-row">
+	    					<div class="order-number">{{item.orderNum}}</div>
+	    					<div :class="['order-type',item.orderStatus=='CANCELLATION'?'cancel':'']">{{formatOrderStatus(item.orderStatus)}}</div>
+	    				</div>
+	    				<div class="order-row order-owner">
+	    					<div class="order-item">{{item.orderContact.contactName}}{{formatGender(item.orderContact.gender)}}<span>{{item.orderContact.contactPhone}}</span></div>
+	    					<div class="order-address">{{item.orderContact.address}}</div>
+	    					<a @click.stop="stopEvent" :href="'tel:'+item.orderContact.contactPhone" class="phone"><img src="../assets/images/phone.png" alt=""></a>
+	    				</div>
+	    				<div class="order-row">
+	    					<div class="order-detail">
+	    						<div class="order-item order-time">下单时间<span>{{moment(item.addTime).format('YYYY-MM-DD HH:mm:ss')}}</span></div>
+	    						<div class="order-item order-money">订单金额<span>￥{{item.orderPrice}}</span></div>
+	    						<div class="order-item">订单类型<span>{{formatOrderType(item.orderType)}}</span></div>
+	    					</div>
+	    					<div v-if="item.orderStatus=='PAYED'" class="operate-btn">
+	    						<button @click.prevent="cancelOrder(item.orderId)" class="btn">取消订单</button>
+	    						<button @click.prevent="acceptOrder(item.orderId,item.orderType)" class="btn deal-btn">接单</button>
+	    					</div>
+	    				</div>
+	    				</router-link>
+	    			</li>
+	    		</ul>
+	    		<div v-show="canLoad" class="loadmore" @click="loadBottom">点击加载</div>
 			</div>
 		</div>
 		<div class="add-goods" @click="addGoods">添加商品</div>
 	</div>
 </template>
 <script>
-	import {getOrderList} from '@/api/api'
+	import {getOrderList,cancelOrderById,finishOrderById,acceptOrderById} from '@/api/api'
 	export default {
 		name: 'order',
 		data: function(){
@@ -56,60 +58,141 @@
 					index: 1
 				},{
 					name: '新订单',
-					orderStatus: '',
+					orderStatus: 'PAYED',
 					index: 2
 				},{
 					name: '配送中',
-					orderStatus: '',
+					orderStatus: 'SHIPPING',
 					index: 3
 				},{
 					name: '已完成',
-					orderStatus: '',
+					orderStatus: 'TRANSACT_FINISHED',
 					index: 4
 				},{
 					name: '已取消',
-					orderStatus: '',
+					orderStatus: 'CANCELLATION',
 					index: 5
-				},],
+				}],
+				init: true,
 				allLoaded: false,
 				active: 'order_1',
 				current: 1,
 				pageId: 1,
 				counts: 0,
-				orderList: []
+				orderStatus: '',
+				orderList: [],
+				canLoad: false
 			}	
 		},
 		created: function(){
-			var params = {
-				pageId: this.pageId,
-				orderStatus: ''
-			}
-			this.getOrders(params)
+			this.getOrders({pageId: this.pageId, orderStatus: this.orderStatus})
 		},
 		methods: {
 			getOrders: function(order){
+				this.$indicator.open();
 				getOrderList({params: {pageSize: 10, pageId: order.pageId, orderStatus: order.orderStatus}}).then(res => {
-					console.log(res)
+					console.log(res.list)
+					if(this.init){
+						this.orderList = res.list
+					}else{
+						this.orderList = [].concat.apply(this.orderList, res.list)
+					}
 					this.counts = res.count;
-					this.orderList.push(res.list)
+					this.$indicator.close();
+					if(res.count == 0){
+						this.allLoaded = true;
+					}else{
+						this.canLoad = true;						
+					}
+					if(Math.ceil(this.counts / 10) == this.pageId){
+						this.allLoaded = true;
+						this.canLoad = false;
+						return;
+					}
 				})
 			},
 			loadBottom: function(){
-				this.allLoaded = true;
-				// this.$toast('上拉加载更多')
 				this.allLoaded = false;
-			},
-			jump: function(){
-				alert(1)
+				this.pageId += 1;
+				this.init = false;
+				this.getOrders({pageId: this.pageId, orderStatus: this.orderStatus})
 			},
 			stopEvent: function(){
 				return;
 			},
-			toggle: function(index){
+			toggle: function(index, orderStatus){
 				this.current = index;
 				this.active = 'order_' + index;
-
-			}
+				this.orderList = [];
+				this.pageId = 1;
+				this.allLoaded = false;
+				this.init = true;
+				this.orderStatus = orderStatus;
+				this.canLoad = false;
+				this.getOrders({pageId: this.pageId,orderStatus: this.orderStatus})
+			},
+			formatGender: function(gender){
+				switch (gender) {
+					case 'MALE':
+						return '先生';
+					case 'FEMALE':
+						return '女士';
+				}
+			},
+			formatOrderStatus: function(status){
+	            switch(status){
+	                case 'PAYED':
+	                    return '新订单';
+	                case 'SHIPPING':
+	                    return '配送中';
+	                case 'CANCELLATION':
+	                    return '已取消';
+	                case 'TRANSACT_FINISHED':
+	                    return '已完成';
+	                default:
+	                    break;
+	            }
+	        },
+			formatOrderType: function(type){
+	            switch(type){
+	                case 'TAKEOUT':
+	                    return '外卖订单';
+	                case 'RESERVE':
+	                    return '预定订单';
+	                default:
+	                    break;
+	            }
+	        },
+	        cancelOrder: function(orderId){
+	        	this.$messagebox.confirm('确定取消接单?').then(action => {
+	        		this.$indicator.open();
+	        		cancelOrderById(orderId).then(() => {
+	        			this.$toast({message:'操作成功',duration: 1000})
+        				this.$indicator.close();
+        				this.getOrders({pageId: this.pageId,orderStatus: this.orderStatus})
+	        		})
+	        	}).catch(()=>{});
+	        },
+	        acceptOrder: function(orderId, orderType){
+	        	this.$messagebox.confirm('确定接单?').then(action => {
+	        		this.$indicator.open();
+	        		if(orderType == 'TAKEOUT'){
+	        			acceptOrderById(orderId).then(() => {
+	        				this.$toast({message:'操作成功',duration: 1000})
+	        				this.$indicator.close();
+	        				this.getOrders({pageId: this.pageId,orderStatus: this.orderStatus})
+	        			})
+	        		}else if(orderType == 'RESERVE'){
+	        			finishOrderById(orderId).then(() => {
+	        				this.$toast({message:'操作成功',duration: 1000})
+	        				this.$indicator.close();
+	        				this.getOrders({pageId: this.pageId,orderStatus: this.orderStatus})
+	        			})
+	        		}
+	        	}).catch(() => {
+	        		// this.$toast({message:'已取消',duration: 1000})
+	        	});
+	        }
 		}
 	}
 </script>
@@ -121,6 +204,7 @@
 	.order-header{
 		width: 100%;
 		position: fixed;
+		z-index: 99;
 	}
 	.order-nav-right{
 		position: absolute;
@@ -140,6 +224,7 @@
 		width: 100%;
 		overflow: hidden;
 		zoom: 1;
+		background-color: #f2f2f2;
 	}
 	.order-nav-item{
 		height: 10.66vw;
@@ -153,22 +238,24 @@
 		border-bottom: 2px solid #0bb745;
 	}
 	.order-content{
+		position: relative;
+		/* top: 22.39vw; */
 	    box-sizing: border-box;
 		height: 100vh;
 		overflow: hidden;
 		zoom: 1;
-		padding: 25.06vw 0 15.72vw;
+		/* padding-bottom: 13.06vw; */
+		padding: 22.39vw 0 13.06vw;
 	}
 	.order-lists{
 		box-sizing: border-box;
 		height: 100%;
-		overflow: scroll;
+		overflow: auto;
 	}
 	.order-lists ul{
 		margin: 0;
-		padding: 0;
+		padding: 1.33vw 2.66vw;
 		list-style: none;
-		padding: 0 2.66vw;
 	}
 	.order-lists li{
 		padding: 2vw 0;
@@ -234,6 +321,7 @@
 		margin-left: 2.66vw;
 	}
 	.order-address{
+		width: 81vw;
 		font-size: 3.46vw;
 		color: #808080;
 	}
@@ -275,5 +363,12 @@
 		background-color: #0bb745;
 		border: 1px solid #0bb745;
 		color: #fff;
+	}
+	.loadmore{
+		text-align: center;
+		padding: 2.66vw;
+	}
+	.link{
+		text-decoration: none;
 	}
 </style>

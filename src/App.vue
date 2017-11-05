@@ -146,13 +146,13 @@ body {
   transition: all .4s ease;  
 }  
 .slide-left-enter, .slide-right-leave-active {  
-  opacity: 1;  
-  -webkit-transform: translate(100vw, 0);  
-  transform: translate(100vw, 0);  
+    opacity: 1;  
+    -webkit-transform: translate(100vw, 0);  
+    transform: translate(100vw, 0);  
 }  
 .slide-left-leave-active, .slide-right-enter {  
-  opacity: 1;  
-  -webkit-transform: translate(-100vw, 0);  
-  transform: translate(-100vw, 0);  
+    opacity: 1;  
+    -webkit-transform: translate(-100vw, 0);  
+    transform: translate(-100vw, 0);  
 }  
 </style>
