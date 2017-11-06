@@ -53,7 +53,7 @@
 					<img class="goods-imgage" :src="headerImage?headerImage:''" alt="商品图片">
 				</div>
 				<div class="row-value upload-img upload">
-						<img class="goods-imgage" src="" alt="点击上传" @click="popupVisible=true">
+					<img class="goods-imgage" src="../assets/images/upload-btn.jpg" alt="点击上传" @click="popupVisible=true">
 				</div>
 			</div>
 			<div class="goods-item">
@@ -100,7 +100,7 @@
 		  	</div>
 		  	<div class="upload-wrap">
 			  	<div class="close-popup" @click="closePopup">x</div>
-		  	  	<div class="upload-bg">点击上传</div>
+		  	  	<div class="upload-bg"></div>
 		  	    <input class="upload-btn" type="file" id="change" @change="change" ref="uploads" accept="image/*">
 		  	    <label for="change"></label>
 		  	</div>
@@ -445,7 +445,8 @@
 .upload-bg{
 	width:50vw;
 	height:50vw;
-	background-color: #000;
+	background: url(../assets/images/upload-btn.jpg) no-repeat center center;
+	background-size: contain;
 	position: absolute;
 	top: 50%;
 	left: 50%;

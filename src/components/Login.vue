@@ -2,7 +2,7 @@
   <div id="login">
 	<div class="top-bg">
 		<div class="nav-bar">
-			<div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
+			<!-- <div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div> -->
 		</div>
 		<div class="login-logo"><img src="../assets/images/login-logo.png" alt=""></div>
 	</div>
@@ -16,7 +16,8 @@
 	</div> -->
 	<div class="login-input-contain" v-if="isMessageCodeLogin">
 		<div class="login-input">
-			<input type="text" class="input-item" placeholder="请输入手机号" maxlength="11" v-model="sellerName"><input type="button" value="获取验证码" class="get-code" @click="getCode" :disabled="isClickGetCode">
+			<input type="text" class="input-item" placeholder="请输入手机号" maxlength="11" v-model="sellerName">
+			<input type="button" value="获取验证码" class="get-code" @click="getCode" :disabled="isClickGetCode">
 		</div>
 		<div class="login-input">
 			<input type="text" class="input-item" placeholder="请输入验证码" v-model="code" maxlength="4">
@@ -214,9 +215,10 @@ export default {
 	height: 6.66vw;
 	position: absolute;
 	right: 0;
+	top: 0;
 	margin: 2vw;
 	font-size: 3.2vw;
-	background-color: #08983c;
+	background: url(../assets/images/get-code.png) no-repeat center center;
 	color: #fff;
 	border-radius: 30px;
 	border: none;

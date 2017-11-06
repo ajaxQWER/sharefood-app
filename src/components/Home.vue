@@ -89,14 +89,14 @@
 			    <!-- </router-link> -->
 		    </div>
 		    <div class="column flex">
+		    	<router-link to="/login" class="link">
 		    	<!-- <router-link to="/bills" class="link"> -->
 			    	<div class="column-item flex-1">
 		    			<img src="../assets/images/shop-item10.png" alt="">
 		    			<div class="column-name">对账单</div>
 			    	</div>
-			    <!-- </router-link> -->
-		    	<router-link to="/login" class="link">
-		    	<!-- <router-link to="/setting" class="link"> -->
+			    </router-link>
+		    	<router-link to="/setting" class="link">
 			    	<div class="column-item flex-1">
 			    		<img src="../assets/images/shop-item11.png" alt="">
 			    		<div class="column-name">设置</div>
@@ -110,12 +110,13 @@
 <script>
 import { loginByCode, loginBySecretKey } from '@/api/api'
 export default {
-  name: 'home',
-  data: function() {
-    return {}
-  },
-  methods: {
-  }
+	name: 'home',
+	data: function() {
+		return {}
+	},
+	methods: {
+
+	}
 }
 
 </script>
@@ -202,7 +203,7 @@ export default {
 .column-wrap{
 	background-color: #f2f2f2;
 	margin-top: 9.33vw;
-	padding-bottom: 9.33vw;
+	padding-bottom: 4vw;
 }
 .column{
 	-webkit-align-items: center;
@@ -227,9 +228,9 @@ export default {
 }
 .flex-item{ 
 	-webkit-align-items: center;  
-  -ms-flex-align: center;  
-  align-items: center;
-  display: -webkit-flex;
-  display: flex;
+	-ms-flex-align: center;  
+	align-items: center;
+	display: -webkit-flex;
+	display: flex;
 }
 </style>

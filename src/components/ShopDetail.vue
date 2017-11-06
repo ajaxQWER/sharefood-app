@@ -6,11 +6,11 @@
 		  		<div class="nav-title">门店信息</div>
 			</div>
 		</div>
-		<div class="shopDetail-content">
+		<div class="shopDetail-content" v-if="shopDetail">
 			<div class="shopDetail-row">
 				<div class="shopDetail-col shop-after">
 					<div class="row-key row-title">营业状态</div>
-					<div class="row-value">营业中</div>
+					<div class="row-value">{{shopDetail.shelves?'营业中':'休息中'}}</div>
 				</div>
 			</div>
 			<div class="shopDetail-row">
@@ -19,11 +19,11 @@
 				</div>
 				<div class="shopDetail-col">
 					<div class="row-key small-title">门店名称</div>
-					<div class="row-key small-key">周大侠盖浇饭(蜀都中心店)</div>
+					<div class="row-key small-key">{{shopDetail.shopName}}</div>
 				</div>
 				<div class="shopDetail-col">
 					<div class="row-key small-title">门店地址</div>
-					<div class="row-key small-key">天府二街138号蜀都中心</div>
+					<div class="row-key small-key">{{shopDetail.address}}</div>
 				</div>
 			</div>
 			<div class="shopDetail-row">
@@ -32,17 +32,17 @@
 				</div>
 				<div class="shopDetail-col shop-after">
 					<div class="row-key small-title">营业时间</div>
-					<div class="row-key small-key">10:00-22:00</div>
+					<div class="row-key small-key">{{shopDetail.busBeginTime}}-{{shopDetail.busEndTime}}</div>
 				</div>
 				<div class="shopDetail-col shop-after">
 					<div class="row-key small-title">联系电话</div>
-					<div class="row-key small-key">13600000000</div>
+					<div class="row-key small-key">{{shopDetail.phoneNum}}</div>
 				</div>
 			</div>
 			<div class="shopDetail-row">
 				<div class="shopDetail-col shop-after">
 					<div class="row-key row-title">营业类型</div>
-					<div class="row-value">预定+外卖</div>
+					<div class="row-value">{{formatShopType(shopDetail.shopType)}}</div>
 				</div>
 			</div>
 			<div class="shopDetail-row">
@@ -54,7 +54,34 @@
 	</div>
 </template>
 <script>
-	
+	import {getShopDetail} from '@/api/api'
+	export default {
+		name: 'shopDetail',
+		data: function(){
+			return {
+				shopDetail: null
+			}
+		},
+		created: function(){
+			this.$indicator.open();
+			getShopDetail().then(res => {
+				this.shopDetail = res;
+				this.$indicator.close();
+			})
+		},
+		methods: {
+			formatShopType: function(shopType){
+				switch (shopType){
+					case 'TAKEOUT':
+						return '外卖'
+					case 'RESERVE':
+						return '预定'
+					case 'RESERVE_TAKEOUT':
+						return '外卖+预定'
+				}
+			}
+		}
+	}
 </script>
 <style scoped>
 	#shopDetail{

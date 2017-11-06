@@ -122,10 +122,18 @@ export const finishOrderById = orderId => {
 export const acceptOrderById = orderId => {
     return ajax.put('seller/order/setShipping/' + orderId);
 };
-
 //获取订单详情
 export const getOrderById = orderId => {
     return ajax.get('seller/order/' + orderId);
+};
+
+//获取店铺信息
+export const getShopDetail = () => {
+    return ajax.get('seller/shopDetail');
+};
+//获取店铺信息
+export const updatePwd = params => {
+    return ajax.post('api/user/secretkey', params);
 };
 
 

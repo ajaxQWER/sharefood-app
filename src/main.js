@@ -11,14 +11,13 @@ Vue.use(MintUI);
 Vue.use(VueRouter)
 // Vue.use(Scrollactive);
 
-Vue.config.productionTip = false
+// Vue.config.productionTip = false
 
 
 const router = new VueRouter({
     mode: "history",
     routes: routes,
     scrollBehavior (to, from, savedPosition) {
-    	console.log(to)
       return { x: 0, y: 0 }
     }
 })
