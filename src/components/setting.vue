@@ -44,7 +44,7 @@
 				</div>
 			</div>
 			<div class="shopDetail-row">
-				<div class="shopDetail-col contact">客服电话&emsp;<a class="contact" href="tel:400-000-0000">400-000-0000</a></div>
+				<div class="shopDetail-col contact">客服电话&emsp;<a class="contact" href="tel:028-67673333">028-67673333</a></div>
 			</div>
 			<button class="login-out-btn" @click="loginOut">退出登录</button>
 		</div>

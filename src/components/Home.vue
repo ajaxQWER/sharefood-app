@@ -5,8 +5,8 @@
 	      	<div class="admin-info">
 		        <img src="../assets/images/login-logo.png" alt="" class="admin-icon">
 		        <div class="admin-shop">
-		        	<h3 class="shop-name">冬季的樱花</h3>
-		        	<router-link to="/shopDetail?shopId=1" class="shop-detail">点击查看门店详情</router-link>
+		        	<h3 class="shop-name">{{loginUser}}</h3>
+		        	<router-link to="/shopDetail" class="shop-detail">点击查看门店详情</router-link>
 		        </div>
 	      	</div>
 	      	<div class="sales-info flex">
@@ -89,13 +89,13 @@
 			    <!-- </router-link> -->
 		    </div>
 		    <div class="column flex">
-		    	<router-link to="/login" class="link">
+		    	<!-- <router-link to="/login" class="link"> -->
 		    	<!-- <router-link to="/bills" class="link"> -->
 			    	<div class="column-item flex-1">
 		    			<img src="../assets/images/shop-item10.png" alt="">
 		    			<div class="column-name">对账单</div>
 			    	</div>
-			    </router-link>
+			    <!-- </router-link> -->
 		    	<router-link to="/setting" class="link">
 			    	<div class="column-item flex-1">
 			    		<img src="../assets/images/shop-item11.png" alt="">
@@ -112,7 +112,9 @@ import { loginByCode, loginBySecretKey } from '@/api/api'
 export default {
 	name: 'home',
 	data: function() {
-		return {}
+		return {
+			loginUser: JSON.parse(localStorage.getItem('seller')).sellerName
+		}
 	},
 	methods: {
 
