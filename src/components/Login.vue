@@ -86,12 +86,7 @@ export default {
   		}, 1000)
 	},
 	userLogin: function(){
-		var params = {
-			code: this.code,
-			// secretkey: this.secretkey,
-			sellerName: this.sellerName
-		}
-
+		
 		if(!this.sellerName){
   			this.$toast({message:'请输入手机号',duration: 1000})
 			return
@@ -100,16 +95,65 @@ export default {
   			this.$toast({message:'请输入验证码',duration: 1000})
 			return
 		}
-		this.$indicator.open();
-		loginByCode(params).then(res=>{
-			this.$indicator.close();
-			console.log(res)
-			localStorage.setItem('jwt',res.jwt)
-			localStorage.setItem('seller',JSON.stringify(res.seller))
-			this.$router.push('/home')
-		}).catch(err=>{
-			this.$indicator.close();
-		})
+
+	    var params = {
+	    	code: this.code,
+	    	cid: '',
+	    	ios: false,
+	    	sellerName: this.sellerName
+	    }
+	    var ua = navigator.userAgent.toLocaleLowerCase();
+	    if(ua.indexOf('iphone') == -1){
+	    	//安卓
+	    	params.ios = false;
+	    	params.cid = android.getCid()
+
+            // alert(android.getCid())
+            // alert(params.ios)
+	    	this.$indicator.open();
+	    	loginByCode(params).then(res=>{
+	    		this.$indicator.close();
+	    		console.log(res)
+	    		localStorage.setItem('jwt',res.jwt)
+	    		localStorage.setItem('seller',JSON.stringify(res.seller))
+	    		this.$router.push('/home')
+	    	}).catch(err=>{
+	    		this.$indicator.close();
+	    	})
+	    }else{
+	    	//ios
+	    	var _this = this;
+	    	_this.setupWebViewJavascriptBridge(function(bridge) {
+	    		bridge.callHandler('getCid', null, function(response) {
+	    			// alert(response)
+	                params.cid = response;
+	                params.ios = true;
+	                _this.$indicator.open();
+	                // alert(loginByCode)
+        	    	loginByCode(params).then(res=>{
+        	    		_this.$indicator.close();
+        	    		// alert(params.cid)
+	              //   	alert(params.ios)
+        	    		console.log(res)
+        	    		localStorage.setItem('jwt',res.jwt)
+        	    		localStorage.setItem('seller',JSON.stringify(res.seller))
+        	    		_this.$router.push('/home')
+        	    	}).catch(err=>{
+        	    		_this.$indicator.close();
+        	    	})
+	            })
+	    	})
+	    }
+	    // loginByCode(params).then(res=>{
+	    // 	this.$indicator.close();
+	    // 	console.log(res)
+	    // 	localStorage.setItem('jwt',res.jwt)
+	    // 	localStorage.setItem('seller',JSON.stringify(res.seller))
+	    // 	this.$router.push('/home')
+	    // }).catch(err=>{
+	    // 	this.$indicator.close();
+	    // })
+		
 
 		// if(this.isMessageCodeLogin){
 		// 	if(!this.sellerName){

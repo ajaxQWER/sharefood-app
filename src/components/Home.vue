@@ -3,27 +3,27 @@
     	<div class="top-bg">
 	      	<div class="nav-bar bar-title">门店管理</div>
 	      	<div class="admin-info">
-		        <img src="../assets/images/login-logo.png" alt="" class="admin-icon">
+		        <img :src="UPLOADURL+'/shopLogo/'+loginShopId+'.png'" alt="" class="admin-icon">
 		        <div class="admin-shop">
 		        	<h3 class="shop-name">{{loginUser}}</h3>
 		        	<router-link to="/shopDetail" class="shop-detail">点击查看门店详情</router-link>
 		        </div>
 	      	</div>
-	      	<div class="sales-info flex">
+	      	<div class="sales-info flex" v-if="shopSalesData">
 		      	<div class="flex-1 sales-item">
 		      		<div class="sales-title">今日营业额</div>
-		      		<div class="sales-money">7,291.20</div>
-		  			<div class="sales-title-small">昨日6,820.31</div>
+		      		<div class="sales-money">{{formatMoney(shopSalesData.todayTurnover)}}</div>
+		  			<div class="sales-title-small">昨日{{formatMoney(shopSalesData.yesterdayOrderQuantity)}}</div>
 		      	</div>
 		      	<div class="flex-1 sales-item">
 		      		<div class="sales-title">今日订单</div>
-		      		<div class="sales-money">130</div>
-		  			<div class="sales-title-small">昨日120</div>
+		      		<div class="sales-money">{{shopSalesData.todayOrderQuantity}}</div>
+		  			<div class="sales-title-small">昨日{{shopSalesData.yesterdayOrderQuantity}}</div>
 		      	</div>
 		      	<div class="flex-1 sales-item">
 					<div class="sales-title">可用余额</div>
-					<div class="sales-money">56,700.20</div>
-					<div class="sales-title-small">可提现32,190.31</div>
+					<div class="sales-money">{{formatMoney(shopSalesData.availableBalance)}}</div>
+					<div class="sales-title-small">可提现{{formatMoney(shopSalesData.amountWithdrawal)}}</div>
 		      	</div>
 	      	</div>
       	</div>
@@ -75,49 +75,68 @@
 		    			<div class="column-name">商品分类</div>
 			    	</div>
 			    </router-link>
-		    	<!-- <router-link to="/employee" class="link"> -->
+	        	<router-link to="/setting" class="link">
+	    	    	<div class="column-item flex-1">
+	    	    		<img src="../assets/images/shop-item11.png" alt="">
+	    	    		<div class="column-name">设置</div>
+	    	    	</div>
+	    	    </router-link>
+	    	    <div class="column-item flex-1 column-null"></div>
+		    	<!-- <router-link to="/employee" class="link">
 			    	<div class="column-item flex-1">
 			    		<img src="../assets/images/shop-item8.png" alt="">
 			    		<div class="column-name">员工</div>
 			    	</div>
-			    <!-- </router-link> -->
-		    	<!-- <router-link to="/sequence" class="link"> -->
+			    </router-link>
+		    	<router-link to="/sequence" class="link">
 			    	<div class="column-item flex-1">
 			    		<img src="../assets/images/shop-item9.png" alt="">
 			    		<div class="column-name">桌号</div>
 			    	</div>
-			    <!-- </router-link> -->
+			    </router-link> -->
 		    </div>
-		    <div class="column flex">
-		    	<!-- <router-link to="/login" class="link"> -->
-		    	<!-- <router-link to="/bills" class="link"> -->
+		    <!-- <div class="column flex">
+		    	<router-link to="/bills" class="link">
 			    	<div class="column-item flex-1">
 		    			<img src="../assets/images/shop-item10.png" alt="">
 		    			<div class="column-name">对账单</div>
 			    	</div>
-			    <!-- </router-link> -->
-		    	<router-link to="/setting" class="link">
-			    	<div class="column-item flex-1">
-			    		<img src="../assets/images/shop-item11.png" alt="">
-			    		<div class="column-name">设置</div>
-			    	</div>
 			    </router-link>
 		    	<div class="column-item flex-1 column-null"></div>
-		    </div>
+		    </div> -->
 	    </div>
   	</div>
 </template>
 <script>
-import { loginByCode, loginBySecretKey } from '@/api/api'
+import { getRealtimestatistics } from '@/api/api'
 export default {
 	name: 'home',
 	data: function() {
 		return {
-			loginUser: JSON.parse(localStorage.getItem('seller')).sellerName
+			loginShopId: JSON.parse(localStorage.getItem('seller')).shopId,
+			loginUser: JSON.parse(localStorage.getItem('seller')).sellerName,
+			shopSalesData: null
 		}
 	},
+	created: function(){
+		this.$indicator.open();
+		getRealtimestatistics().then(res => {
+			console.log(res)
+			this.shopSalesData = res;
+			this.$indicator.close();
+		})
+	},
 	methods: {
-
+		formatMoney: function(money){
+			money = parseFloat((money + "").replace(/[^\d\.-]/g, "")).toFixed(2) + "";  
+			var l = money.split(".")[0].split("").reverse();
+			var r = money.split(".")[1];  
+			var t = "";  
+			for(var i = 0; i < l.length; i ++ ) {  
+				t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");  
+			}  
+		  	return t.split("").reverse().join("") + "." + r;
+		}
 	}
 }
 
@@ -141,6 +160,7 @@ export default {
 
 .admin-icon {
   width: 16vw;
+  height: 16vw;
   border-radius: 50%;
   float: left;
   background-color: #fff;

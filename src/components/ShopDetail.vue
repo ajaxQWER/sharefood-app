@@ -10,7 +10,7 @@
 			<div class="shopDetail-row">
 				<div class="shopDetail-col shop-after">
 					<div class="row-key row-title">营业状态</div>
-					<div class="row-value">{{shopDetail.shelves?'营业中':'休息中'}}</div>
+					<div class="row-value row-value-after">{{shopDetail.shelves?'营业中':'休息中'}}</div>
 				</div>
 			</div>
 			<div class="shopDetail-row">
@@ -127,7 +127,7 @@
 	.shop-after{
 		position: relative;
 	}
-	.row-value:after{
+	.row-value-after:after{
 		content: '';
 		display: inline-block;
 		width: 2vw;

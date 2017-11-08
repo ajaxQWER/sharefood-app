@@ -51,7 +51,7 @@
 	</div>
 </template>
 <script>
-	import {} from '@/api/api'
+	import {logOut} from '@/api/api'
 	export default {
 		name: 'setting',
 		data: function(){
@@ -63,14 +63,22 @@
 			loginOut: function(){
 				this.$messagebox.confirm('确定退出登录?').then(action => {
 					// this.$indicator.open();
-					localStorage.clear()
-					this.$toast({message:'退出成功',duration: 1000})
-					setTimeout(() => {
-				 		this.$router.push('/login')
-					}, 1300)
+					logOut().then(() => {
+						localStorage.clear()
+						this.$toast({message:'退出成功',duration: 1000})
+						setTimeout(() => {
+					 		this.$router.push('/login')
+						}, 1300)
+					})
 				}).catch(() => {
 					// this.$toast({message:'已取消',duration: 1000})
 				});
+			},
+			test(){
+
+			},
+			tese: function(){
+
 			}
 		}
 	}

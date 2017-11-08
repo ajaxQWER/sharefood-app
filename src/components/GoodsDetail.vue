@@ -13,7 +13,7 @@
 					<img class="goods-imgage" :src="headerImage?headerImage:UPLOADURL + goodsInfo.goods.goodsImgUrl" alt="商品图片">
 				</div>
 				<div class="row-value upload-img upload">
-						<img class="goods-imgage" src="" alt="点击上传" @click="popupVisible=true">
+						<img class="goods-imgage" src="../assets/images/upload-btn.jpg" alt="点击上传" @click="popupVisible=true">
 				</div>
 			</div>
 			<div class="goods-item">

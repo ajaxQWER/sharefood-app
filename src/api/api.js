@@ -54,6 +54,9 @@ export const loginByCode = params => {
 export const loginBySecretKey = params => {
     return ajax.post('seller/seller/loginBySecretKey', params);
 };
+export const logOut = () => {
+    return ajax.post('seller/seller/logout');
+};
 
 //登录遇到问题文章
 export const getArticleListByCategoryId = id => {
@@ -64,6 +67,10 @@ export const getArticleById = id => {
 };
 
 
+//首页数据
+export const getRealtimestatistics = params => {
+    return ajax.get('seller/realtimestatistics', params);
+};
 
 //商品分类
 export const getGoodsCategoryLists = params => {
@@ -136,7 +143,14 @@ export const updatePwd = params => {
     return ajax.post('api/user/secretkey', params);
 };
 
-
+//店铺评价
+export const getShopAppraise = params => {
+    return ajax.get('seller/shopAppraise', params);
+};
+//店铺评价详情
+export const getShopAppraiseById = id => {
+    return ajax.get('seller/shopAppraise/' + id);
+};
 
 
 

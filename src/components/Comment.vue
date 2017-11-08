@@ -15,74 +15,49 @@
 				<div class="comment-filter">
 					<button class="comment-filter-btn large-btn">未回复</button>
 					<button class="comment-filter-btn large-btn active-filter">全部评价</button>
-					<button class="comment-filter-btn active-filter">全部(450)</button>
-					<button class="comment-filter-btn">一星(0)</button>
-					<button class="comment-filter-btn">二星(3360)</button>
-					<button class="comment-filter-btn">三星(0)</button>
-					<button class="comment-filter-btn">四星(99999999)</button>
-					<button class="comment-filter-btn">五星(99990)</button>
+					<button class="comment-filter-btn active-filter">全部</button>
+					<button class="comment-filter-btn">一星</button>
+					<button class="comment-filter-btn">二星</button>
+					<button class="comment-filter-btn">三星</button>
+					<button class="comment-filter-btn">四星</button>
+					<button class="comment-filter-btn">五星</button>
 				</div>
 				<div class="comment-lists-wrap">
 					<div class="check-box">
-						<div :class="[contentOnly?'check-true':'check-false','check']" v-model="contentOnly" @click="checkbox">只看有内容的评价</div>
+						<div :class="[showContentOnly?'check-true':'check-false','check']" v-model="showContentOnly" @click="checkbox">只看有内容的评价</div>
 					</div>
 					<ul class="comment-lists">
-						<li>
+						<li v-for="(item,index) in commentList" :key="index">
 							<div class="comment-wrap">
 								<div class="commit-header">
-									<div class="commit-scores"><img v-for="n in scores" src="../assets/images/scores.png" alt="" class="scores-img"></div>
-									<div class="commit-time">2017-09-24</div>
+									<div class="commit-scores">
+										<img v-for="n in item.shopAppraise" src="../assets/images/scores.png" alt="" class="scores-img">
+									</div>
+									<div class="commit-time">{{moment(item.appraiseTime).format('YYYY-MM-DD')}}</div>
 								</div>
-								<div class="commit-content">还不错还不错还不错</div>
-								<div class="order-goods">老干妈卤肉饭老干妈卤肉饭老干妈卤肉饭老干妈卤肉饭</div>
-								<div class="yours-replys"><span class="yours-reply">您的回复：</span>亲，谢谢您的支持！期待再次为你服务</div>
+								<div>{{item.contentShopAppraise}}</div>
+								<div class="order-goods">{{item.orderName}}</div>
+								<div class="yours-replys" v-for="(val,key) in item.commentList" :key="key"><span class="yours-reply">您的回复：</span>{{val.commentContent}}</div>
 							</div>
-							<div class="commit-reply-lists">
+							<div class="spread">
+								<img src="../assets/images/spread.png" alt="" @click="showGoodsList(item.shopAppraiseId)">
+							</div>
+							<!-- <div class="commit-reply-lists">
 								<div class="commit-reply-list">
 									<div class="commit-header">
 										<div class="commit-scores goods-name">老干妈卤肉饭</div>
-										<div class="commit-time"><img v-for="n in scores" src="../assets/images/scores.png" alt="" class="scores-img"></div>
+										<div class="goods-comment"><img v-for="n in scores" src="../assets/images/scores.png" alt="" class="scores-img"></div>
 									</div>
 									<div class="custom-commit">还不错还不错还不错</div>
 								</div>
 								<div class="commit-reply-list">
 									<div class="commit-header">
 										<div class="commit-scores goods-name">老干妈卤肉饭</div>
-										<div class="commit-time"><img v-for="n in scores" src="../assets/images/scores.png" alt="" class="scores-img"></div>
+										<div class="goods-comment"><img v-for="n in scores" src="../assets/images/scores.png" alt="" class="scores-img"></div>
 									</div>
 									<div class="custom-commit">还不错还不错还不错</div>
 								</div>
-							</div>
-							<div class="reply-btn">
-								<button class="comment-filter-btn active-filter">回复</button>
-							</div>
-						</li>
-						<li>
-							<div class="comment-wrap">
-								<div class="commit-header">
-									<div class="commit-scores"><img v-for="n in scores" src="../assets/images/scores.png" alt="" class="scores-img"></div>
-									<div class="commit-time">2017-09-24</div>
-								</div>
-								<div class="commit-content">还不错还不错还不错</div>
-								<div class="order-goods">老干妈卤肉饭老干妈卤肉饭老干妈卤肉饭老干妈卤肉饭</div>
-								<div class="yours-replys"><span class="yours-reply">您的回复：</span>亲，谢谢您的支持！期待再次为你服务</div>
-							</div>
-							<div class="commit-reply-lists">
-								<div class="commit-reply-list">
-									<div class="commit-header">
-										<div class="commit-scores goods-name">老干妈卤肉饭</div>
-										<div class="commit-time"><img v-for="n in scores" src="../assets/images/scores.png" alt="" class="scores-img"></div>
-									</div>
-									<div class="custom-commit">还不错还不错还不错</div>
-								</div>
-								<div class="commit-reply-list">
-									<div class="commit-header">
-										<div class="commit-scores goods-name">老干妈卤肉饭</div>
-										<div class="commit-time"><img v-for="n in scores" src="../assets/images/scores.png" alt="" class="scores-img"></div>
-									</div>
-									<div class="custom-commit">还不错还不错还不错</div>
-								</div>
-							</div>
+							</div> -->
 							<div class="reply-btn">
 								<button class="comment-filter-btn active-filter">回复</button>
 							</div>
@@ -91,21 +66,42 @@
 				</div>
 			</div>
 		</div>
-		<div class="add-goods">添加商品</div>
+		<div class="add-goods" @click="addGoods">添加商品</div>
 	</div>
 </template>
 <script>
+	import {getShopAppraise,getShopAppraiseById} from '@/api/api'
 	export default {
 		name: 'comment',
 		data: function(){
 			return {
-				contentOnly: false,
-				scores: 5
+				showContentOnly: false,
+				pageId: 1,
+				counts: 0,
+				shopAppraise: '',
+				reply: false,
+				commentList: [],
+				canLoad: false
 			}
 		},
+		created: function(){
+			this.showShopAppraise()
+		},
 		methods: {
+			showShopAppraise: function(){
+				getShopAppraise({params:{shopAppraise:this.shopAppraise, reply: this.reply, pageSize: 10, pageId: this.pageId}}).then(res => {
+					console.log(res)
+					this.commentList = res.list;
+					this.counts = res.count;
+				})
+			},
 			checkbox: function(e){
-				this.contentOnly = !this.contentOnly;
+				this.showContentOnly = !this.showContentOnly;
+			},
+			showGoodsList: function(shopAppraiseId){
+				getShopAppraiseById(shopAppraiseId).then(res => {
+					console.log(res)
+				})
 			}
 		}
 	}
@@ -196,10 +192,10 @@
 	}
 	.comment-lists li{
 		margin-bottom: 2.66vw;
+		background-color: #fff;
 	}
 	.check-box{
 		padding: 2.66vw;
-		background-color: #fff;
 		border-bottom: 0.13vw solid #999;
 		margin-top: 2.66vw;
 	}
@@ -249,6 +245,16 @@
 	.commit-scores{
 		float: left;
 		vertical-align: middle;
+		width: 76vw;
+	}
+	.goods-name{
+		font-weight: bold;
+		width: 69vw;
+		float: left;
+	}
+	.goods-comment{
+		float: right;
+		width: 25.25vw;
 	}
 	.scores-img{
 		width: 3.73vw;
@@ -258,8 +264,8 @@
 	.commit-time{
 		float: right;
 		vertical-align: middle;
+		width: 18vw;
 	}
-	.custom-commit{}
 	.commit-reply-list{
 		background-color: #eee;
 		padding: 2.66vw;
@@ -270,11 +276,18 @@
 	.reply-btn{
 		background-color: #fff;
 		text-align: right;
-		padding: 4vw 2.66vw 2.66vw;
+		padding: 2.66vw;
 	}
 	.reply-btn button{
 		width: 20.8vw;
 		height: 6.66vw;
 		line-height: 6.66vw;
+	}
+	.spread{
+		text-align: center;
+	}
+	.spread img{
+		width: 7.6vw;
+		height: 7.6vw;
 	}
 </style>

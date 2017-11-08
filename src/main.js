@@ -37,10 +37,24 @@ Vue.prototype.back = function(){
 	router.isBack = true;
 	router.back()
 }
+
 window.goBack = function(){
 	router.isBack = true;
 	router.back()
 }
+
+//这是必须要写的，用来初始化一些设置
+Vue.prototype.setupWebViewJavascriptBridge = function (callback) {
+    if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
+    if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
+    window.WVJBCallbacks = [callback];
+    var WVJBIframe = document.createElement('iframe');
+    WVJBIframe.style.display = 'none';
+    WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
+    document.documentElement.appendChild(WVJBIframe);
+    setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
+}
+
 Vue.prototype.addGoods = function(){
 	router.push('/goodsDetail')
 }
