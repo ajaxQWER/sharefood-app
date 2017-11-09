@@ -40,7 +40,7 @@
 				</div>
 				<div class="shopDetail-col">
 					<div class="row-title">清理缓存</div>
-					<div class="row-key">0KB</div>
+					<!-- <div class="row-key">0KB</div> -->
 				</div>
 			</div>
 			<div class="shopDetail-row">

@@ -22,10 +22,12 @@
 					<input type="text" placeholder="请输入商品名称" v-model="goodsInfo.goods.goodsName" maxlength="12">
 				</div>
 			</div>
-			<div class="goods-item">
-				<div class="row-title">商品分类</div>
-				<div class="row-value value-after"></div>
-			</div>
+			<router-link :to="'/setGoodsCategory?goodsId='+goodsInfo.goods.goodsId+'&goodsCategoryList='+goodsInfo.goodsCategoryIdList" class="jump">
+				<div class="goods-item">
+					<div class="row-title">商品分类</div>
+					<div class="row-value value-after">{{formatGoodsClass(goodsInfo.goods.goodsClassNames)}}</div>
+				</div>
+			</router-link>
 			<div class="goods-item">
 				<div class="row-title">商品价格</div>
 				<div class="row-value">
@@ -63,8 +65,10 @@
 				</div>
 			</div>
 			<div class="goods-item">
-				<div class="row-title">商品分类</div>
-				<div class="row-value value-after">火锅、火锅、火锅、火锅、火锅</div>
+				<router-link to="/setGoodsCategory" class="jump">
+					<div class="row-title">商品分类</div>
+					<div class="row-value value-after">{{newGoods.goods.goodsClassNames}}</div>
+				</router-link>
 			</div>
 			<div class="goods-item">
 				<div class="row-title">商品价格</div>
@@ -133,7 +137,7 @@
 					    goodsPrice: '',
 					    goodsStatus: "SOLD_OUT",
 				  	},
-				  	goodsCategoryIdList: [0]
+				  	goodsCategoryIdList: []
 				},
 				goodsId: ''
 			}
@@ -148,6 +152,18 @@
 					this.goodsInfo = res;
 					this.$indicator.close();
 				})
+			}else{
+				var goodsCategoryIdList = JSON.parse(localStorage.getItem('goodsCategoryList'))
+				if(goodsCategoryIdList){
+					goodsCategoryIdList.forEach((item,index) => {
+						this.newGoods.goodsCategoryIdList.push(item.id)
+						if(index == 0){
+							this.newGoods.goods.goodsClassNames += item.name
+						}else{
+							this.newGoods.goods.goodsClassNames += ','+ item.name 
+						}
+					})
+				}
 			}
 		},
 		mounted: function(){
@@ -284,11 +300,15 @@
 					addGoods(this.newGoods).then(() => {
 						this.$toast({message:'操作成功',duration: 1000})
 						this.$indicator.close();
+						localStorage.removeItem('goodsCategoryList')
 						setTimeout(() => {
 							this.$router.back()
 						}, 1500)
 					})
 				}
+			},
+			formatGoodsClass: function(className){
+				return className.replace(/,/g,'、')
 			}
 		}
 	}
@@ -468,5 +488,10 @@
 	background-color: #ef4f4f;
 	color: #fff;
 	border-radius: 50%;
+}
+.jump{
+	display: block;
+	text-decoration: none;
+	color: #4d4d4d;
 }
 </style>

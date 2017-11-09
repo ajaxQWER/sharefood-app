@@ -82,6 +82,9 @@ export const addGoodsCategory = params => {
 export const deleteGoodsCategoryById = id => {
     return ajax.delete('seller/goodsCategory/' + id);
 };
+export const updateGoodsCategory = (id, params) => {
+    return ajax.post('seller/goods/updateCategory/' + id, params);
+};
 
 //获取商品列表
 export const getGoodsLists = params => {
@@ -109,7 +112,7 @@ export const updateGoodsById = (goodsId,params) => {
 };
 //添加商品
 export const addGoods = params => {
-    return ajax.put('seller/goods/', params);
+    return ajax.put('seller/goods', params);
 };
 
 
@@ -152,6 +155,22 @@ export const getShopAppraiseById = id => {
     return ajax.get('seller/shopAppraise/' + id);
 };
 
+//营业状态-营业
+export const setBusinessOpen = () => {
+    return ajax.put('seller/shopDetail/operatingState');
+};
+//营业状态-歇业
+export const setBusinessClose = () => {
+    return ajax.delete('seller/shopDetail/operatingState');
+};
+//设置营业时间
+export const setBusinessTime = params => {
+    return ajax.put('seller/shopDetail/busTime', params);
+};
+//设置联系电话
+export const setBusinessPhoneNumber = phoneNumber => {
+    return ajax.put('/seller/shopDetail/takeOutPhone/' + phoneNumber);
+};
 
 
 

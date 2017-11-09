@@ -8,10 +8,12 @@
 		</div>
 		<div class="shopDetail-content" v-if="shopDetail">
 			<div class="shopDetail-row">
-				<div class="shopDetail-col shop-after">
-					<div class="row-key row-title">营业状态</div>
-					<div class="row-value row-value-after">{{shopDetail.shelves?'营业中':'休息中'}}</div>
-				</div>
+				<router-link to="/businessStatus" class="jump">
+					<div class="shopDetail-col shop-after">
+						<div class="row-key row-title">营业状态</div>
+						<div class="row-value row-value-after">{{shopDetail.shelves?'营业中':'歇业中'}}</div>
+					</div>
+				</router-link>
 			</div>
 			<div class="shopDetail-row">
 				<div class="shopDetail-col">
@@ -26,18 +28,28 @@
 					<div class="row-key small-key">{{shopDetail.address}}</div>
 				</div>
 			</div>
-			<div class="shopDetail-row">
+			<div class="shopDetail-row sales">
 				<div class="shopDetail-col">
 					<div class="row-key">营业设置</div>
 				</div>
-				<div class="shopDetail-col shop-after">
-					<div class="row-key small-title">营业时间</div>
-					<div class="row-key small-key">{{shopDetail.busBeginTime}}-{{shopDetail.busEndTime}}</div>
-				</div>
-				<div class="shopDetail-col shop-after">
-					<div class="row-key small-title">联系电话</div>
-					<div class="row-key small-key">{{shopDetail.phoneNum}}</div>
-				</div>
+				<router-link :to="'/businessTime?start='+shopDetail.busBeginTime+'&end='+shopDetail.busEndTime" class="jump">
+					<div class="shopDetail-col shop-after">
+						<div class="row-title">
+							<div class="row-key small-title">营业时间</div>
+							<div class="row-key small-key">{{shopDetail.busBeginTime}}-{{shopDetail.busEndTime}}</div>
+						</div>
+						<div class="row-value row-value-after"></div>
+					</div>
+				</router-link>
+				<router-link :to="'/shopContact?tel='+shopDetail.takeOutPhone" class="jump">
+					<div class="shopDetail-col shop-after">
+						<div class="row-title">
+							<div class="row-key small-title">联系电话</div>
+							<div class="row-key small-key">{{shopDetail.takeOutPhone}}</div>
+						</div>
+						<div class="row-value row-value-after"></div>
+					</div>
+				</router-link>
 			</div>
 			<div class="shopDetail-row">
 				<div class="shopDetail-col shop-after">
@@ -45,11 +57,14 @@
 					<div class="row-value">{{formatShopType(shopDetail.shopType)}}</div>
 				</div>
 			</div>
-			<div class="shopDetail-row">
-				<div class="shopDetail-col shop-after">
-					<div class="row-key">配送设置</div>
-				</div>
-			</div>
+			<!-- <div class="shopDetail-row">
+				<router-link to="/setDelivery" class="jump">
+					<div class="shopDetail-col shop-after">
+						<div class="row-key row-title">配送设置</div>
+						<div class="row-value row-value-after"></div>
+					</div>
+				</router-link>
+			</div> -->
 		</div>
 	</div>
 </template>
@@ -104,6 +119,9 @@
 	.shopDetail-col:not(:last-child){
 		border-bottom: 0.13vw solid #f2f2f2;
 	}
+	.jump:not(:last-child){
+		border-bottom: 0.13vw solid #f2f2f2;
+	}
 	.row-key{
 		font-size: 4.26vw;
 	}
@@ -137,5 +155,15 @@
 		vertical-align: middle;
 		margin-top: -0.4vw;
 		margin-left: 2.66vw;
+	}
+	.sales .row-value-after:after{
+		margin-top: 2.66vw;
+	}
+	.jump{
+		display: block;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		color: #4d4d4d;
 	}
 </style>

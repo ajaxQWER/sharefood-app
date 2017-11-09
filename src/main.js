@@ -35,6 +35,7 @@ Object.defineProperty(Vue.prototype, 'moment', {value: moment});
 
 Vue.prototype.back = function(){
 	router.isBack = true;
+	localStorage.removeItem('goodsCategoryList');
 	router.back()
 }
 

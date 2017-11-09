@@ -13,6 +13,11 @@ import ShopDetail from '@/components/ShopDetail.vue' //店铺信息
 import GoodsCategory from '@/components/GoodsCategory.vue' //商品分类
 import Setting from '@/components/Setting.vue' //设置
 import UpdatePassword from '@/components/UpdatePassword.vue' //修改密码
+import BusinessStatus from '@/components/BusinessStatus.vue' //营业时间
+import BusinessTime from '@/components/BusinessTime.vue' //营业时间
+import ShopContact from '@/components/ShopContact.vue' //联系电话
+import SetDelivery from '@/components/SetDelivery.vue' //配送设置
+import GoodsCategoryList from '@/components/GoodsCategoryList.vue' //选择商品分类
 let routes = [{
     path: '/login',
     component: Login,
@@ -69,6 +74,26 @@ let routes = [{
     path: '/updatePassword',
     component: UpdatePassword,
     name: 'updatePassword'
+},{
+    path: '/businessStatus',
+    component: BusinessStatus,
+    name: 'businessStatus'
+},{
+    path: '/businessTime',
+    component: BusinessTime,
+    name: 'businessTime'
+},{
+    path: '/shopContact',
+    component: ShopContact,
+    name: 'shopContact'
+},{
+    path: '/setDelivery',
+    component: SetDelivery,
+    name: 'setDelivery'
+},{
+    path: '/setGoodsCategory',
+    component: GoodsCategoryList,
+    name: 'setGoodsCategory'
 }];
 
 export default routes;

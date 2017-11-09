@@ -39,30 +39,24 @@
 								<div class="order-goods">{{item.orderName}}</div>
 								<div class="yours-replys" v-for="(val,key) in item.commentList" :key="key"><span class="yours-reply">您的回复：</span>{{val.commentContent}}</div>
 							</div>
-							<div class="spread">
-								<img src="../assets/images/spread.png" alt="" @click="showGoodsList(item.shopAppraiseId)">
+							<div class="spread" v-if="!item.goodsAppraiseList">
+								<img src="../assets/images/spread.png" alt="" @click="showGoodsList(item.shopAppraiseId,index)">
 							</div>
-							<!-- <div class="commit-reply-lists">
+							<div class="commit-reply-lists" v-else="item.goodsAppraiseList" v-for="(goods,goodsKey) in item.goodsAppraiseList" :key="goodsKey">
 								<div class="commit-reply-list">
 									<div class="commit-header">
-										<div class="commit-scores goods-name">老干妈卤肉饭</div>
-										<div class="goods-comment"><img v-for="n in scores" src="../assets/images/scores.png" alt="" class="scores-img"></div>
+										<div class="commit-scores goods-name">{{goods.goodsName}}</div>
+										<div class="goods-comment"><img v-for="n in goods.appraiseLevel" src="../assets/images/scores.png" alt="" class="scores-img"></div>
 									</div>
-									<div class="custom-commit">还不错还不错还不错</div>
+									<div class="custom-commit">{{goods.appraiseContent}}</div>
 								</div>
-								<div class="commit-reply-list">
-									<div class="commit-header">
-										<div class="commit-scores goods-name">老干妈卤肉饭</div>
-										<div class="goods-comment"><img v-for="n in scores" src="../assets/images/scores.png" alt="" class="scores-img"></div>
-									</div>
-									<div class="custom-commit">还不错还不错还不错</div>
-								</div>
-							</div> -->
+							</div>
 							<div class="reply-btn">
 								<button class="comment-filter-btn active-filter">回复</button>
 							</div>
 						</li>
 					</ul>
+					<div v-show="canLoad" class="loadmore" @click="loadBottom">点击加载</div>
 				</div>
 			</div>
 		</div>
@@ -81,6 +75,8 @@
 				shopAppraise: '',
 				reply: false,
 				commentList: [],
+				init: true,
+				allLoaded: false,
 				canLoad: false
 			}
 		},
@@ -89,19 +85,43 @@
 		},
 		methods: {
 			showShopAppraise: function(){
+				this.$indicator.open();
 				getShopAppraise({params:{shopAppraise:this.shopAppraise, reply: this.reply, pageSize: 10, pageId: this.pageId}}).then(res => {
 					console.log(res)
-					this.commentList = res.list;
 					this.counts = res.count;
+					if(this.init){
+						this.commentList = res.list
+					}else{
+						this.commentList = [].concat.apply(this.commentList, res.list)
+					}
+					console.log(this.commentList)
+					this.$indicator.close();
+					if(res.count == 0){
+						this.allLoaded = true;
+					}else{
+						this.canLoad = true;						
+					}
+					if(Math.ceil(this.counts / 10) == this.pageId){
+						this.allLoaded = true;
+						this.canLoad = false;
+						return;
+					}
 				})
 			},
 			checkbox: function(e){
 				this.showContentOnly = !this.showContentOnly;
 			},
-			showGoodsList: function(shopAppraiseId){
+			showGoodsList: function(shopAppraiseId,index){
 				getShopAppraiseById(shopAppraiseId).then(res => {
 					console.log(res)
+					this.$set(this.commentList[index],'goodsAppraiseList',res.goodsAppraiseList)
 				})
+			},
+			loadBottom: function(){
+				this.allLoaded = false;
+				this.pageId += 1;
+				this.init = false;
+				this.showShopAppraise()
 			}
 		}
 	}
@@ -289,5 +309,9 @@
 	.spread img{
 		width: 7.6vw;
 		height: 7.6vw;
+	}
+	.loadmore{
+		text-align: center;
+		padding: 2.66vw;
 	}
 </style>
