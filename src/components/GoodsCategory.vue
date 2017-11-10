@@ -78,7 +78,7 @@
 	position: fixed;
 }
 .goodsCategory-content{
-    box-sizing: border-box;
+  box-sizing: border-box;
 	padding-top: 11.73vw;
 	padding-bottom: 10.66vw;
 }
@@ -94,7 +94,7 @@
 	margin: 5.33vw 0 5.33vw;
 	padding: 0;
 	list-style: none;
-	background-color: 
+	background-color:
 }
 .category-item{
 	overflow: hidden;

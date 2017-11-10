@@ -49,12 +49,12 @@
 		    	</router-link>
 		    </div>
 		    <div class="column flex">
-		    	<!-- <router-link to="/analyze" class="link"> -->
+          <router-link to="/analyze" class="link">
 			    	<div class="column-item flex-1">
 		    			<img src="../assets/images/shop-item4.png" alt="">
 		    			<div class="column-name">营业分析</div>
 			    	</div>
-			    <!-- </router-link> -->
+          </router-link>
 		    	<router-link to="/shopDetail" class="link">
 			    	<div class="column-item flex-1">
 			    		<img src="../assets/images/shop-item5.png" alt="">
@@ -128,13 +128,13 @@ export default {
 	},
 	methods: {
 		formatMoney: function(money){
-			money = parseFloat((money + "").replace(/[^\d\.-]/g, "")).toFixed(2) + "";  
+			money = parseFloat((money + "").replace(/[^\d\.-]/g, "")).toFixed(2) + "";
 			var l = money.split(".")[0].split("").reverse();
-			var r = money.split(".")[1];  
-			var t = "";  
-			for(var i = 0; i < l.length; i ++ ) {  
-				t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");  
-			}  
+			var r = money.split(".")[1];
+			var t = "";
+			for(var i = 0; i < l.length; i ++ ) {
+				t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			}
 		  	return t.split("").reverse().join("") + "." + r;
 		}
 	}
@@ -187,7 +187,7 @@ export default {
 	border-radius: 8px;
 	background-color: #fff;
 	-webkit-align-items: center;
-	-ms-flex-align: center;  
+	-ms-flex-align: center;
 	align-items: center;
 	-moz-box-shadow: 1px 1px 10px 0px #beeccc;
 	-webkit-box-shadow: 1px 1px 10px 0px #beeccc;
@@ -229,7 +229,7 @@ export default {
 }
 .column{
 	-webkit-align-items: center;
-	-ms-flex-align: center;  
+	-ms-flex-align: center;
 	align-items: center;
 }
 .column-item{
@@ -248,9 +248,9 @@ export default {
 .column-null{
 	background-color: #f2f2f2;
 }
-.flex-item{ 
-	-webkit-align-items: center;  
-	-ms-flex-align: center;  
+.flex-item{
+	-webkit-align-items: center;
+	-ms-flex-align: center;
 	align-items: center;
 	display: -webkit-flex;
 	display: flex;
