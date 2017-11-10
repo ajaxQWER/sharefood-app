@@ -7,11 +7,11 @@
 			</div>
 		</div>
 		<div class="business-content">
-			<div class="business-row">
-				<button class="business-btn business-open">营业中</button>
+			<div class="business-row" v-if="isOpen=='false'">
+				<button class="business-btn business-open" @click="open">设置营业</button>
 			</div>
-			<div class="business-row">
-				<button class="business-btn business-close">歇业中</button>
+			<div class="business-row" v-else>
+				<button class="business-btn business-close" @click="close">设置歇业</button>
 			</div>
 		</div>
 	</div>
@@ -22,11 +22,42 @@
 		name: 'business',
 		data: function(){
 			return {
-
+				isOpen: 'true'
 			}
 		},
+		created: function(){
+			var isOpen = this.$route.query.open;
+			this.isOpen = isOpen;
+		},
 		methods: {
-
+			open: function(){
+				this.$indicator.open();
+				setBusinessOpen().then(res => {
+					this.$indicator.close();
+					this.$toast({
+						message:'操作成功',
+						duration: 1000
+					})
+					this.$router.isBack = true;
+					setTimeout(() => {
+					   this.$router.back()
+					}, 1500)
+				})
+			},
+			close: function(){
+				this.$indicator.open();
+				setBusinessClose().then(res => {
+					this.$indicator.close();
+					this.$toast({
+						message:'操作成功',
+						duration: 1000
+					})
+					this.$router.isBack = true;
+					setTimeout(() => {
+					   this.$router.back()
+					}, 1500)
+				})
+			}
 		}
 	}
 </script>

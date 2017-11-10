@@ -6,7 +6,7 @@
 	</div>
 	<div class="regist">
 		<div><img src="../assets/images/open-store.png" alt=""></div>
-		<p>请使用pc访问<a href="//kaidian.sf.chinagjgx.com">kaidian.sf.chinagjgx.com</a>,谢谢</p>
+		<p>请使用pc访问<span>kaidian.gongxiangdiancan.com</span>,谢谢</p>
 	</div>
   </div>
 </template>
@@ -34,7 +34,7 @@ export default {
 	text-align: center;
 	font-size: 3.46vw;
 }
-.regist a{
+.regist span{
 	color: #08983c;
 	text-decoration: none;
 }

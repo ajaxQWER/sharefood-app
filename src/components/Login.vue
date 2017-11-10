@@ -35,8 +35,8 @@
 		<input type="button" value="立即登录" class="login-btn" @click="userLogin">
 	</div>
 	<div class="jump-row">
-		<router-link to="/regist" class="jump-item regist">新用户注册</router-link>
-		<router-link to="/forgetPwd" class="jump-item forget-pwd">忘记密码?</router-link>
+		<!-- <router-link to="/regist" class="jump-item regist">新用户注册</router-link> -->
+		<!-- <router-link to="/forgetPwd" class="jump-item forget-pwd">忘记密码?</router-link> -->
 	</div>
 	<p class="help-row">
 		<router-link to="/help?id=5" class="help-item">登录遇到问题?</router-link>
@@ -102,6 +102,15 @@ export default {
 	    	ios: false,
 	    	sellerName: this.sellerName
 	    }
+	    loginByCode(params).then(res=>{
+    		this.$indicator.close();
+    		console.log(res)
+    		localStorage.setItem('jwt',res.jwt)
+    		localStorage.setItem('seller',JSON.stringify(res.seller))
+    		this.$router.push('/home')
+    	}).catch(err=>{
+    		this.$indicator.close();
+    	})
 	    var ua = navigator.userAgent.toLocaleLowerCase();
 	    if(ua.indexOf('iphone') == -1){
 	    	//安卓
