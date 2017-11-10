@@ -102,15 +102,15 @@ export default {
 	    	ios: false,
 	    	sellerName: this.sellerName
 	    }
-	    loginByCode(params).then(res=>{
-    		this.$indicator.close();
-    		console.log(res)
-    		localStorage.setItem('jwt',res.jwt)
-    		localStorage.setItem('seller',JSON.stringify(res.seller))
-    		this.$router.push('/home')
-    	}).catch(err=>{
-    		this.$indicator.close();
-    	})
+	    // loginByCode(params).then(res=>{
+    	// 	this.$indicator.close();
+    	// 	console.log(res)
+    	// 	localStorage.setItem('jwt',res.jwt)
+    	// 	localStorage.setItem('seller',JSON.stringify(res.seller))
+    	// 	this.$router.push('/home')
+    	// }).catch(err=>{
+    	// 	this.$indicator.close();
+    	// })
 	    var ua = navigator.userAgent.toLocaleLowerCase();
 	    if(ua.indexOf('iphone') == -1){
 	    	//安卓
