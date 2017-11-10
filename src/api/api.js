@@ -2,8 +2,8 @@ import MintUI from 'mint-ui'
 import axios from 'axios';
 
 var ajax = axios.create({
-    baseURL: 'http://apitest.sf.chinagjgx.com', //测试
-    // baseURL: 'http://api.sf.chinagjgx.com', //正式服
+    baseURL: 'http://apitest.gongxiangdiancan.com', //测试
+    // baseURL: 'http://api.gongxiangdiancan.com', //正式服
     headers: {},
     withCredentials: true, //cookie
     crossDomain: true //跨域
@@ -146,6 +146,10 @@ export const updatePwd = params => {
     return ajax.post('api/user/secretkey', params);
 };
 
+//店铺总评
+export const getShopAppraiseHead = () => {
+    return ajax.get('seller/shopAppraise/shopAppriseStatistics');
+};
 //店铺评价
 export const getShopAppraise = params => {
     return ajax.get('seller/shopAppraise', params);

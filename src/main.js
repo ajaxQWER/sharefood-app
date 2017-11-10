@@ -24,12 +24,12 @@ const router = new VueRouter({
 
 
 //正式
-// Object.defineProperty(Vue.prototype, 'UPLOADURL', {value: 'http://uploads.sf.chinagjgx.com'});
-// Object.defineProperty(Vue.prototype, 'BASEURL', {value: 'http://api.sf.chinagjgx.com'});
+// Object.defineProperty(Vue.prototype, 'UPLOADURL', {value: 'http://uploads.gongxiangdiancan.com'});
+// Object.defineProperty(Vue.prototype, 'BASEURL', {value: 'http://api.gongxiangdiancan.com'});
 
 //测试
 Object.defineProperty(Vue.prototype, 'UPLOADURL', {value: 'http://uploadstest.gongxiangdiancan.com'});
-Object.defineProperty(Vue.prototype, 'BASEURL', {value: 'http://apitest.sf.chinagjgx.com'});
+Object.defineProperty(Vue.prototype, 'BASEURL', {value: 'http://apitest.gongxiangdiancan.com'});
 
 Object.defineProperty(Vue.prototype, 'moment', {value: moment});
 
