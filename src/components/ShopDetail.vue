@@ -8,10 +8,10 @@
 		</div>
 		<div class="shopDetail-content" v-if="shopDetail">
 			<div class="shopDetail-row">
-				<router-link to="/businessStatus" class="jump">
+				<router-link :to="'/businessStatus?open='+shopDetail.operatingState" class="jump">
 					<div class="shopDetail-col shop-after">
 						<div class="row-key row-title">营业状态</div>
-						<div class="row-value row-value-after">{{shopDetail.shelves?'营业中':'歇业中'}}</div>
+						<div class="row-value row-value-after">{{shopDetail.operatingState?'营业中':'歇业中'}}</div>
 					</div>
 				</router-link>
 			</div>

@@ -6,70 +6,70 @@
 		  		<div class="nav-title">评价管理</div>
 			</div>
 		</div>
-		<div class="comment-content">
+		<div class="comment-content" v-if="appraiseTotal">
 			<div class="comment-scroll-wrap">
 				<div class="comment-header-detail">
-					<div class="comment-grade"><span class="grades">4.8</span><br>综合评价<br>高于商圈23%的商家</div>
-					<div class="comment-status">近7天评价回复率：67%(良好)<br>近7天差评回复率：100%(良好)</div>
+					<div class="comment-grade"><span class="grades">{{appraiseTotal.comprehensiveApprise}}</span><br>综合评价<br>高于商圈{{appraiseTotal.businessCircleRatio}}%的商家</div>
+					<div class="comment-status">近7天评价回复率：{{appraiseTotal.reversionRate}}%<br>近7天差评回复率：{{appraiseTotal.reviewRate}}%</div>
 				</div>
 				<div class="comment-filter">
-					<button class="comment-filter-btn large-btn">未回复</button>
-					<button class="comment-filter-btn large-btn active-filter">全部评价</button>
-					<button class="comment-filter-btn active-filter">全部</button>
-					<button class="comment-filter-btn">一星</button>
-					<button class="comment-filter-btn">二星</button>
-					<button class="comment-filter-btn">三星</button>
-					<button class="comment-filter-btn">四星</button>
-					<button class="comment-filter-btn">五星</button>
+					<button v-for="(val,key) in replyObj" :class="['comment-filter-btn', 'large-btn', (replyIndex==val.index)?'active-filter':'']" @click="showReply('reply',val.index, val.reply)">{{val.name}}</button>
+					<button v-for="(item,index) in filterObj" :class="['comment-filter-btn', (starIndex == item.index)?'active-filter': '']" @click="showReply('star',item.index,item.shopAppraise)">{{item.name}}</button>
 				</div>
 				<div class="comment-lists-wrap">
 					<div class="check-box">
-						<div :class="[showContentOnly?'check-true':'check-false','check']" v-model="showContentOnly" @click="checkbox">只看有内容的评价</div>
+						<div :class="[commentsAppraise?'check-true':'check-false','check']" v-model="commentsAppraise" @click="checkbox">只看有内容的评价</div>
 					</div>
-					<ul class="comment-lists">
-						<li v-for="(item,index) in commentList" :key="index">
-							<div class="comment-wrap">
-								<div class="commit-header">
-									<div class="commit-scores">
-										<img v-for="n in item.shopAppraise" src="../assets/images/scores.png" alt="" class="scores-img">
-									</div>
-									<div class="commit-time">{{moment(item.appraiseTime).format('YYYY-MM-DD')}}</div>
-								</div>
-								<div>{{item.contentShopAppraise}}</div>
-								<div class="order-goods">{{item.orderName}}</div>
-								<div class="yours-replys" v-for="(val,key) in item.commentList" :key="key"><span class="yours-reply">您的回复：</span>{{val.commentContent}}</div>
-							</div>
-							<div class="spread" v-if="!item.goodsAppraiseList">
-								<img src="../assets/images/spread.png" alt="" @click="showGoodsList(item.shopAppraiseId,index)">
-							</div>
-							<div class="commit-reply-lists" v-else="item.goodsAppraiseList" v-for="(goods,goodsKey) in item.goodsAppraiseList" :key="goodsKey">
-								<div class="commit-reply-list">
+					<div v-if="!isEmpty">
+						<ul class="comment-lists">
+							<li v-for="(item,index) in commentList" :key="index">
+								<div class="comment-wrap">
 									<div class="commit-header">
-										<div class="commit-scores goods-name">{{goods.goodsName}}</div>
-										<div class="goods-comment"><img v-for="n in goods.appraiseLevel" src="../assets/images/scores.png" alt="" class="scores-img"></div>
+										<div class="commit-scores">
+											<img v-for="n in item.shopAppraise" src="../assets/images/scores.png" alt="" class="scores-img">
+										</div>
+										<div class="commit-time">{{moment(item.appraiseTime).format('YYYY-MM-DD')}}</div>
 									</div>
-									<div class="custom-commit">{{goods.appraiseContent}}</div>
+									<div>{{item.contentShopAppraise}}</div>
+									<div class="order-goods">{{item.orderName}}</div>
+									<div class="yours-replys" v-for="(val,key) in item.commentList" :key="key"><span class="yours-reply">您的回复：</span>{{val.commentContent}}</div>
 								</div>
-							</div>
-							<div class="reply-btn">
-								<button class="comment-filter-btn active-filter">回复</button>
-							</div>
-						</li>
-					</ul>
-					<div v-show="canLoad" class="loadmore" @click="loadBottom">点击加载</div>
+								<div class="spread" v-if="!item.goodsAppraiseList">
+									<img src="../assets/images/spread.png" alt="" @click="showGoodsList(item.shopAppraiseId,index)">
+								</div>
+								<div class="commit-reply-lists" v-else="item.goodsAppraiseList" v-for="(goods,goodsKey) in item.goodsAppraiseList" :key="goodsKey">
+									<div class="commit-reply-list">
+										<div class="commit-header">
+											<div class="commit-scores goods-name">{{goods.goodsName}}</div>
+											<div class="goods-comment"><img v-for="n in goods.appraiseLevel" src="../assets/images/scores.png" alt="" class="scores-img"></div>
+										</div>
+										<div class="custom-commit">{{goods.appraiseContent}}</div>
+									</div>
+								</div>
+								<div class="reply-btn">
+									<button class="comment-filter-btn active-filter">回复</button>
+								</div>
+							</li>
+						</ul>
+						<div v-show="canLoad" class="loadmore" @click="loadBottom">点击加载</div>
+					</div>
+					<div v-else class="empty">
+						<img src="../assets/images/empty-img.png" alt="">
+					</div>
 				</div>
+				
 			</div>
 		</div>
 		<div class="add-goods" @click="addGoods">添加商品</div>
 	</div>
 </template>
 <script>
-	import {getShopAppraise,getShopAppraiseById} from '@/api/api'
+	import {getShopAppraiseHead,getShopAppraise,getShopAppraiseById} from '@/api/api'
 	export default {
 		name: 'comment',
 		data: function(){
 			return {
-				showContentOnly: false,
+				commentsAppraise: false,
 				pageId: 1,
 				counts: 0,
 				shopAppraise: '',
@@ -77,16 +77,67 @@
 				commentList: [],
 				init: true,
 				allLoaded: false,
-				canLoad: false
+				canLoad: false,
+				appraiseTotal: null,
+				isEmpty: false,
+				replyIndex: 1,
+				replyObj: [{
+					name: '未回复',
+					reply: false,
+					index: 1
+				},{
+					name: '已回复',
+					reply: true,
+					index: 2
+				}],
+				starIndex: 1,
+				filterObj: [{
+					name: '全部',
+					shopAppraise: '',
+					index: 1
+				},{
+					name: '一星',
+					shopAppraise: '1',
+					index: 2
+				},{
+					name: '二星',
+					shopAppraise: '2',
+					index: 3
+				},{
+					name: '三星',
+					shopAppraise: '3',
+					index: 4
+				},{
+					name: '四星',
+					shopAppraise: '4',
+					index: 5
+				},{
+					name: '五星',
+					shopAppraise: '5',
+					index: 6
+				},]
 			}
 		},
 		created: function(){
 			this.showShopAppraise()
+			getShopAppraiseHead().then(res => {
+				console.log(res)
+				if(res.comprehensiveApprise){
+					this.appraiseTotal = res;
+				}else{
+					this.appraiseTotal = {
+						businessCircleRatio: 0,
+						comprehensiveApprise: 0,
+						reversionRate: 0,
+						reviewRate: 0
+					}
+				}
+			})
 		},
 		methods: {
 			showShopAppraise: function(){
 				this.$indicator.open();
-				getShopAppraise({params:{shopAppraise:this.shopAppraise, reply: this.reply, pageSize: 10, pageId: this.pageId}}).then(res => {
+				getShopAppraise({params:{shopAppraise:this.shopAppraise, reply: this.reply,commentsAppraise: this.commentsAppraise, pageSize: 10, pageId: this.pageId}}).then(res => {
 					console.log(res)
 					this.counts = res.count;
 					if(this.init){
@@ -97,8 +148,10 @@
 					console.log(this.commentList)
 					this.$indicator.close();
 					if(res.count == 0){
+						this.isEmpty = true;
 						this.allLoaded = true;
 					}else{
+						this.isEmpty = false;
 						this.canLoad = true;						
 					}
 					if(Math.ceil(this.counts / 10) == this.pageId){
@@ -109,11 +162,15 @@
 				})
 			},
 			checkbox: function(e){
-				this.showContentOnly = !this.showContentOnly;
+				this.commentsAppraise = !this.commentsAppraise;
+				this.init = true;
+				this.showShopAppraise()
 			},
 			showGoodsList: function(shopAppraiseId,index){
+				this.$indicator.open();
 				getShopAppraiseById(shopAppraiseId).then(res => {
 					console.log(res)
+					this.$indicator.close();
 					this.$set(this.commentList[index],'goodsAppraiseList',res.goodsAppraiseList)
 				})
 			},
@@ -121,6 +178,17 @@
 				this.allLoaded = false;
 				this.pageId += 1;
 				this.init = false;
+				this.showShopAppraise()
+			},
+			showReply: function(type, index, options){
+				if(type == 'reply'){
+					this.replyIndex = index;
+					this.reply = options;
+				}else if(type == 'star'){
+					this.starIndex = index;
+					this.shopAppraise = options;
+				}
+				this.init = true;
 				this.showShopAppraise()
 			}
 		}
@@ -190,6 +258,7 @@
 		background-color: #fff;
 		border: 0.13vw solid #0bb745;
 		border-radius: 0.66vw;
+		outline: none;
 		font-size: 4vw;
 		padding: 0;
 		margin: 2vw 1.87vw;

@@ -13,34 +13,39 @@
 			</div>
 		</div>
 		<div class="order-content">
-			<div class="order-lists" v-if="orderList">
-	    		<ul>
-	    			<li v-for="(item,index) in orderList" :key="index">
-	    				<router-link :to="'/orderDetail?orderId='+item.orderId" class="link">
-	    				<div class="order-row">
-	    					<div class="order-number">{{item.orderNum}}</div>
-	    					<div :class="['order-type',item.orderStatus=='CANCELLATION'?'cancel':'']">{{formatOrderStatus(item.orderStatus)}}</div>
-	    				</div>
-	    				<div class="order-row order-owner">
-	    					<div class="order-item">{{item.orderContact.contactName}}{{formatGender(item.orderContact.gender)}}<span>{{item.orderContact.contactPhone}}</span></div>
-	    					<div class="order-address">{{item.orderContact.address}}</div>
-	    					<a @click.stop="stopEvent" :href="'tel:'+item.orderContact.contactPhone" class="phone"><img src="../assets/images/phone.png" alt=""></a>
-	    				</div>
-	    				<div class="order-row">
-	    					<div class="order-detail">
-	    						<div class="order-item order-time">下单时间<span>{{moment(item.addTime).format('YYYY-MM-DD HH:mm:ss')}}</span></div>
-	    						<div class="order-item order-money">订单金额<span>￥{{item.orderPrice}}</span></div>
-	    						<div class="order-item">订单类型<span>{{formatOrderType(item.orderType)}}</span></div>
-	    					</div>
-	    					<div v-if="item.orderStatus=='PAYED'" class="operate-btn">
-	    						<button @click.prevent="cancelOrder(item.orderId)" class="btn">取消订单</button>
-	    						<button @click.prevent="acceptOrder(item.orderId,item.orderType)" class="btn deal-btn">接单</button>
-	    					</div>
-	    				</div>
-	    				</router-link>
-	    			</li>
-	    		</ul>
-	    		<div v-show="canLoad" class="loadmore" @click="loadBottom">点击加载</div>
+			<div v-if="!isEmpty">
+				<div class="order-lists" v-if="orderList.length">
+		    		<ul>
+		    			<li v-for="(item,index) in orderList" :key="index">
+		    				<router-link :to="'/orderDetail?orderId='+item.orderId" class="link">
+		    				<div class="order-row">
+		    					<div class="order-number">{{item.orderNum}}</div>
+		    					<div :class="['order-type',item.orderStatus=='CANCELLATION'?'cancel':'']">{{formatOrderStatus(item.orderStatus)}}</div>
+		    				</div>
+		    				<div class="order-row order-owner">
+		    					<div class="order-item">{{item.orderContact.contactName}}{{formatGender(item.orderContact.gender)}}<span>{{item.orderContact.contactPhone}}</span></div>
+		    					<div class="order-address">{{item.orderContact.address}}</div>
+		    					<a @click.stop="stopEvent" :href="'tel:'+item.orderContact.contactPhone" class="phone"><img src="../assets/images/phone.png" alt=""></a>
+		    				</div>
+		    				<div class="order-row">
+		    					<div class="order-detail">
+		    						<div class="order-item order-time">下单时间<span>{{moment(item.addTime).format('YYYY-MM-DD HH:mm:ss')}}</span></div>
+		    						<div class="order-item order-money">订单金额<span>￥{{item.orderPrice}}</span></div>
+		    						<div class="order-item">订单类型<span>{{formatOrderType(item.orderType)}}</span></div>
+		    					</div>
+		    					<div v-if="item.orderStatus=='PAYED'" class="operate-btn">
+		    						<button @click.prevent="cancelOrder(item.orderId)" class="btn">取消订单</button>
+		    						<button @click.prevent="acceptOrder(item.orderId,item.orderType)" class="btn deal-btn">接单</button>
+		    					</div>
+		    				</div>
+		    				</router-link>
+		    			</li>
+		    		</ul>
+		    		<div v-show="canLoad" class="loadmore" @click="loadBottom">点击加载</div>
+	    		</div>
+			</div>
+			<div v-else class="empty">
+				<img src="../assets/images/empty-img.png" alt="">
 			</div>
 		</div>
 		<div class="add-goods" @click="addGoods">添加商品</div>
@@ -81,7 +86,8 @@
 				counts: 0,
 				orderStatus: '',
 				orderList: [],
-				canLoad: false
+				canLoad: false,
+				isEmpty: false
 			}	
 		},
 		created: function(){
@@ -101,8 +107,10 @@
 					this.$indicator.close();
 					if(res.count == 0){
 						this.allLoaded = true;
+						this.isEmpty = true;
 					}else{
-						this.canLoad = true;						
+						this.canLoad = true;
+						this.isEmpty = false;						
 					}
 					if(Math.ceil(this.counts / 10) == this.pageId){
 						this.allLoaded = true;
@@ -129,6 +137,7 @@
 				this.init = true;
 				this.orderStatus = orderStatus;
 				this.canLoad = false;
+				this.isEmpty = false;
 				this.getOrders({pageId: this.pageId,orderStatus: this.orderStatus})
 			},
 			formatGender: function(gender){

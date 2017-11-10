@@ -7,12 +7,15 @@
 			</div>
 		</div>
 		<div class="goodsCategory-content">
-			<ul class="goodsCategory-lists">
+			<ul class="goodsCategory-lists" v-if="!isEmpty">
 				<li class="category-item" v-for="(item,index) in goodsCategoryList" :key="index">
 					<div class="category-name">{{item.goodsCategoryName}}</div>
 					<div class="delete-btn" @click="deleteCategory(item.goodsCategoryId)">删除</div>
 				</li>
 			</ul>
+			<div v-else class="empty">
+				<img src="../assets/images/empty-img.png" alt="">
+			</div>
 		</div>
 		<div class="goodsCategory-add-wrap">
 			<input type="text" class="goodsCategory-input" placeholder="分类名称,最多8个汉字" maxlength="8" v-model.trim="goodsCategoryName">
@@ -27,7 +30,8 @@
 		data: function(){
 			return {
 				goodsCategoryName: '',
-				goodsCategoryList: null
+				goodsCategoryList: null,
+				isEmpty: false
 			}
 		},
 		created: function(){
@@ -38,6 +42,11 @@
 				this.$indicator.open();
 				getGoodsCategoryLists({params:{pageSize:99999999}}).then(res=>{
 					console.log(res)
+					if(res.count == 0){
+						this.isEmpty = true
+					}else{
+						this.isEmpty = false
+					}
 					this.goodsCategoryList = res.list;
 					this.$indicator.close();
 				})
@@ -61,6 +70,7 @@
 				}
 				addGoodsCategory(param).then(() => {
 					this.$toast({message:'添加成功',duration: 1000})
+					this.goodsCategoryName = ''
 					this.getGoodsCategoryList()
 				})
 			}

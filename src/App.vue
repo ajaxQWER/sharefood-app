@@ -155,4 +155,12 @@ body {
     -webkit-transform: translate(-100vw, 0);  
     transform: translate(-100vw, 0);  
 }  
+.empty{
+    text-align: center;
+    padding: 8vw;
+}
+.empty img{
+    width: 27.86vw;
+    height: 28.66vw;
+}
 </style>

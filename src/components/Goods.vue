@@ -15,25 +15,30 @@
 				</ul>
 			</div>
 			<div class="goods-details-lists">
-				<ul>
-					<li class="goods-detail" v-for="(item,index) in goodsList" :key="index">
-						<div class="goods-detail-wrap">
-							<div class="goods-image">
-								<img :src="UPLOADURL + item.goodsImgUrl" alt="">
+				<div v-if="!isEmpty">
+					<ul>
+						<li class="goods-detail" v-for="(item,index) in goodsList" :key="index">
+							<div class="goods-detail-wrap">
+								<div class="goods-image">
+									<img :src="UPLOADURL + item.goodsImgUrl" alt="">
+								</div>
+								<div class="goods-info">
+									<h3 class="goods-name">{{item.goodsName}}</h3>
+									<div class="goods-sales">月售{{item.goodsSales}}份</div>
+									<div class="goods-price">￥{{item.goodsPrice}}</div>
+								</div>
 							</div>
-							<div class="goods-info">
-								<h3 class="goods-name">{{item.goodsName}}</h3>
-								<div class="goods-sales">月售{{item.goodsSales}}份</div>
-								<div class="goods-price">￥{{item.goodsPrice}}</div>
+							<div class="operate-row">
+								<router-link :to="'/goodsDetail?goodsId='+item.goodsId"><button class="btn edit-btn">编辑</button></router-link>
+								<button class="btn sold-out-btn" @click="soldOut(item.goodsId,index,item.goodsStatus)">{{formatStatus(item.goodsStatus)}}</button>
+								<button class="btn delete-btn" @click="deleteGoods(item.goodsId,index)">删除</button>
 							</div>
-						</div>
-						<div class="operate-row">
-							<router-link :to="'/goodsDetail?goodsId='+item.goodsId"><button class="btn edit-btn">编辑</button></router-link>
-							<button class="btn sold-out-btn" @click="soldOut(item.goodsId,index,item.goodsStatus)">{{formatStatus(item.goodsStatus)}}</button>
-							<button class="btn delete-btn" @click="deleteGoods(item.goodsId,index)">删除</button>
-						</div>
-					</li>
-				</ul>
+						</li>
+					</ul>
+				</div>
+				<div v-else class="empty">
+					<img src="../assets/images/empty-img.png" alt="">
+				</div>
 			</div>
 		</div>
 		<div class="add-goods" @click="addGoods">添加商品</div>
@@ -46,29 +51,38 @@
 		data: function(){
 			return {
 				goodsCategoryLists: null,
-				goodsList: null
+				goodsList: null,
+				isEmpty: false
 			}
 		},
 		created: function(){
 			this.$indicator.open();
 			getGoodsCategoryLists({params: {pageSize: 999999}}).then(res => {
-				// console.log(res)
-				this.getGoods(res.list[0].goodsCategoryId)
-				this.goodsCategoryLists = res.list;
-				this.goodsCategoryLists.forEach(function(item,index){
-					item['isActiveItem'] = false;
-					if(index == 0){
-						item['isActiveItem'] = true
-					}
-				})
+				console.log(res)
+				if(res.list.length){
+					this.getGoods(res.list[0].goodsCategoryId)
+					this.goodsCategoryLists = res.list;
+					this.goodsCategoryLists.forEach(function(item,index){
+						item['isActiveItem'] = false;
+						if(index == 0){
+							item['isActiveItem'] = true
+						}
+					})
+				}else{
+					this.isEmpty = true;
+				}
+				this.$indicator.close();
 			})
 		},
 		methods: {
 			getGoods: function(id){
 				getGoodsLists({params: {pageSize: 999999, goodsClassId: id}}).then(res => {
-					// console.log(res.list)
-					this.goodsList = res.list;
+					console.log(res.list)
 					this.$indicator.close();
+					this.goodsList = res.list;
+					if(res.count == 0){
+						this.isEmpty = true;
+					}
 				})
 			},
 			formatStatus: function(status){
@@ -129,7 +143,7 @@
 		width: 100%;
 		position: fixed;
 	}
-	.nav-title:after{
+	/* .nav-title:after{
 		content: '';
 		display: inline-block;
 		width: 3.6vw;
@@ -137,7 +151,7 @@
 		background: url(../assets/images/selecct-down.png) no-repeat center center;
 		background-size: contain;
 		margin-left: 2.66vw;
-	}
+	} */
 	.goods-nav-right{
 		position: absolute;
 		overflow: hidden;
