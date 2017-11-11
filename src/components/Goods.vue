@@ -20,7 +20,8 @@
 						<li class="goods-detail" v-for="(item,index) in goodsList" :key="index">
 							<div class="goods-detail-wrap">
 								<div class="goods-image">
-									<img :src="UPLOADURL + item.goodsImgUrl" alt="">
+									<!-- <img :src="UPLOADURL + item.goodsImgUrl" alt=""> -->
+									<img v-lazy="UPLOADURL + item.goodsImgUrl" alt="">
 								</div>
 								<div class="goods-info">
 									<h3 class="goods-name">{{item.goodsName}}</h3>
@@ -56,6 +57,7 @@
 			}
 		},
 		created: function(){
+			console.log(this.UPLOADURL)
 			this.$indicator.open();
 			getGoodsCategoryLists({params: {pageSize: 999999}}).then(res => {
 				console.log(res)

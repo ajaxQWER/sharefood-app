@@ -155,6 +155,14 @@ body {
     -webkit-transform: translate(-100vw, 0);  
     transform: translate(-100vw, 0);  
 }  
+img[lazy=error] {
+    background: url(assets/images/default.jpg) no-repeat center center;
+    background-size: cover;
+}
+img[lazy=loading] {
+    background: url(assets/images/loading.svg) no-repeat center center #eaeaea;
+    background-size: cover;
+}
 .empty{
     text-align: center;
     padding: 8vw;
@@ -162,5 +170,9 @@ body {
 .empty img{
     width: 27.86vw;
     height: 28.66vw;
+}
+
+.goodscategory-toast{
+    z-index: 9999!important;
 }
 </style>
