@@ -47,22 +47,6 @@
 					})
 					this.$indicator.close();
 				})
-			}else{
-				// var goodsCategoryIdList = JSON.parse(localStorage.getItem('goodsCategoryList'))
-
-				this.$indicator.open();
-				getGoodsCategoryLists().then(res => {
-					res.list.forEach((item) => {
-						this.options.push({
-							label: item.goodsCategoryName,
-							value: {
-								id: item.goodsCategoryId,
-								name: item.goodsCategoryName
-							}
-						})
-					})
-					this.$indicator.close();
-				})
 			}
 		},
 		methods: {
@@ -76,24 +60,9 @@
 					})
 					return;
 				}
-				var goodsId = this.$route.query.goodsId;
-				if(goodsId){
-					//修改
-					this.$indicator.open();
-					updateGoodsCategory(goodsId,this.goodsCategoryList).then(() => {
-						this.$indicator.close();
-						this.$toast({
-							message: '修改成功',
-							duration: 1000
-						})
-						this.$router.isBack = true;
-						setTimeout(() => {
-						   this.$router.back()
-						}, 1500)
-					})
-				}else{
-					//新增
-					localStorage.setItem('goodsCategoryList',JSON.stringify(this.goodsCategoryList))
+				this.$indicator.open();
+				updateGoodsCategory(this.$route.query.goodsId,this.goodsCategoryList).then(() => {
+					this.$indicator.close();
 					this.$toast({
 						message: '修改成功',
 						duration: 1000
@@ -102,8 +71,7 @@
 					setTimeout(() => {
 					   this.$router.back()
 					}, 1500)
-				}
-				
+				})
 			}
 		}
 	}

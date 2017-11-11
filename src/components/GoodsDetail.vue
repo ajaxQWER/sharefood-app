@@ -64,11 +64,11 @@
 					<input type="text" placeholder="请输入商品名称" v-model="newGoods.goods.goodsName" maxlength="12">
 				</div>
 			</div>
-			<div class="goods-item">
-				<router-link to="/setGoodsCategory" class="jump">
+			<div class="goods-item" @click="showGoodsCategoryPopup">
+				<!-- <router-link to="/setGoodsCategory" class="jump"> -->
 					<div class="row-title">商品分类</div>
 					<div class="row-value value-after">{{newGoods.goods.goodsClassNames}}</div>
-				</router-link>
+				<!-- </router-link> -->
 			</div>
 			<div class="goods-item">
 				<div class="row-title">商品价格</div>
@@ -109,12 +109,29 @@
 		  	    <label for="change"></label>
 		  	</div>
 		</mt-popup>
-
+		<mt-popup v-model="goodsCategoryPopup" position="right" class="mint-popup-3" :modal="false">
+			<div class="goodsDetail-header">
+				<div class="nav-bar help-navbar">
+			  		<div class="back"></div>
+			  		<div class="nav-title">商品分类</div>
+				</div>
+			</div>
+			<div class="category-content">
+					<mt-checklist
+			      align="right"
+			      class="page-part"
+			      :max="5"
+			      v-model="goodsCategoryList"
+			      :options="options">
+			    </mt-checklist>
+			</div>
+			<div class="saveBusiness" @click="saveBusiness">保存</div>
+	    </mt-popup>
 	</div>
 </template>
 <script>
 	import Cropper from 'cropperjs'
-	import {getGoodsById,updateGoodsById,addGoods,uploadFiles} from '@/api/api'
+	import {getGoodsById,updateGoodsById,addGoods,getGoodsCategoryLists,uploadFiles} from '@/api/api'
 	export default {
 		name: 'goodsDetail',
 		data: function(){
@@ -139,7 +156,10 @@
 				  	},
 				  	goodsCategoryIdList: []
 				},
-				goodsId: ''
+				goodsId: '',
+				goodsCategoryPopup: false,
+				goodsCategoryList: [],
+				options: []
 			}
 		},
 		created: function(){
@@ -152,19 +172,18 @@
 					this.goodsInfo = res;
 					this.$indicator.close();
 				})
-			}else{
-				var goodsCategoryIdList = JSON.parse(localStorage.getItem('goodsCategoryList'))
-				if(goodsCategoryIdList){
-					goodsCategoryIdList.forEach((item,index) => {
-						this.newGoods.goodsCategoryIdList.push(item.id)
-						if(index == 0){
-							this.newGoods.goods.goodsClassNames += item.name
-						}else{
-							this.newGoods.goods.goodsClassNames += ','+ item.name 
+			}
+			getGoodsCategoryLists().then(res => {
+				res.list.forEach((item) => {
+					this.options.push({
+						label: item.goodsCategoryName,
+						value: {
+							id: item.goodsCategoryId,
+							name: item.goodsCategoryName
 						}
 					})
-				}
-			}
+				})
+			})
 		},
 		mounted: function(){
 			var self = this;
@@ -285,9 +304,9 @@
 				this.$refs.uploads.value = '';
 			},
 			updateGoods: function(){
-				this.$indicator.open();
 				//编辑
 				if(this.goodsId){
+					this.$indicator.open();
 					updateGoodsById(this.goodsInfo.goods.goodsId,this.goodsInfo).then(() => {
 						this.$toast({message:'操作成功',duration: 1000})
 						this.$indicator.close();
@@ -297,6 +316,31 @@
 					})
 				}else{
 					//新增
+					if(!this.newGoods.goods.goodsImgUrl){
+						this.$toast({message:'请上传商品图片',duration: 1000})
+						return;
+					}
+					if(!this.newGoods.goods.goodsName){
+						this.$toast({message:'请输入商品名称',duration: 1000})
+						return;
+					}
+					if(this.newGoods.goodsCategoryIdList.length == 0){
+						this.$toast({message:'请选择商品分类',duration: 1000})
+						return;
+					}
+					if(!this.newGoods.goods.goodsPrice){
+						this.$toast({message:'请输入商品价格',duration: 1000})
+						return;
+					}
+					if(!this.newGoods.goods.feeMeals){
+						this.$toast({message:'请输入餐盒费',duration: 1000})
+						return;
+					}
+					if(!this.newGoods.goods.goodsContent){
+						this.$toast({message:'请输入商品简介',duration: 1000})
+						return;
+					}
+					this.$indicator.open();
 					addGoods(this.newGoods).then(() => {
 						this.$toast({message:'操作成功',duration: 1000})
 						this.$indicator.close();
@@ -309,6 +353,34 @@
 			},
 			formatGoodsClass: function(className){
 				return className.replace(/,/g,'、')
+			},
+			showGoodsCategoryPopup: function(){
+				this.goodsCategoryPopup = true;
+			},
+			closeGoodscategoryPopup: function(){
+				this.goodsCategoryPopup = false;				
+			},
+			saveBusiness: function(){
+				if (this.goodsCategoryList.length == 0) {
+					this.$toast({message:'请选择分类',duration: 1000,className:'goodscategory-toast'})
+					return;
+				}
+
+				console.log(this.goodsCategoryList)
+				var tempGoodsCategoryIdList = {};
+				this.goodsCategoryList.forEach((item,index) => {
+					tempGoodsCategoryIdList[item.id] = item.name
+				})
+
+				var names = [];
+				this.newGoods.goodsCategoryIdList = []
+				for (var id in tempGoodsCategoryIdList) {
+					names.push(tempGoodsCategoryIdList[id]);
+					this.newGoods.goodsCategoryIdList.push(+id)
+				}
+
+				this.newGoods.goods.goodsClassNames = names.join(",");
+				this.goodsCategoryPopup = false;
 			}
 		}
 	}
@@ -493,5 +565,30 @@
 	display: block;
 	text-decoration: none;
 	color: #4d4d4d;
+}
+.category-content{
+	padding-top: 11.73vw;
+}
+.mint-popup-3 {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+}
+.mint-popup-3 .mint-button {
+	position: absolute;
+	width: 60px;
+	top: 0;
+	left: 0;
+}
+.saveBusiness{
+	width: 100%;
+	height: 10.66vw;
+	text-align: center;
+	line-height: 10.66vw;
+	background-color: #0eb745;
+	color: #fff;
+	font-size: 4.26vw;
+	position: fixed;
+	bottom: 0;
 }
 </style>
