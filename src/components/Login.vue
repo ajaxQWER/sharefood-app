@@ -86,7 +86,7 @@ export default {
   		}, 1000)
 	},
 	userLogin: function(){
-		
+
 		if(!this.sellerName){
   			this.$toast({message:'请输入手机号',duration: 1000})
 			return
@@ -162,7 +162,7 @@ export default {
 	    // }).catch(err=>{
 	    // 	this.$indicator.close();
 	    // })
-		
+
 
 		// if(this.isMessageCodeLogin){
 		// 	if(!this.sellerName){
@@ -316,7 +316,7 @@ export default {
 	margin-top: 10.66vw;
 }
 .help-item{
-	text-decoration: none;	
+	text-decoration: none;
 	font-size: 3.73vw;
 	color: #999;
 }
