@@ -9,9 +9,12 @@
     <div class="analysis-content">
       <div class="column-wrap">
         <div class="column flex">
-          <div class="column-item flex-1">
-            <img src="../assets/images/new-customer.png" alt="">
-          </div>
+          <router-link to="/customerTendency" class="link">
+            <div class="column-item flex-1">
+              <img src="../assets/images/new-customer.png" alt="">
+            </div>
+          </router-link>
+
 
           <div class="column-item flex-1">
             <img src="../assets/images/order.png" alt="">
