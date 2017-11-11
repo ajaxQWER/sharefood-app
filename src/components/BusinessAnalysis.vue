@@ -15,15 +15,17 @@
             </div>
           </router-link>
 
+          <router-link to="/orderQuantity" class="link">
+            <div class="column-item flex-1">
+              <img src="../assets/images/order.png" alt="">
+            </div>
+          </router-link>
 
-          <div class="column-item flex-1">
-            <img src="../assets/images/order.png" alt="">
-          </div>
-
-          <div class="column-item flex-1">
-            <img src="../assets/images/business-volume.png" alt="">
-          </div>
-
+          <router-link to="/businessVolume" class="link">
+            <div class="column-item flex-1">
+              <img src="../assets/images/business-volume.png" alt="">
+            </div>
+          </router-link>
         </div>
         <div class="column flex">
           <div class="column-item flex-1">
@@ -68,8 +70,8 @@
     background-color: #fff;
     border-radius: 2px;
   }
-  .column-item:nth-child(3n+2){
-    margin: 0 2.67vw;
+  .column-item{
+    margin: 0 2.67vw 0 0;
   }
   .column-item img{
     width: 29.73vw;
