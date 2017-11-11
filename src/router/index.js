@@ -19,6 +19,8 @@ import ShopContact from '@/components/ShopContact.vue' //联系电话
 import SetDelivery from '@/components/SetDelivery.vue' //配送设置
 import GoodsCategoryList from '@/components/GoodsCategoryList.vue' //选择商品分类
 import BusinessAnalyze from '@/components/BusinessAnalysis.vue'  //营业分析
+import CustomerTendency from '@/components/CustomerTendencyChart.vue'  //新客户趋势图
+// import OrderQuantity from '@/components/OrderQuantity.vue'  //新客户趋势图
 let routes = [{
     path: '/login',
     component: Login,
@@ -99,6 +101,10 @@ let routes = [{
     path: '/analyze',
     component: BusinessAnalyze,
     name: 'analyze'
+},{
+    path: '/customerTendency',
+    component: CustomerTendency,
+    name: 'customerTendency'
 }];
 
 export default routes;

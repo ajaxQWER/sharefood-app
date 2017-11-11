@@ -255,4 +255,5 @@ export default {
 	display: -webkit-flex;
 	display: flex;
 }
+
 </style>
