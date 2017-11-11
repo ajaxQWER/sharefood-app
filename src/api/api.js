@@ -2,7 +2,7 @@ import MintUI from 'mint-ui'
 import axios from 'axios';
 
 var ajax = axios.create({
-    baseURL: 'http://apitest.gongxiangdiancan.com', //测试
+    baseURL: process.env.BASE_URL, //测试
     // baseURL: 'http://api.gongxiangdiancan.com', //正式服
     headers: {},
     withCredentials: true, //cookie
