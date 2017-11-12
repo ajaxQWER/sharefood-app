@@ -22,6 +22,8 @@ import BusinessAnalyze from '@/components/BusinessAnalysis.vue'  //营业分析
 import CustomerTendency from '@/components/CustomerTendencyChart.vue'  //新客户趋势图
 import OrderQuantity from '@/components/OrderQuantity.vue'  //订单量趋势图
 import BusinessVolume from '@/components/BusinessVolume.vue'  //营业额趋势图
+import SalesVolume from '@/components/SalesVolume.vue'  //销售量
+import SalesRank from '@/components/SalesRank.vue'  //销售量
 let routes = [{
     path: '/login',
     component: Login,
@@ -114,6 +116,14 @@ let routes = [{
     path: '/businessVolume',
     component: BusinessVolume,
     name: 'businessVolume'
+},{
+    path: '/salesVolume',
+    component: SalesVolume,
+    name: 'salesVolume'
+},{
+    path: '/salesRank',
+    component: SalesRank,
+    name: 'salesRank'
 }];
 
 export default routes;

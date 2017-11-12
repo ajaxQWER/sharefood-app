@@ -3,7 +3,7 @@
 		<div class="business-header">
 			<div class="nav-bar help-navbar">
 				<div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
-				<div class="nav-title">营业额趋势图</div>
+				<div class="nav-title">销售量趋势图</div>
 			</div>
 		</div>
 		<div class="business-content">
@@ -12,7 +12,7 @@
 				<div class="table-title">
 					<div class="column flex">
 						<div class="column-item flex-1">日期</div>
-						<div class="column-item flex-1">营业额</div>
+						<div class="column-item flex-1">销售量</div>
 					</div>
 				</div>
 				<table class="date-num">
