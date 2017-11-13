@@ -8,7 +8,7 @@
     </div>
     <div class="business-content">
       <div class="chart">
-        <IEcharts :option="line"></IEcharts>
+        <IEcharts :option="line" :loading="loading"></IEcharts>
       </div>
       <div class="chart-info">
         <div class="table-title">
@@ -130,15 +130,15 @@
         for(let i=res.length-1; i>=0; i--){
           let t = res[i].finishDayTime;
           let turnoverCount = that.formatMoney(res[i].turnoverCount);
-          let week = that.formatDate(t);
-          weeks.push(week);
+          let date = that.moment(t).format('MM-DD');
+          weeks.push(date);
           turnoverCounts.push(turnoverCount);
           console.log(turnoverCount);
         }
         that.line.xAxis.data = weeks;
         that.line.series[0].data = turnoverCounts;
         that.loading = false;
-        that.turnover = res.reverse();
+        that.turnover = res;
       })
     },
     methods: {
@@ -181,11 +181,9 @@
   }
   .business-header{
     width: 100%;
-    position: fixed;
-    z-index: 999;
   }
   .business-content{
-    padding: 12vw 0 0;
+    padding: 0;
   }
   .chart{
     width: 100%;

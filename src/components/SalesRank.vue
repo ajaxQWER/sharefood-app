@@ -48,6 +48,9 @@
 					</tbody>
 				</table>
 			</div>
+			<div v-if="isEmpty" class="empty">
+				<img src="../assets/images/empty-img.png" alt="">
+			</div>
 		</div>
 		<mt-datetime-picker ref="time" type="date" @confirm="handleChange" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
 	</div>
@@ -59,7 +62,8 @@
 			return {
 				dateNow: this.moment(Date.now()).format('YYYY-MM-DD'),
 				startDate: '',
-				endDate: ''
+				endDate: '',
+				isEmpty: false
 			}
 		},
 		created: function(){

@@ -9,29 +9,54 @@
 		<div class="business-content">
 			<div class="search-content">
 				<span>商品名称</span>
-				<div class="search-input"><input type="text" placeholder="请输入相关商品" @keyup.enter="searchKeywords"></div>
+				<div class="search-input"><input type="text" placeholder="请输入相关商品" @keyup.enter="searchKeywords" ref="searchBar" v-model="keywords"></div>
+			</div>
+			<div v-if="isEmpty" class="empty">
+				<img src="../assets/images/empty-img.png" alt="">
 			</div>
 			<ul class="search-datalist">
-				<li @click="fetchData(1)">鲜锅兔</li>
-				<li>烤兔</li>
-				<li>老妈兔头</li>
-				<li>鸡兔同笼</li>
+				<li v-for="(item,index) in searchData" :key="index" @click="fetchData(item.goodsId)">{{item.goodsName}}</li>
 			</ul>
 		</div>
 	</div>
 </template>
 <script>
+	import {getGoodsLists} from '@/api/api'
 	export default {
 		name: 'salesVolume',
 		data: function(){
-			return {}
+			return {
+				keywords: '',
+				searchData: [],
+				isEmpty: false
+			}
+		},
+		mounted: function(){
+			this.$refs.searchBar.focus()
 		},
 		methods: {
 			searchKeywords: function(){
-				//fetch data
+				if(!this.keywords){
+					this.$toast({message:'请输入相关商品',duration: 1000})
+					return;
+				}
+				getGoodsLists({params:{goodsNameLike: this.keywords}}).then(res => {
+					console.log(res)
+					this.keywords = '';
+					this.$refs.searchBar.blur()
+					if(res.count > 0){
+						this.searchData = res.list;
+						this.isEmpty = false;
+					}else{
+						this.searchData = [];
+						this.isEmpty = true;
+					}
+				})
 			},
-			fetchData: function(id){
+			fetchData: function(goodsId){
 				//fetch data
+				console.log(goodsId)
+				this.$router.push('/salesVolume?goodsId' + goodsId)
 			}
 		}
 	}
@@ -44,8 +69,6 @@
 }
 .business-header{
 	width: 100%;
-}
-.business-content{
 }
 .search-content{
 	padding: 2vw 4vw;

@@ -8,7 +8,7 @@
     </div>
     <div class="customer-content">
       <div class="chart">
-        <IEcharts :option="line"></IEcharts>
+        <IEcharts :option="line" :loading="loading"></IEcharts>
       </div>
       <div class="chart-info">
         <div class="table-title">
@@ -131,14 +131,14 @@
         for(let i=res.length-1; i>=0; i--){
           let t = res[i].finishDayTime;
           let count = res[i].newCustomerCount;
-          let week = that.formatDate(t);
-          weeks.push(week);
+          let date = that.moment(t).format('MM-DD');
+          weeks.push(date);
           customerCounts.push(count);
         }
         that.line.xAxis.data = weeks;
         that.line.series[0].data = customerCounts;
         that.loading = false,
-        that.customers = res.reverse();
+        that.customers = res;
       })
     },
     methods: {
@@ -170,11 +170,9 @@
   }
   .customer-header{
     width: 100%;
-    position: fixed;
-    z-index: 999;
   }
   .customer-content{
-    padding: 12vw 0 0;
+    padding: 0;
   }
   .chart{
     width: 100%;

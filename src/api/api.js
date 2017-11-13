@@ -173,7 +173,7 @@ export const setBusinessTime = params => {
 };
 //设置联系电话
 export const setBusinessPhoneNumber = phoneNumber => {
-    return ajax.put('/seller/shopDetail/takeOutPhone/' + phoneNumber);
+    return ajax.put('seller/shopDetail/takeOutPhone/' + phoneNumber);
 };
 
 
@@ -189,6 +189,11 @@ export const getOrderQuantity = params => {
 //订单量趋势图
 export const getTurnover = params => {
   return ajax.get('seller/analysis/turnover', params);
+};
+
+//销售量趋势图
+export const getSalesTendency = params => {
+  return ajax.get('seller/analysis/goodsSales', params);
 };
 
 

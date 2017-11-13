@@ -42,9 +42,6 @@
 		</div>
 	</div>
 </template>
-<script>
-
-</script>
 <style scoped>
 #analysis {
 	min-height: 100%;

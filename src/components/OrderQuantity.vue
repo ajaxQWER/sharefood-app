@@ -8,7 +8,7 @@
     </div>
     <div class="order-content">
       <div class="chart">
-        <IEcharts :option="line"></IEcharts>
+        <IEcharts :option="line" :loading="loading"></IEcharts>
       </div>
       <div class="chart-info">
         <div class="table-title">
@@ -131,14 +131,14 @@
         for(let i=res.length-1; i>=0; i--){
           let t = res[i].finishDayTime;
           let count = res[i].orderQuantity;
-          let week = that.formatDate(t);
-          weeks.push(week);
+          let date = that.moment(t).format('MM-DD');
+          weeks.push(date);
           orderCounts.push(count);
         }
         that.line.xAxis.data = weeks;
         that.line.series[0].data = orderCounts;
         that.loading = false;
-        that.orders = res.reverse();
+        that.orders = res;
       })
     },
     methods: {
@@ -170,11 +170,9 @@
   }
   .order-header{
     width: 100%;
-    position: fixed;
-    z-index: 999;
   }
   .order-content{
-    padding: 12vw 0 0;
+    padding: 0;
   }
   .chart{
     width: 100%;
