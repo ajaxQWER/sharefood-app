@@ -19,34 +19,10 @@
         </div>
         <table class="date-num">
           <tbody>
-          <tr>
-            <td>2017/11/06</td>
-            <td>186.00</td>
-          </tr>
-          <tr>
-            <td>2017/11/06</td>
-            <td>389.00</td>
-          </tr>
-          <tr>
-            <td>2017/11/06</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>2017/11/06</td>
-            <td>568.00</td>
-          </tr>
-          <tr>
-            <td>2017/11/06</td>
-            <td>186.00</td>
-          </tr>
-          <tr>
-            <td>2017/11/06</td>
-            <td>389.00</td>
-          </tr>
-          <tr>
-            <td>2017/11/06</td>
-            <td>2263.90</td>
-          </tr>
+            <tr v-for="(item,index) in turnover">
+              <td>{{item.date}}</td>
+              <td>{{item.count}}</td>
+            </tr>
           </tbody>
 
         </table>
@@ -60,6 +36,7 @@
   </div>
 </template>
 <script>
+  import {getTurnover} from '@/api/api';
   import IEcharts from 'vue-echarts-v3/src/full.vue';
   export default {
     name: 'turnover',
@@ -70,7 +47,7 @@
 
     },
     data: () => ({
-      loading: true,
+      turnover: null,
       line: {
         tooltip: {
           trigger: 'axis'
@@ -90,7 +67,7 @@
             color: '#999'
           },
 
-          data: ['周一','周二','周三','周四','周五','周六','周日']
+          data: null
         },
         yAxis: {
           type: 'value',
@@ -111,7 +88,7 @@
         series: [{
           name: '新客户量',
           type: 'line',
-          data: [7,9,8,16,10,12,9],
+          data: null,
           itemStyle: {
             normal: {
               borderColor: '#f8b755'
@@ -141,35 +118,97 @@
 
       }
     }),
-    methods: {
+    created: function () {
+      var that = this;
+      getTurnover({params:{days:7}}).then(res => {
+        console.log(res);
+        var weeks = [];
+        var turnoverCounts = [];
+        var turnover = [];
 
+        for(let i=res.length-1; i>=0; i--){
+          let t = res[i].finishDayTime;
+          let count = res[i].turnoverCount;
+          let obj = {};
+          let week = that.formatDate(t).week;
+          obj['date'] = that.formatDate(t).date;
+          obj['count'] = count;
+          console.log(week);
+          console.log(obj);
+
+          weeks.push(week);
+          turnoverCounts.push(count);
+          turnover.push(obj);
+        }
+        that.line.xAxis.data = weeks;
+        that.line.series[0].data = turnoverCounts;
+        that.turnover = turnover;
+      })
+    },
+    methods: {
+      formatDate: function (t) {
+        var date=new Date(t);
+        var year=date.getFullYear();
+        var month=date.getMonth()+1;
+        var day=date.getDate();
+        var week = "";
+        month = month < 10? '0'+month : month;
+        day = day < 10? '0'+day : day;
+        switch (date.getDay()) {
+          case 0:
+            week="周日";
+            break;
+          case 1:
+            week="周一";
+            break;
+          case 2:
+            week="周二";
+            break;
+          case 3:
+            week="周三";
+            break;
+          case 4:
+            week="周四";
+            break;
+          case 5:
+            week="周五";
+            break;
+          case 6:
+            week="周六";
+            break;
+        }
+
+        return {
+          date: year + '/' + month + '/' + day,
+          week: week
+        }
+      }
     }
+
   }
 </script>
 <style scoped>
   #business{
     min-height: 100%;
     background-color: #f2f2f2;
-    overflow: hidden;
   }
   .business-header{
     width: 100%;
     position: fixed;
+    z-index: 999;
   }
   .business-content{
     padding: 12vw 0 0;
-    overflow: hidden;
   }
   .chart{
     width: 100%;
     height: 54vw;
     background-color: #fff;
+    margin: 0 0 2.66vw;
   }
   .chart-info{
     width: 100vw;
     height: 104vw;
-    position: absolute;
-    bottom: 0;
     overflow: hidden;
     background-color: #fff;
   }
