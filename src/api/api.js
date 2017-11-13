@@ -188,3 +188,16 @@ export const uploadFiles = params => {
     return ajax.post('commons/upload' + params.path, params);
 };
 
+
+//新客户趋势图
+export const getNewCustomerTendency = params => {
+  return ajax.get('seller/analysis/newCustomer', params);
+};
+//订单量趋势图
+export const getOrderQuantity = params => {
+  return ajax.get('seller/analysis/orderQuantity', params);
+};
+//订单量趋势图
+export const getTurnover = params => {
+  return ajax.get('seller/analysis/turnover', params);
+};

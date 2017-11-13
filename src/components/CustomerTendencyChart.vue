@@ -19,33 +19,9 @@
         </div>
         <table class="date-num">
           <tbody>
-            <tr>
-              <td>2017/11/06</td>
-              <td>5</td>
-            </tr>
-            <tr>
-              <td>2017/11/06</td>
-              <td>5</td>
-            </tr>
-            <tr>
-              <td>2017/11/06</td>
-              <td>5</td>
-            </tr>
-            <tr>
-              <td>2017/11/06</td>
-              <td>5</td>
-            </tr>
-            <tr>
-              <td>2017/11/06</td>
-              <td>5</td>
-            </tr>
-            <tr>
-              <td>2017/11/06</td>
-              <td>5</td>
-            </tr>
-            <tr>
-              <td>2017/11/06</td>
-              <td>5</td>
+            <tr v-for="(item,index) in customers">
+              <td>{{item.date}}</td>
+              <td>{{item.count}}</td>
             </tr>
           </tbody>
 
@@ -60,105 +36,168 @@
   </div>
 </template>
 <script>
-import IEcharts from 'vue-echarts-v3/src/full.vue';
-export default {
-  name: 'customerTendency',
-  components: {
-    IEcharts
-  },
-  props: {
+  import {getNewCustomerTendency} from '@/api/api';
+  import IEcharts from 'vue-echarts-v3/src/full.vue';
+  export default {
+    name: 'customerTendency',
+    components: {
+      IEcharts
+    },
+    props: {
 
-  },
-  data: () => ({
-    loading: true,
-    line: {
-      tooltip: {
-        trigger: 'axis'
-      },
-      xAxis: {
-        type: 'category',
-        boundaryGap: false,
-        axisLine: {
-          lineStyle: {
+    },
+    data: () => ({
+      customers: null,
+      line: {
+        tooltip: {
+          trigger: 'axis'
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          axisLine: {
+            lineStyle: {
+              color: '#999'
+            }
+          },
+          splitLine:{
+            show: true
+          },
+          axisLabel: {
             color: '#999'
+          },
+
+          data: null
+        },
+        yAxis: {
+          type: 'value',
+          axisLine: {
+            lineStyle: {
+              color: '#999'
+            }
+          },
+          splitLine:{
+            show:false
+          },
+          axisLabel: {
+            formatter: '{value}',
+            color: '#999'
+
           }
         },
-        splitLine:{
-          show: true
-        },
-        axisLabel: {
-          color: '#999'
-        },
-
-        data: ['周一','周二','周三','周四','周五','周六','周日']
-      },
-      yAxis: {
-        type: 'value',
-        axisLine: {
+        series: [{
+          name: '新客户量',
+          type: 'line',
+          data: null,
+          itemStyle: {
+            normal: {
+              borderColor: '#f7bdbd'
+            }
+          },
           lineStyle: {
-            color: '#999'
+            normal: {
+              color: '#f47475'
+            }
+          },
+          label: {
+            normal: {
+              color: '#999',
+
+            }
           }
-        },
-        splitLine:{
-          show:false
-        },
-        axisLabel: {
-          formatter: '{value}',
-          color: '#999'
+        }],
+        grid: {
+          show: true,
+          left: '10%',
+          right: '10%',
+          top: '10%',
+          bottom: '10%',
+          containLabel: true
 
         }
-      },
-      series: [{
-        name: '新客户量',
-        type: 'line',
-        data: [7,9,8,16,10,12,9],
-        itemStyle: {
-          normal: {
-            borderColor: '#f7bdbd'
-          }
-        },
-        lineStyle: {
-          normal: {
-            color: '#f47475'
-          }
-        },
-        label: {
-          normal: {
-            color: '#999',
-
-          }
-        }
-      }],
-      grid: {
-        show: true,
-        left: '10%',
-        right: '10%',
-        top: '10%',
-        bottom: '10%',
-        containLabel: true
 
       }
+    }),
+    created: function () {
+      var that = this;
+      getNewCustomerTendency({params:{days:7}}).then(res => {
+        console.log(res);
+        var weeks = [];
+        var customerCounts = [];
+        var customers = [];
 
+        for(let i=res.length-1; i>=0; i--){
+          let t = res[i].finishDayTime;
+          let count = res[i].newCustomerCount;
+          let obj = {};
+          let week = that.formatDate(t).week;
+          obj['date'] = that.formatDate(t).date;
+          obj['count'] = count;
+          console.log(week);
+          console.log(obj);
+
+          weeks.push(week);
+          customerCounts.push(count);
+          customers.push(obj);
+        }
+        that.line.xAxis.data = weeks;
+        that.line.series[0].data = customerCounts;
+        that.customers = customers;
+      })
+    },
+    methods: {
+      formatDate: function (t) {
+        var date=new Date(t);
+        var year=date.getFullYear();
+        var month=date.getMonth()+1;
+        var day=date.getDate();
+        var week = "";
+        month = month < 10? '0'+month : month;
+        day = day < 10? '0'+day : day;
+        switch (date.getDay()) {
+          case 0:
+            week="周日";
+            break;
+          case 1:
+            week="周一";
+            break;
+          case 2:
+            week="周二";
+            break;
+          case 3:
+            week="周三";
+            break;
+          case 4:
+            week="周四";
+            break;
+          case 5:
+            week="周五";
+            break;
+          case 6:
+            week="周六";
+            break;
+        }
+
+        return {
+          date: year + '/' + month + '/' + day,
+          week: week
+        }
+      }
     }
-  }),
-  methods: {
-
   }
-}
 </script>
 <style scoped>
   #customer{
     min-height: 100%;
     background-color: #f2f2f2;
-    overflow: hidden;
   }
   .customer-header{
     width: 100%;
     position: fixed;
+    z-index: 999;
   }
   .customer-content{
     padding: 12vw 0 0;
-    overflow: hidden;
   }
   .chart{
     width: 100%;
@@ -167,12 +206,11 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 0 0 2.66vw;
   }
   .chart-info{
     width: 100vw;
     height: 104vw;
-    position: absolute;
-    bottom: 0;
     overflow: hidden;
     background-color: #fff;
   }
