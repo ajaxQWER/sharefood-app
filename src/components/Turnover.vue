@@ -20,8 +20,8 @@
         <table class="date-num">
           <tbody>
             <tr v-for="(item,index) in turnover">
-              <td>{{item.date}}</td>
-              <td>{{item.count}}</td>
+              <td>{{moment(item.finishDayTime).format('YYYY/MM/DD')}}</td>
+              <td>{{item.turnoverCount}}</td>
             </tr>
           </tbody>
 
@@ -48,6 +48,7 @@
     },
     data: () => ({
       turnover: null,
+      loading: true,
       line: {
         tooltip: {
           trigger: 'axis'
@@ -113,74 +114,51 @@
           top: '10%',
           bottom: '10%',
           containLabel: true
-
-        }
+        },
 
       }
     }),
     created: function () {
       var that = this;
+      that.$indicator.open();
       getTurnover({params:{days:7}}).then(res => {
         console.log(res);
+        that.$indicator.close();
         var weeks = [];
         var turnoverCounts = [];
-        var turnover = [];
 
         for(let i=res.length-1; i>=0; i--){
           let t = res[i].finishDayTime;
           let count = res[i].turnoverCount;
-          let obj = {};
-          let week = that.formatDate(t).week;
-          obj['date'] = that.formatDate(t).date;
-          obj['count'] = count;
+          let week = that.formatDate(t);
           console.log(week);
-          console.log(obj);
 
           weeks.push(week);
           turnoverCounts.push(count);
-          turnover.push(obj);
         }
         that.line.xAxis.data = weeks;
         that.line.series[0].data = turnoverCounts;
-        that.turnover = turnover;
+        that.loading = false;
+        that.turnover = res.reverse();
       })
     },
     methods: {
       formatDate: function (t) {
-        var date=new Date(t);
-        var year=date.getFullYear();
-        var month=date.getMonth()+1;
-        var day=date.getDate();
-        var week = "";
-        month = month < 10? '0'+month : month;
-        day = day < 10? '0'+day : day;
-        switch (date.getDay()) {
+        switch (this.moment(t).day()) {
           case 0:
-            week="周日";
-            break;
+            return "周日";
           case 1:
-            week="周一";
-            break;
+            return "周一";
           case 2:
-            week="周二";
-            break;
+            return "周二";
           case 3:
-            week="周三";
-            break;
+            return "周三";
           case 4:
-            week="周四";
-            break;
+            return "周四";
           case 5:
-            week="周五";
-            break;
+            return "周五";
           case 6:
-            week="周六";
-            break;
-        }
-
-        return {
-          date: year + '/' + month + '/' + day,
-          week: week
+            return "周六";
         }
       }
     }
