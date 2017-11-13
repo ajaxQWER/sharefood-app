@@ -82,7 +82,7 @@
   }
 
   .column-item {
-    margin: 0 2vw 0 0;
+    margin: 0 1.33vw 0 0;
   }
 
   .column-item img {
