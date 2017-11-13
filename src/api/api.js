@@ -190,10 +190,13 @@ export const getOrderQuantity = params => {
 export const getTurnover = params => {
   return ajax.get('seller/analysis/turnover', params);
 };
-
 //销售量趋势图
 export const getSalesTendency = params => {
   return ajax.get('seller/analysis/goodsSales', params);
+};
+//销售量排行
+export const getSalesRank = params => {
+  return ajax.get('seller/analysis/salesRank', params);
 };
 
 

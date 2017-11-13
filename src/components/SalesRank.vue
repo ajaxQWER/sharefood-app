@@ -7,7 +7,7 @@
 			</div>
 		</div>
 		<div class="business-content">
-			<div class="search-content">日期<span @click="focus">{{dateNow}}</span></div>
+			<div class="search-content">日期<span @click="showDatePicker">{{dateNow}}</span></div>
 			<div class="chart-info">
 				<div class="table-title">
 					<div class="column flex">
@@ -15,54 +15,32 @@
 						<div class="column-item flex-1">销售量</div>
 					</div>
 				</div>
-				<table class="date-num">
+				<div v-if="isEmpty" class="empty">
+					<img src="../assets/images/empty-img.png" alt="">
+				</div>
+				<table class="date-num" v-else>
 					<tbody>
-						<tr>
-							<td>鲜锅兔</td>
-							<td>93</td>
-						</tr>
-						<tr>
-							<td>玉米嫩兔</td>
-							<td>80</td>
-						</tr>
-						<tr>
-							<td>嫩牛蛙</td>
-							<td>70</td>
-						</tr>
-						<tr>
-							<td>水煮肉片</td>
-							<td>56</td>
-						</tr>
-						<tr>
-							<td>拌白肉</td>
-							<td>43</td>
-						</tr>
-						<tr>
-							<td>芋儿鸡</td>
-							<td>20</td>
-						</tr>
-						<tr>
-							<td>青椒肉丝</td>
-							<td>6</td>
+						<tr v-for="(item,index) in rankData" :key="index">
+							<td>{{item.goodsName}}</td>
+							<td>{{item.salesCount}}</td>
 						</tr>
 					</tbody>
 				</table>
-			</div>
-			<div v-if="isEmpty" class="empty">
-				<img src="../assets/images/empty-img.png" alt="">
 			</div>
 		</div>
 		<mt-datetime-picker ref="time" type="date" @confirm="handleChange" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
 	</div>
 </template>
 <script>
+	import {getSalesRank} from '@/api/api'
 	export default {
 		name: 'salesRank',
 		data: function (){
 			return {
-				dateNow: this.moment(Date.now()).format('YYYY-MM-DD'),
+				dateNow: '',
 				startDate: '',
 				endDate: '',
+				rankData: [],
 				isEmpty: false
 			}
 		},
@@ -73,15 +51,28 @@
 			var thisEndDate = thisYear + '-12-31';
 			this.startDate = new Date(thisStartDate);
 			this.endDate = new Date(thisEndDate);
+			this.dateNow = this.moment(Date.now()).format('YYYY-MM-DD');
+			this.fetchData()
 		},
 		methods: {
-			handleChange: function(value){
-				console.log(value)
-				this.dateNow = this.moment(value).format('YYYY-MM-DD')
-				//TODO
-				//fetch data
+			fetchData: function(){
+				this.$indicator.open();
+				getSalesRank({params: {quertDate: this.dateNow}}).then(res => {
+					console.log(res)
+					if(res.length){
+						this.rankData = res;
+						this.isEmpty = false;
+					}else{
+						this.isEmpty = true;
+					}
+					this.$indicator.close();
+				})
 			},
-			focus: function(){
+			handleChange: function(value){
+				this.dateNow = this.moment(value).format('YYYY-MM-DD')
+				this.fetchData()
+			},
+			showDatePicker: function(){
 				this.$refs.time.open()
 			}
 		}
