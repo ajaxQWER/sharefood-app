@@ -114,7 +114,7 @@
           data: [7,9,8,16,10,12,9],
           itemStyle: {
             normal: {
-              borderColor: '#f8bc61'
+              borderColor: '#f8b755'
             }
           },
           lineStyle: {

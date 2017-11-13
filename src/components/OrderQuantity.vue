@@ -119,7 +119,7 @@
           },
           lineStyle: {
             normal: {
-              color: '#c5f3d6'
+              color: '#4ddb80'
             }
           },
           label: {
