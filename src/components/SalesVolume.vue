@@ -7,6 +7,7 @@
 			</div>
 		</div>
 		<div class="business-content">
+			<div class="search-content">商品名称<span @click="focus">请输入相关商品</span></div>
 			<div class="chart"></div>
 			<div class="chart-info">
 				<div class="table-title">
@@ -53,7 +54,17 @@
 	</div>
 </template>
 <script>
-	
+	export default {
+		name: 'salesVolume',
+		data: function(){
+			return {}
+		},
+		methods: {
+			focus: function(){
+				this.$router.push('/salesTendency')
+			}
+		}
+	}
 </script>
 <style scoped>
 #business{
@@ -115,5 +126,25 @@ tr td:last-child{
 	font-size: 4.26vw;
 	color: #777;
 	padding: 2.67vw 0 0 4.67vw;
+}
+.search-content{
+	padding: 2vw 4vw;
+	color: #4d4d4d;
+	background-color: #fff;
+	font-size: 4.26vw;
+}
+.search-content span{
+	display: inline-block;
+	height: 6.66vw;
+	line-height: 6.66vw;
+	width: 66.66vw;
+	border-radius: 5px;
+	outline: none;
+	border: 0.13vw solid #999;
+	text-align: center;
+	font-size: 3.46vw;
+	color: #999;
+	margin: 0 2vw;
+    vertical-align: middle;
 }
 </style>

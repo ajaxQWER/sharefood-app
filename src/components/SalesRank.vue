@@ -7,9 +7,7 @@
 			</div>
 		</div>
 		<div class="business-content">
-			<div class="search-content">
-				<p>日期<span @click="focus">{{dateNow}}</span></p>
-			</div>
+			<div class="search-content">日期<span @click="focus">{{dateNow}}</span></div>
 			<div class="chart-info">
 				<div class="table-title">
 					<div class="column flex">
