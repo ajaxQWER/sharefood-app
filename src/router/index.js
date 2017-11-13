@@ -24,6 +24,7 @@ import OrderQuantity from '@/components/OrderQuantity.vue'  //订单量趋势图
 import Turnover from '@/components/Turnover.vue'  //营业额趋势图
 import SalesVolume from '@/components/SalesVolume.vue'  //销售量
 import SalesRank from '@/components/SalesRank.vue'  //销售量
+import AddActivity from '@/components/AddActivity.vue'  //销售量
 let routes = [{
     path: '/login',
     component: Login,
@@ -124,6 +125,10 @@ let routes = [{
     path: '/salesRank',
     component: SalesRank,
     name: 'salesRank'
+},{
+  path: '/activity',
+  component: AddActivity,
+  name: 'activity'
 }];
 
 export default routes;

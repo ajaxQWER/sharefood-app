@@ -61,12 +61,12 @@
 			    		<div class="column-name">门店信息</div>
 			    	</div>
 			    </router-link>
-		    	<!-- <router-link to="/activity" class="link"> -->
+		    	 <router-link to="/activity" class="link">
 			    	<div class="column-item flex-1">
 			    		<img src="../assets/images/shop-item6.png" alt="">
 			    		<div class="column-name">活动</div>
 			    	</div>
-			    <!-- </router-link> -->
+			     </router-link>
 		    </div>
 		    <div class="column flex">
 		    	<router-link to="/goodsCategory" class="link">
