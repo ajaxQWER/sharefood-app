@@ -139,7 +139,9 @@ export default {
 			_this.$indicator.open();
 			getSalesTendency({params: {days: 7, goodsId: _this.goodsId}}).then(res => {
 				console.log(res)
-				res.forEach((item) => {
+				res.sort((a,b) => {
+					return a.finishDayTime - b.finishDayTime;
+				}).forEach((item) => {
 					_this.line.xAxis.data.push(_this.moment(item.finishDayTime).format('MM-DD'));
 					_this.line.series[0].data.push(item.goodsSaleCount);
 					_this.loading = false;
