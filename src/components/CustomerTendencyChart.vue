@@ -8,7 +8,7 @@
     </div>
     <div class="customer-content">
       <div class="chart">
-        <IEcharts :option="line"></IEcharts>
+        <IEcharts :option="line" :loading="loading"></IEcharts>
       </div>
       <div class="chart-info">
         <div class="table-title">
@@ -170,11 +170,9 @@
   }
   .customer-header{
     width: 100%;
-    position: fixed;
-    z-index: 999;
   }
   .customer-content{
-    padding: 12vw 0 0;
+    padding: 0;
   }
   .chart{
     width: 100%;
