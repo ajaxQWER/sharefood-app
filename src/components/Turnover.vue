@@ -138,7 +138,7 @@
         that.line.xAxis.data = weeks;
         that.line.series[0].data = turnoverCounts;
         that.loading = false;
-        that.turnover = res.reverse();
+        that.turnover = res;
       })
     },
     methods: {

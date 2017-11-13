@@ -138,7 +138,7 @@
         that.line.xAxis.data = weeks;
         that.line.series[0].data = orderCounts;
         that.loading = false;
-        that.orders = res.reverse();
+        that.orders = res;
       })
     },
     methods: {

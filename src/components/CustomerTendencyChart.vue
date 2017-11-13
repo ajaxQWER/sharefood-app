@@ -138,7 +138,7 @@
         that.line.xAxis.data = weeks;
         that.line.series[0].data = customerCounts;
         that.loading = false,
-        that.customers = res.reverse();
+        that.customers = res;
       })
     },
     methods: {
