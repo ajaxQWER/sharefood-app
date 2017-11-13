@@ -62,7 +62,7 @@
 <script>
   import IEcharts from 'vue-echarts-v3/src/full.vue';
   export default {
-    name: 'businessVolume',
+    name: 'turnover',
     components: {
       IEcharts
     },
