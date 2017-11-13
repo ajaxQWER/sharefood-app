@@ -21,7 +21,7 @@
           <tbody>
             <tr v-for="(item,index) in turnover">
               <td>{{moment(item.finishDayTime).format('YYYY/MM/DD')}}</td>
-              <td>{{item.turnoverCount}}</td>
+              <td>{{formatMoney(item.turnoverCount)}}</td>
             </tr>
           </tbody>
 
@@ -129,12 +129,11 @@
 
         for(let i=res.length-1; i>=0; i--){
           let t = res[i].finishDayTime;
-          let count = res[i].turnoverCount;
+          let turnoverCount = that.formatMoney(res[i].turnoverCount);
           let week = that.formatDate(t);
-          console.log(week);
-
           weeks.push(week);
-          turnoverCounts.push(count);
+          turnoverCounts.push(turnoverCount);
+          console.log(turnoverCount);
         }
         that.line.xAxis.data = weeks;
         that.line.series[0].data = turnoverCounts;
@@ -160,6 +159,16 @@
           case 6:
             return "周六";
         }
+      },
+      formatMoney: function(money){
+        money = parseFloat((money + "").replace(/[^\d\.-]/g, "")).toFixed(2) + "";
+        var l = money.split(".")[0].split("").reverse();
+        var r = money.split(".")[1];
+        var t = "";
+        for(var i = 0; i < l.length; i ++ ) {
+          t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+        }
+        return t.split("").reverse().join("") + "." + r;
       }
     }
 
