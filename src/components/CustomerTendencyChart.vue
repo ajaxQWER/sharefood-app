@@ -7,7 +7,9 @@
       </div>
     </div>
     <div class="customer-content">
-      <div class="chart"></div>
+      <div class="chart">
+        <IEcharts :option="line"></IEcharts>
+      </div>
       <div class="chart-info">
         <div class="table-title">
           <div class="column flex">
@@ -57,6 +59,93 @@
     </div>
   </div>
 </template>
+<script>
+import IEcharts from 'vue-echarts-v3/src/full.vue';
+export default {
+  name: 'customerTendency',
+  components: {
+    IEcharts
+  },
+  props: {
+
+  },
+  data: () => ({
+    loading: true,
+    line: {
+      tooltip: {
+        trigger: 'axis'
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        axisLine: {
+          lineStyle: {
+            color: '#999'
+          }
+        },
+        splitLine:{
+          show: true
+        },
+        axisLabel: {
+          color: '#999'
+        },
+
+        data: ['周一','周二','周三','周四','周五','周六','周日']
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: {
+          lineStyle: {
+            color: '#999'
+          }
+        },
+        splitLine:{
+          show:false
+        },
+        axisLabel: {
+          formatter: '{value}',
+          color: '#999'
+
+        }
+      },
+      series: [{
+        name: '新客户量',
+        type: 'line',
+        data: [7,9,8,16,10,12,9],
+        itemStyle: {
+          normal: {
+            borderColor: '#f7bdbd'
+          }
+        },
+        lineStyle: {
+          normal: {
+            color: '#f47475'
+          }
+        },
+        label: {
+          normal: {
+            color: '#999',
+
+          }
+        }
+      }],
+      grid: {
+        show: true,
+        left: '10%',
+        right: '10%',
+        top: '10%',
+        bottom: '10%',
+        containLabel: true
+
+      }
+
+    }
+  }),
+  methods: {
+
+  }
+}
+</script>
 <style scoped>
   #customer{
     min-height: 100%;
@@ -75,6 +164,9 @@
     width: 100%;
     height: 54vw;
     background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   .chart-info{
     width: 100vw;
@@ -96,7 +188,7 @@
   .column-item{
     line-height: 12vw;
     font-size: 4.26vw;
-    color: #777;
+    color: #999;
   }
   .date-num{
     width: 100%;
@@ -105,7 +197,7 @@
     line-height: 7.33vw;
     text-align: center;
     font-size: 4.26vw;
-    color: #777;
+    color: #999;
   }
   tr td{
     width: 50%;

@@ -19,7 +19,7 @@
 							<img src="../assets/images/order.png" alt="">
 						</div>
 					</router-link>
-					<router-link to="/businessVolume" class="link">
+					<router-link to="/turnover" class="link">
 						<div class="column-item flex-1">
 							<img src="../assets/images/business-volume.png" alt="">
 						</div>
@@ -43,7 +43,7 @@
 	</div>
 </template>
 <script>
-	
+
 </script>
 <style scoped>
 #analysis {

@@ -21,7 +21,7 @@ import GoodsCategoryList from '@/components/GoodsCategoryList.vue' //选择商�
 import BusinessAnalyze from '@/components/BusinessAnalysis.vue'  //营业分析
 import CustomerTendency from '@/components/CustomerTendencyChart.vue'  //新客户趋势图
 import OrderQuantity from '@/components/OrderQuantity.vue'  //订单量趋势图
-import BusinessVolume from '@/components/BusinessVolume.vue'  //营业额趋势图
+import Turnover from '@/components/Turnover.vue'  //营业额趋势图
 import SalesVolume from '@/components/SalesVolume.vue'  //销售量
 import SalesRank from '@/components/SalesRank.vue'  //销售量排行
 import SalesTendency from '@/components/SalesTendency.vue'  //销售量趋势图搜索
@@ -114,9 +114,9 @@ let routes = [{
     component: OrderQuantity,
     name: 'orderQuantity'
 },{
-    path: '/businessVolume',
-    component: BusinessVolume,
-    name: 'businessVolume'
+    path: '/turnover',
+    component: Turnover,
+    name: 'turnover'
 },{
     path: '/salesVolume',
     component: SalesVolume,

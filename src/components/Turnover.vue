@@ -1,12 +1,12 @@
 <template>
-  <div id="order">
-    <div class="order-header">
+  <div id="business">
+    <div class="business-header">
       <div class="nav-bar help-navbar">
         <div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
-        <div class="nav-title">订单量趋势图</div>
+        <div class="nav-title">营业额趋势图</div>
       </div>
     </div>
-    <div class="order-content">
+    <div class="business-content">
       <div class="chart">
         <IEcharts :option="line"></IEcharts>
       </div>
@@ -14,38 +14,38 @@
         <div class="table-title">
           <div class="column flex">
             <div class="column-item flex-1">日期</div>
-            <div class="column-item flex-1">订单量</div>
+            <div class="column-item flex-1">营业额</div>
           </div>
         </div>
         <table class="date-num">
           <tbody>
           <tr>
             <td>2017/11/06</td>
-            <td>5</td>
+            <td>186.00</td>
           </tr>
           <tr>
             <td>2017/11/06</td>
-            <td>5</td>
+            <td>389.00</td>
           </tr>
           <tr>
             <td>2017/11/06</td>
-            <td>5</td>
+            <td></td>
           </tr>
           <tr>
             <td>2017/11/06</td>
-            <td>5</td>
+            <td>568.00</td>
           </tr>
           <tr>
             <td>2017/11/06</td>
-            <td>5</td>
+            <td>186.00</td>
           </tr>
           <tr>
             <td>2017/11/06</td>
-            <td>5</td>
+            <td>389.00</td>
           </tr>
           <tr>
             <td>2017/11/06</td>
-            <td>5</td>
+            <td>2263.90</td>
           </tr>
           </tbody>
 
@@ -53,7 +53,7 @@
         <div class="tip">
           Tips:
           <br>
-          订单量：只统计已完成的订单数量
+          营业额：只统计已完成的订单的订单金额
         </div>
       </div>
     </div>
@@ -62,7 +62,7 @@
 <script>
   import IEcharts from 'vue-echarts-v3/src/full.vue';
   export default {
-    name: 'orderQuantity',
+    name: 'turnover',
     components: {
       IEcharts
     },
@@ -114,12 +114,12 @@
           data: [7,9,8,16,10,12,9],
           itemStyle: {
             normal: {
-              borderColor: '#8bc876'
+              borderColor: '#f8b755'
             }
           },
           lineStyle: {
             normal: {
-              color: '#4ddb80'
+              color: '#f39800'
             }
           },
           label: {
@@ -147,16 +147,16 @@
   }
 </script>
 <style scoped>
-  #order{
+  #business{
     min-height: 100%;
     background-color: #f2f2f2;
     overflow: hidden;
   }
-  .order-header{
+  .business-header{
     width: 100%;
     position: fixed;
   }
-  .order-content{
+  .business-content{
     padding: 12vw 0 0;
     overflow: hidden;
   }
