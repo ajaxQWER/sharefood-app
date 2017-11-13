@@ -7,7 +7,9 @@
       </div>
     </div>
     <div class="order-content">
-      <div class="chart"></div>
+      <div class="chart">
+        <IEcharts :option="line"></IEcharts>
+      </div>
       <div class="chart-info">
         <div class="table-title">
           <div class="column flex">
@@ -57,6 +59,93 @@
     </div>
   </div>
 </template>
+<script>
+  import IEcharts from 'vue-echarts-v3/src/full.vue';
+  export default {
+    name: 'orderQuantity',
+    components: {
+      IEcharts
+    },
+    props: {
+
+    },
+    data: () => ({
+      loading: true,
+      line: {
+        tooltip: {
+          trigger: 'axis'
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          axisLine: {
+            lineStyle: {
+              color: '#999'
+            }
+          },
+          splitLine:{
+            show: true
+          },
+          axisLabel: {
+            color: '#999'
+          },
+
+          data: ['周一','周二','周三','周四','周五','周六','周日']
+        },
+        yAxis: {
+          type: 'value',
+          axisLine: {
+            lineStyle: {
+              color: '#999'
+            }
+          },
+          splitLine:{
+            show:false
+          },
+          axisLabel: {
+            formatter: '{value}',
+            color: '#999'
+
+          }
+        },
+        series: [{
+          name: '新客户量',
+          type: 'line',
+          data: [7,9,8,16,10,12,9],
+          itemStyle: {
+            normal: {
+              borderColor: '#8bc876'
+            }
+          },
+          lineStyle: {
+            normal: {
+              color: '#c5f3d6'
+            }
+          },
+          label: {
+            normal: {
+              color: '#999',
+
+            }
+          }
+        }],
+        grid: {
+          show: true,
+          left: '10%',
+          right: '10%',
+          top: '10%',
+          bottom: '10%',
+          containLabel: true
+
+        }
+
+      }
+    }),
+    methods: {
+
+    }
+  }
+</script>
 <style scoped>
   #order{
     min-height: 100%;
