@@ -130,8 +130,8 @@
         for(let i=res.length-1; i>=0; i--){
           let t = res[i].finishDayTime;
           let turnoverCount = that.formatMoney(res[i].turnoverCount);
-          let week = that.formatDate(t);
-          weeks.push(week);
+          let date = that.moment(t).format('MM-DD');
+          weeks.push(date);
           turnoverCounts.push(turnoverCount);
           console.log(turnoverCount);
         }

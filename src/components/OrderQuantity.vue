@@ -131,8 +131,8 @@
         for(let i=res.length-1; i>=0; i--){
           let t = res[i].finishDayTime;
           let count = res[i].orderQuantity;
-          let week = that.formatDate(t);
-          weeks.push(week);
+          let date = that.moment(t).format('MM-DD');
+          weeks.push(date);
           orderCounts.push(count);
         }
         that.line.xAxis.data = weeks;
