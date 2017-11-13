@@ -178,17 +178,6 @@ export const setBusinessPhoneNumber = phoneNumber => {
 
 
 
-//短信验证码
-export const getPhoneCode = phoneNumber => {
-    return ajax.post('commons/phoneCode/' + phoneNumber);
-};
-
-//文件上传 前台文件需要设置一个path属性
-export const uploadFiles = params => {
-    return ajax.post('commons/upload' + params.path, params);
-};
-
-
 //新客户趋势图
 export const getNewCustomerTendency = params => {
   return ajax.get('seller/analysis/newCustomer', params);
@@ -201,3 +190,16 @@ export const getOrderQuantity = params => {
 export const getTurnover = params => {
   return ajax.get('seller/analysis/turnover', params);
 };
+
+
+//短信验证码
+export const getPhoneCode = phoneNumber => {
+    return ajax.post('commons/phoneCode/' + phoneNumber);
+};
+
+//文件上传 前台文件需要设置一个path属性
+export const uploadFiles = params => {
+    return ajax.post('commons/upload' + params.path, params);
+};
+
+
