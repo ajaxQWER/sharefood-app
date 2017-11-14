@@ -3,7 +3,7 @@
     <div class="activity-header">
       <div class="nav-bar help-navbar">
         <div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
-        <div class="nav-title">其他</div>
+        <div class="nav-title">购满就送</div>
       </div>
     </div>
     <div class="activity-content">
@@ -19,9 +19,25 @@
           <div class="selectTime" @click="focus">{{endTime}}</div>
         </div>
         <div class="shopDetail-col">
-          <div class="row-title">活动名称</div>
+          <div class="row-title">最低金额</div>
           <div class="activity-name">
-            <input type="text" placeholder="最多40个字符">
+            <input type="number" placeholder="0.00">
+          </div>
+        </div>
+        <div class="shopDetail-col">
+          <div class="row-title">选择红包</div>
+          <div class="activity-name">
+            <select name="redPacket" id="">
+              <option value="0">2元红包(2017-01-01~2018-01-01)</option>
+              <option value="1">5元红包(2017-01-01~2018-01-01)</option>
+              <option value="2">10元红包(2017-01-01~2018-01-01)</option>
+            </select>
+          </div>
+        </div>
+        <div class="shopDetail-col">
+          <div class="row-title">红包数量</div>
+          <div class="activity-name">
+            <input type="number" placeholder="1">
           </div>
         </div>
       </div>
@@ -33,7 +49,7 @@
 </template>
 <script>
   export default {
-    name: 'elseActivity',
+    name: 'firstReduceActivity',
     data: function (){
       return {
         beginTime: this.moment(Date.now()).format('YYYY-MM-DD'),
@@ -128,6 +144,8 @@
     display: inline-block;
     height: 6.66vw;
     float: right;
+    border: 1px solid #f2f2f2;
+    border-radius: 3px;
   }
   .activity-name input{
     display: block;
@@ -136,10 +154,19 @@
     font-size: 3.72vw;
     text-align: right;
     padding-right: 2.66vw;
-    border: 1px solid #f2f2f2;
-    border-radius: 3px;
     outline: none;
+    border: none;
   }
+  .activity-name select{
+    display: block;
+    width: 67.2vw;
+    height: 6.67vw;
+    font-size: 3.72vw;
+    text-align: right;
+    padding: 0.1vw 2.67vw;
+    border: none;
+    outline: none;
+   }
   input::placeholder,input:-ms-input-placeholder,
   input:-moz-placeholder,input::-webkit-input-placeholder{
     color: #ccc;

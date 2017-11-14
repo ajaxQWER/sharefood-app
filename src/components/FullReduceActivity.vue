@@ -3,7 +3,7 @@
     <div class="activity-header">
       <div class="nav-bar help-navbar">
         <div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
-        <div class="nav-title">其他</div>
+        <div class="nav-title">购满就减</div>
       </div>
     </div>
     <div class="activity-content">
@@ -18,10 +18,81 @@
           <div class="row-value"></div>
           <div class="selectTime" @click="focus">{{endTime}}</div>
         </div>
+      </div>
+      <div class="shopDetail-row full">
         <div class="shopDetail-col">
-          <div class="row-title">活动名称</div>
-          <div class="activity-name">
-            <input type="text" placeholder="最多40个字符">
+          <div class="left">
+            <div class="row-title">购满</div>
+            <div class="activity-name">
+              <input type="number" placeholder="0.00">
+            </div>
+          </div>
+
+          <div class="right">
+            <div class="row-title">减</div>
+            <div class="activity-name">
+              <input type="number" placeholder="0.00">
+            </div>
+          </div>
+        </div>
+        <div class="shopDetail-col">
+          <div class="left">
+            <div class="row-title">购满</div>
+            <div class="activity-name">
+              <input type="number" placeholder="0.00">
+            </div>
+          </div>
+
+          <div class="right">
+            <div class="row-title">减</div>
+            <div class="activity-name">
+              <input type="number" placeholder="0.00">
+            </div>
+          </div>
+        </div>
+        <div class="shopDetail-col">
+          <div class="left">
+            <div class="row-title">购满</div>
+            <div class="activity-name">
+              <input type="number" placeholder="0.00">
+            </div>
+          </div>
+
+          <div class="right">
+            <div class="row-title">减</div>
+            <div class="activity-name">
+              <input type="number" placeholder="0.00">
+            </div>
+          </div>
+        </div>
+        <div class="shopDetail-col">
+          <div class="left">
+            <div class="row-title">购满</div>
+            <div class="activity-name">
+              <input type="number" placeholder="0.00">
+            </div>
+          </div>
+
+          <div class="right">
+            <div class="row-title">减</div>
+            <div class="activity-name">
+              <input type="number" placeholder="0.00">
+            </div>
+          </div>
+        </div>
+        <div class="shopDetail-col">
+          <div class="left">
+            <div class="row-title">购满</div>
+            <div class="activity-name">
+              <input type="number" placeholder="0.00">
+            </div>
+          </div>
+
+          <div class="right">
+            <div class="row-title">减</div>
+            <div class="activity-name">
+              <input type="number" placeholder="0.00">
+            </div>
           </div>
         </div>
       </div>
@@ -33,7 +104,7 @@
 </template>
 <script>
   export default {
-    name: 'elseActivity',
+    name: 'fullReduceActivity',
     data: function (){
       return {
         beginTime: this.moment(Date.now()).format('YYYY-MM-DD'),
@@ -86,8 +157,13 @@
     padding: 13.06vw 0 14.39vw;
   }
   .shopDetail-row{
-    margin-top: 2.66vw;
     background-color: #fff;
+  }
+  .shopDetail-row:first-child{
+    margin-top: 2.66vw;
+  }
+  .shopDetail-row.full{
+    border-top: 0.13vw solid #f2f2f2;
   }
   .shopDetail-col{
     padding: 2vw 2.66vw;
@@ -124,15 +200,30 @@
     float: right;
     margin: 0.8vw 0.4vw 0 0;
   }
+  .shopDetail-row.full .shopDetail-col{
+    border: none;
+    margin-top: 2.66vw;
+  }
+  .full .shopDetail-col .row-title{
+    line-height: 8.66vw;
+    margin-top: 0.1vw;
+  }
+  .left{
+    float: left;
+  }
+  .right{
+    float: left;
+    margin-left: 13.33vw;
+  }
   .activity-name{
     display: inline-block;
-    height: 6.66vw;
-    float: right;
+    float: left;
+    margin-left: 2.66vw;
   }
   .activity-name input{
     display: block;
-    width: 64.66vw;
-    height: 6vw;
+    width: 16.66vw;
+    height: 8.66vw;
     font-size: 3.72vw;
     text-align: right;
     padding-right: 2.66vw;

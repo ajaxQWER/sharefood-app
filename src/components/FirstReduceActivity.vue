@@ -3,7 +3,7 @@
     <div class="activity-header">
       <div class="nav-bar help-navbar">
         <div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
-        <div class="nav-title">其他</div>
+        <div class="nav-title">首单立减</div>
       </div>
     </div>
     <div class="activity-content">
@@ -19,9 +19,9 @@
           <div class="selectTime" @click="focus">{{endTime}}</div>
         </div>
         <div class="shopDetail-col">
-          <div class="row-title">活动名称</div>
+          <div class="row-title">立减金额</div>
           <div class="activity-name">
-            <input type="text" placeholder="最多40个字符">
+            <input type="number" placeholder="0.00">
           </div>
         </div>
       </div>
@@ -33,7 +33,7 @@
 </template>
 <script>
   export default {
-    name: 'elseActivity',
+    name: 'firstReduceActivity',
     data: function (){
       return {
         beginTime: this.moment(Date.now()).format('YYYY-MM-DD'),
