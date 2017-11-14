@@ -9,11 +9,11 @@
     <div class="addActivity-content">
       <div class="column-wrap">
         <div class="column flex">
-          <router-link to="/fullSendActivity" class="link">
-            <div class="column-item flex-1">
+          <!-- <router-link to="/fullSendActivity" class="link"> -->
+            <div class="column-item flex-1" @click="tips">
               <img src="../assets/images/full-send.png" alt="">
             </div>
-          </router-link>
+          <!-- </router-link> -->
           <router-link to="/firstReduceActivity" class="link">
             <div class="column-item flex-1">
               <img src="../assets/images/first-reduce.png" alt="">
@@ -27,12 +27,12 @@
         </div>
         <div class="column flex">
           <!--<router-link to="/salesVolume">-->
-            <div class="column-item flex-1">
+            <div class="column-item flex-1" @click="tips">
               <img src="../assets/images/bargain-goods.png" alt="">
             </div>
           <!--</router-link>-->
           <!--<router-link to="/salesRank">-->
-            <div class="column-item flex-1">
+            <div class="column-item flex-1" @click="tips">
               <img src="../assets/images/discount-goods.png" alt="">
             </div>
           <!--</router-link>-->
@@ -46,6 +46,22 @@
     </div>
   </div>
 </template>
+<script>
+  export default {
+    name: 'addActivity',
+    data: function(){
+      return {}
+    },
+    methods: {
+      tips: function(){
+        this.$toast({
+          message: '暂未开通',
+          duration: 1000
+        })
+      }
+    }
+  }
+</script>
 <style scoped>
   #addActivity {
     min-height: 100%;

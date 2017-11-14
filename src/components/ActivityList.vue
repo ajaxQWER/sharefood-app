@@ -15,10 +15,10 @@
 				<li v-for="(item,index) in activityLists" :key="index">
 					<div class="activity-content">
 						<div class="activity-info">
-							<div class="activity-title"><span class="activity-icon type-1">{{formatActivityIconByType(item.activityType)}}</span>{{item.activityName}}</div>
+							<div class="activity-title"><span :class="['activity-icon', formatClassByType(item.activityType)]">{{formatActivityIconByType(item.activityType)}}</span>{{item.activityName}}</div>
 							<div class="activity-type">{{formatActivityType(item.activityType)}}</div>
 						</div>
-						<div class="activity-deadline">有效期：{{moment(item.beginTime).format('YYYY-MM-DD')}}至{{moment(item.endTime).format('YYYY-MM-DD')}}</div>
+						<div class="activity-deadline">有效期：{{moment(item.beginTime).format('YYYY-MM-DD')}} 至 {{item.endTime?moment(item.endTime).format('YYYY-MM-DD'):'长期'}}</div>
 					</div>
 					<div class="activity-delete-btn" @click="deleteActivity(item.activityId)">删除</div>
 				</li>
@@ -93,6 +93,22 @@
 						return '折';
 					case 'SPECIFIC':
 						return '其';
+				}
+			},
+			formatClassByType: function(type){
+				switch (type) {
+					case 'FIRST':
+						return 'type-3';
+					case 'DELGOLD':
+						return 'type-2';
+					case 'COMPLIMENTARY':
+						return 'type-1';
+					case 'SPECIALPRICES':
+						return 'type-3';
+					case 'SALE':
+						return 'type-2';
+					case 'SPECIFIC':
+						return 'type-1';
 				}
 			}
 		}
