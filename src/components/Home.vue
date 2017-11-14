@@ -156,6 +156,7 @@ export default {
   text-align: center;
   line-height: 11.73vw;
   font-size: 4.8vw;
+  color: #fff;
 }
 
 .admin-info {
