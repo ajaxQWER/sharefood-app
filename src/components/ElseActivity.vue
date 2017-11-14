@@ -92,7 +92,7 @@
     background-color: #fff;
   }
   .shopDetail-col{
-    padding: 2.66vw;
+    padding: 2vw 2.66vw;
     overflow: hidden;
     zoom: 1;
     color: #4d4d4d;
@@ -104,6 +104,7 @@
     font-size: 4.26vw;
     display: inline-block;
     float: left;
+    line-height: 6.66vw;
   }
   .row-value{
     display: inline-block;
@@ -127,11 +128,23 @@
   }
   .activity-name{
     display: inline-block;
+    height: 6.66vw;
     float: right;
-    margin-top: 0.4vw;
   }
   .activity-name input{
-    width: 66.66vw;
+    display: block;
+    width: 64.66vw;
+    height: 6vw;
+    font-size: 3.72vw;
+    text-align: right;
+    padding-right: 2.66vw;
+    border: 1px solid #f2f2f2;
+    border-radius: 3px;
+    outline: none;
+  }
+  input::placeholder,input:-ms-input-placeholder,
+  input:-moz-placeholder,input::-webkit-input-placeholder{
+    color: #ccc;
   }
   .save{
     width: 100%;
