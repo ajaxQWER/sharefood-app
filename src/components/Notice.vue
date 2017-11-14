@@ -7,23 +7,26 @@
       </div>
     </div>
     <div class="notice-content">
-      <ul class="notice-lists" v-if="!isEmpty">
-        <li class="notice-item" v-for="(item,index) in noticeList" :key="index">
-          <div class="notice-info">
-            <div class="notice-icon">
-              <img src="../assets/images/notice.png" alt="">
+      <div v-if="!isEmpty">
+        <ul class="notice-lists">
+          <li class="notice-item" v-for="(item,index) in noticeList" :key="index">
+            <div class="notice-info">
+              <div class="notice-icon">
+                <img src="../assets/images/notice.png" alt="">
+              </div>
+              <div class="info">
+                <p class="name-time">
+                  <span class="name">{{item.title}}</span>
+                  <span class="time">{{moment(item.createTime).format('MM-DD hh:mm')}}</span>
+                </p>
+                <p class="desc">{{item.content}}</p>
+              </div>
             </div>
-            <div class="info">
-              <p class="name-time">
-                <span class="name">{{item.title}}</span>
-                <span class="time">{{moment(item.createTime).format('MM-DD hh:mm')}}</span>
-              </p>
-              <p class="desc">{{item.content}}</p>
-            </div>
-          </div>
-          <div class="delete-btn" @click="deleteNotice(item.noticeId)">删除</div>
-        </li>
-      </ul>
+            <div class="delete-btn" @click="deleteNotice(item.noticeId,index)">删除</div>
+          </li>
+        </ul>
+        <div v-show="canLoad" class="loadmore" @click="loadBottom">点击加载</div>
+      </div>
       <div v-else class="empty">
         <img src="../assets/images/empty-img.png" alt="">
       </div>
@@ -36,32 +39,61 @@
     name: 'notice',
     data: function(){
       return {
+        init: true,
+        allLoaded: false,
+        current: 1,
+        pageId: 1,
+        counts: 0,
+        canLoad: false,
         noticeList: null,
         isEmpty: false
       }
     },
     created: function(){
-      this.getNoticeList()
+      this.getNoticeList({pageId: this.pageId});
     },
     methods: {
-      getNoticeList: function(){
+      getNoticeList: function(notice){
         this.$indicator.open();
-        getNoticeLists({params:{pageSize:99999999}}).then(res=>{
+        getNoticeLists({params: {pageSize: 10, pageId: notice.pageId}}).then(res=>{
           console.log(res);
+          if(this.init){
+            this.noticeList = res.list;
+          }else{
+            this.noticeList = [].concat.apply(this.noticeList,res.list);
+          }
+          this.counts = res.count;
+          this.$indicator.close();
           if(res.count == 0){
+            this.allLoaded = true;
             this.isEmpty = true
           }else{
+            this.canLoad = true;
             this.isEmpty = false
           }
-          this.noticeList = res.list;
-          this.$indicator.close();
+
+          if(Math.ceil(this.counts / 10) == this.pageId){
+            this.allLoaded = true;
+            this.canLoad = false;
+            return;
+          }
         })
       },
-      deleteNotice: function(id){
+      loadBottom: function(){
+        this.allLoaded = false;
+        this.pageId += 1;
+        this.init = false;
+        this.getNoticeList({pageId: this.pageId})
+      },
+      deleteNotice: function(id,index){
         this.$messagebox.confirm('确定删除该通知?').then(action => {
-          deleteNoticeById(id).then(() => {
-            this.$toast({message:'删除成功',duration: 1000})
-            this.getNoticeList()
+          console.log(id,index);
+          deleteNoticeById(id,index).then(() => {
+            this.$toast({message:'删除成功',duration: 1000});
+            this.noticeList.splice(index,1);
+            if(this.noticeList.length == 0){
+              this.isEmpty = true;
+            }
           })
         }).catch(() => {
           this.$toast({message:'已取消',duration: 1000})
@@ -155,5 +187,9 @@
     line-height: 18vw;
     background-color: #ef4f4f;
     color: #fff;
+  }
+  .loadmore{
+    text-align: center;
+    padding: 2.66vw;
   }
 </style>

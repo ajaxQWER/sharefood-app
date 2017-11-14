@@ -87,7 +87,7 @@
           }
         },
         series: [{
-          name: '新客户量',
+          name: '',
           type: 'line',
           data: null,
           itemStyle: {
