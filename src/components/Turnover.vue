@@ -130,7 +130,7 @@
           return a.finishDayTime - b.finishDayTime;
         }).forEach((item) => {
           _this.line.xAxis.data.push(_this.moment(item.finishDayTime).format('MM-DD'));
-          _this.line.series[0].data.push(item.turnoverCount);
+          _this.line.series[0].data.push(_this.formatMoney(item.turnoverCount));
           _this.loading = false;
         })
         _this.turnover = res;
