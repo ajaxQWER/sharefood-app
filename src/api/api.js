@@ -222,6 +222,10 @@ export const getActivityLists = params => {
 export const deleteActivityById = activityId => {
     return ajax.delete('seller/activity/' + activityId);
 };
+//添加活动
+export const addActivity = params => {
+    return ajax.put('seller/activity', params);
+};
 
 //短信验证码
 export const getPhoneCode = phoneNumber => {

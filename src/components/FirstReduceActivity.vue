@@ -1,5 +1,5 @@
 <template>
-  <div id="activity">
+  <div id="firstActivity">
     <div class="activity-header">
       <div class="nav-bar help-navbar">
         <div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
@@ -10,36 +10,40 @@
       <div class="shopDetail-row">
         <div class="shopDetail-col">
           <div class="row-title">开始时间</div>
-          <div class="row-value"></div>
-          <div class="selectTime" @click="focus">{{beginTime}}</div>
+          <div class="selectTime" @click="selectBeginTime">
+            <div class="row-value">{{this.moment(beginTime).format('YYYY-MM-DD')}}</div>
+          </div>
         </div>
         <div class="shopDetail-col">
           <div class="row-title">结束时间</div>
-          <div class="row-value"></div>
-          <div class="selectTime" @click="focus1">{{endTime}}</div>
+          <div class="selectTime" @click="selectEndTime">
+            <div class="row-value">{{endTime?this.moment(endTime).format('YYYY-MM-DD'):''}}</div>
+          </div>
         </div>
         <div class="shopDetail-col">
           <div class="row-title">立减金额</div>
           <div class="activity-name">
-            <input type="number" placeholder="0.00">
+            <input type="number" placeholder="请输入立减金额" v-model="money">
           </div>
         </div>
       </div>
-      <button class="save">保存</button>
+      <button class="save" @click="saveActivity">保存</button>
     </div>
-    <mt-datetime-picker ref="start" type="date" @confirm="handleChange" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
-    <mt-datetime-picker ref="end" type="date" @confirm="handleChange1" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
+    <mt-datetime-picker ref="start" type="date" @confirm="setBeginTime" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
+    <mt-datetime-picker ref="end" type="date" @confirm="setEndTime" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
   </div>
 </template>
 <script>
+  import {addActivity} from '@/api/api'
   export default {
     name: 'firstReduceActivity',
     data: function (){
       return {
-        beginTime: this.moment(Date.now()).format('YYYY-MM-DD'),
-        endTime: '不限制',
+        beginTime: Date.now(),
+        endTime: '',
         startDate: '',
-        endDate: ''
+        endDate: '',
+        money: null
       }
     },
     created: function(){
@@ -51,29 +55,60 @@
       this.endDate = new Date(thisEndDate);
     },
     methods: {
-      handleChange: function(value){
-        console.log(value);
-        this.beginTime = this.moment(value).format('YYYY-MM-DD')
-        //TODO
-        //fetch data
+      setBeginTime: function(value){
+        this.beginTime = new Date(value).getTime()
       },
-      handleChange1: function(value){
-        console.log(value);
-        this.endTime = this.moment(value).format('YYYY-MM-DD')
-        //TODO
-        //fetch data
+      setEndTime: function(value){
+        this.endTime = new Date(value).getTime()
       },
-      focus: function(){
+      selectBeginTime: function(){
         this.$refs.start.open()
       },
-      focus1: function(){
+      selectEndTime: function(){
         this.$refs.end.open()
+      },
+      saveActivity: function(){
+        if(this.endTime && this.beginTime > this.endTime){
+            this.$toast({
+                message: '结束时间不能小于开始时间',
+                duration: 1500
+            })
+            return;
+        }
+        if(!this.money){
+            this.$toast({
+                message: '请输入立减金额',
+                duration: 1500
+            })
+            return;
+        }
+        var activityParams = {
+            activityContent: {
+                money: this.money
+            },
+            activityType: "FIRST",
+            beginTime: this.beginTime,
+            endTime: this.endTime,
+            isValid: true,
+        }
+        this.$indicator.open();
+        addActivity(activityParams).then(() => {
+            this.$indicator.close();
+            this.$toast({
+                message: '添加成功',
+                duration: 1000
+            })
+            setTimeout(() => {
+                this.$router.isBack = true;
+                this.$router.back()
+            }, 1500)
+        })
       }
     }
   }
 </script>
 <style scoped>
-  #activity{
+  #firstActivity{
     min-height: 100%;
     background-color: #f2f2f2;
   }
@@ -105,14 +140,19 @@
     font-size: 4.26vw;
     display: inline-block;
     float: left;
-    line-height: 6.66vw;
   }
   .row-value{
+    width: 21vw;
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 0.8vw;
+  }
+  .selectTime{
     display: inline-block;
     float: right;
-    margin-top: 0.4vw;
   }
-  .row-value:after{
+  .selectTime:after{
     content: '';
     display: inline-block;
     width: 2vw;
@@ -121,11 +161,6 @@
     background-size: contain;
     vertical-align: middle;
     margin-top: 0.8vw;
-  }
-  .selectTime{
-    display: inline-block;
-    float: right;
-    margin: 0.8vw 0.4vw 0 0;
   }
   .activity-name{
     display: inline-block;

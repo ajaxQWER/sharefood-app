@@ -1,12 +1,12 @@
 <template>
-  <div id="activity">
-    <div class="activity-header">
+  <div id="addActivity">
+    <div class="addActivity-header">
       <div class="nav-bar help-navbar">
         <div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
         <div class="nav-title">添加活动</div>
       </div>
     </div>
-    <div class="activity-content">
+    <div class="addActivity-content">
       <div class="column-wrap">
         <div class="column flex">
           <router-link to="/fullSendActivity" class="link">
@@ -47,16 +47,16 @@
   </div>
 </template>
 <style scoped>
-  #activity {
+  #addActivity {
     min-height: 100%;
     background-color: #f2f2f2;
   }
 
-  .activity-header {
+  .addActivity-header {
     width: 100%;
   }
 
-  .activity-content {
+  .addActivity-content {
     margin-top: 2.66vw;
     height: 69.33vw;
   }

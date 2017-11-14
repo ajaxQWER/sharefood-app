@@ -67,8 +67,7 @@ export default {
 		var _this = this;
   		if(this.sellerName.length == 11){
 			_this.isClickGetCode = true;
-  			getPhoneCode(this.sellerName).then(()=>{
-  			})
+  			getPhoneCode(this.sellerName).then(()=>{})
   		}else{
   			this.$toast({message:'请输入正确的手机号码',duration: 1000})
   			return;
