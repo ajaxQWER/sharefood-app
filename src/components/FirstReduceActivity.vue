@@ -18,8 +18,6 @@
           <div class="row-value"></div>
           <div class="selectTime" @click="focus">{{endTime}}</div>
         </div>
-      </div>
-      <div class="shopDetail-row">
         <div class="shopDetail-col">
           <div class="row-title">立减金额</div>
           <div class="activity-name">

@@ -9,21 +9,21 @@
     <div class="activity-content">
       <div class="column-wrap">
         <div class="column flex">
-          <!--<router-link to="/customerTendency" class="link">-->
+          <router-link to="/fullSendActivity" class="link">
             <div class="column-item flex-1">
               <img src="../assets/images/full-send.png" alt="">
             </div>
-          <!--</router-link>-->
+          </router-link>
           <router-link to="/firstReduceActivity" class="link">
             <div class="column-item flex-1">
               <img src="../assets/images/first-reduce.png" alt="">
             </div>
           </router-link>
-          <!--<router-link to="/turnover" class="link">-->
+          <router-link to="/fullReduceActivity" class="link">
             <div class="column-item flex-1">
               <img src="../assets/images/full-reduce.png" alt="">
             </div>
-          <!--</router-link>-->
+          </router-link>
         </div>
         <div class="column flex">
           <!--<router-link to="/salesVolume">-->

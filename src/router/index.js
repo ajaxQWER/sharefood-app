@@ -27,6 +27,8 @@ import SalesRank from '@/components/SalesRank.vue'  //销售量
 import AddActivity from '@/components/AddActivity.vue'  //活动
 import ElseActivity from '@/components/ElseActivity.vue'  //其他 活动
 import FirstReduceActivity from '@/components/FirstReduceActivity.vue'  //首单立减 活动
+import FullReduceActivity from '@/components/FullReduceActivity.vue'  //购满就减 活动
+import FullSendActivity from '@/components/FullSendActivity.vue'  //购满就送 活动
 let routes = [{
     path: '/login',
     component: Login,
@@ -139,6 +141,14 @@ let routes = [{
   path: '/firstReduceActivity',
   component: FirstReduceActivity,
   name: 'firstReduceActivity'
+},{
+  path: '/fullReduceActivity',
+  component: FullReduceActivity,
+  name: 'fullReduceActivity'
+},{
+  path: '/fullSendActivity',
+  component: FullSendActivity,
+  name: 'fullSendActivity'
 }];
 
 export default routes;
