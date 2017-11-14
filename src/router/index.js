@@ -25,7 +25,8 @@ import Turnover from '@/components/Turnover.vue'  //营业额趋势图
 import SalesVolume from '@/components/SalesVolume.vue'  //销售量
 import SalesRank from '@/components/SalesRank.vue'  //销售量
 import AddActivity from '@/components/AddActivity.vue'  //活动
-import ElseActivity from '@/components/ElseActivity.vue'  //其他活动
+import ElseActivity from '@/components/ElseActivity.vue'  //其他 活动
+import FirstReduceActivity from '@/components/FirstReduceActivity.vue'  //首单立减 活动
 let routes = [{
     path: '/login',
     component: Login,
@@ -134,6 +135,10 @@ let routes = [{
   path: '/elseActivity',
   component: ElseActivity,
   name: 'elseActivity'
+},{
+  path: '/firstReduceActivity',
+  component: FirstReduceActivity,
+  name: 'firstReduceActivity'
 }];
 
 export default routes;

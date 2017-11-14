@@ -14,11 +14,11 @@
               <img src="../assets/images/full-send.png" alt="">
             </div>
           <!--</router-link>-->
-          <!--<router-link to="/orderQuantity" class="link">-->
+          <router-link to="/firstReduceActivity" class="link">
             <div class="column-item flex-1">
               <img src="../assets/images/first-reduce.png" alt="">
             </div>
-          <!--</router-link>-->
+          </router-link>
           <!--<router-link to="/turnover" class="link">-->
             <div class="column-item flex-1">
               <img src="../assets/images/full-reduce.png" alt="">
