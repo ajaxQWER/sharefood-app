@@ -56,10 +56,10 @@
     },
     methods: {
       setBeginTime: function(value){
-        this.beginTime = new Date(value).getTime()
+        this.beginTime = new Date(value).getTime();
       },
       setEndTime: function(value){
-        this.endTime = new Date(value).getTime()
+        this.endTime = new Date(value).getTime();
       },
       selectBeginTime: function(){
         this.$refs.start.open()

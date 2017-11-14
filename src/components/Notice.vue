@@ -116,7 +116,7 @@
     padding: 12vw 0 0;
   }
   .notice-lists{
-    margin: 0 0 5.33vw;
+    margin: 0;
     padding: 0;
     list-style: none;
     background-color: #fff;

@@ -1,43 +1,46 @@
 <template>
-  <div id="activity">
-    <div class="activity-header">
+  <div id="otherActivity">
+    <div class="otherActivity-header">
       <div class="nav-bar help-navbar">
         <div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
         <div class="nav-title">其他</div>
       </div>
     </div>
-    <div class="activity-content">
+    <div class="otherActivity-content">
       <div class="shopDetail-row">
         <div class="shopDetail-col">
           <div class="row-title">开始时间</div>
-          <div class="row-value"></div>
-          <div class="selectTime" @click="focus">{{beginTime}}</div>
+          <div class="selectTime" @click="selectBeginTime">
+            <div class="row-value">{{this.moment(beginTime).format('YYYY-MM-DD')}}</div>
+          </div>
         </div>
         <div class="shopDetail-col">
           <div class="row-title">结束时间</div>
-          <div class="row-value"></div>
-          <div class="selectTime" @click="focus1">{{endTime}}</div>
+          <div class="selectTime" @click="selectEndTime">
+            <div class="row-value">{{endTime?this.moment(endTime).format('YYYY-MM-DD'):''}}</div>
+          </div>
         </div>
         <div class="shopDetail-col">
           <div class="row-title">活动名称</div>
-          <div class="activity-name">
-            <input type="text" placeholder="最多40个字符" v-model="activityName">
+          <div class="otherActivity-name">
+            <input type="text" placeholder="活动名称,最多10个字符" v-model="activityName" maxlength="10">
           </div>
         </div>
       </div>
       <button class="save" @click="save()">保存</button>
     </div>
-    <mt-datetime-picker ref="start" type="date" @confirm="handleChange" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
-    <mt-datetime-picker ref="end" type="date" @confirm="handleChange1" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
+    <mt-datetime-picker ref="start" type="date" @confirm="setBeginTime" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
+    <mt-datetime-picker ref="end" type="date" @confirm="setEndTime" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
   </div>
 </template>
 <script>
+  import {addActivity} from '@/api/api'
   export default {
     name: 'elseActivity',
     data: function (){
       return {
-        beginTime: this.moment(Date.now()).format('YYYY-MM-DD'),
-        endTime: '不限制',
+        beginTime: Date.now(),
+        endTime: '',
         startDate: '',
         endDate: '',
         activityName: ''
@@ -52,43 +55,68 @@
       this.endDate = new Date(thisEndDate);
     },
     methods: {
-      handleChange: function(value){
-        console.log(value);
-        this.beginTime = this.moment(value).format('YYYY-MM-DD')
-        //TODO
-        //fetch data
+      setBeginTime: function(value){
+        this.beginTime = new Date(value).getTime();
       },
-      handleChange1: function(value){
-        console.log(value);
-        this.endTime = this.moment(value).format('YYYY-MM-DD')
-        //TODO
-        //fetch data
+      setEndTime: function(value){
+        this.endTime = new Date(value).getTime();
       },
-      focus: function(){
+      selectBeginTime: function(){
         this.$refs.start.open()
       },
-      focus1: function(){
+      selectEndTime: function(){
         this.$refs.end.open()
       },
       save: function () {
-        console.log(this.moment(this.beginTime).format());
-        console.log(this.endTime);
-        console.log(this.activityName);
+        if(this.endTime && this.beginTime > this.endTime){
+            this.$toast({
+                message: '结束时间不能小于开始时间',
+                duration: 1500
+            })
+            return;
+        }
+        if(!this.activityName){
+            this.$toast({
+                message: '请输入活动名称',
+                duration: 1500
+            })
+            return;
+        }
+        var activityParams = {
+            activityContent: {
+                content: this.activityName
+            },
+            activityType: "SPECIFIC",
+            beginTime: this.beginTime,
+            endTime: this.endTime,
+            isValid: true,
+        }
+        this.$indicator.open();
+        addActivity(activityParams).then(() => {
+            this.$indicator.close();
+            this.$toast({
+                message: '添加成功',
+                duration: 1000
+            })
+            setTimeout(() => {
+                this.$router.isBack = true;
+                this.$router.back()
+            }, 1500)
+        })
       }
-
     }
   }
 </script>
 <style scoped>
-  #activity{
+  #otherActivity{
     min-height: 100%;
     background-color: #f2f2f2;
   }
-  .activity-header{
+  .otherActivity-header{
     width: 100%;
     position: fixed;
   }
-  .activity-content{
+  .otherActivity-content{
     box-sizing: border-box;
     height: 100vh;
     overflow: hidden;
@@ -112,14 +140,19 @@
     font-size: 4.26vw;
     display: inline-block;
     float: left;
-    line-height: 6.66vw;
   }
   .row-value{
+    width: 21vw;
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 0.8vw;
+  }
+  .selectTime{
     display: inline-block;
     float: right;
-    margin-top: 0.4vw;
   }
-  .row-value:after{
+  .selectTime:after{
     content: '';
     display: inline-block;
     width: 2vw;
@@ -129,17 +162,12 @@
     vertical-align: middle;
     margin-top: 0.8vw;
   }
-  .selectTime{
-    display: inline-block;
-    float: right;
-    margin: 0.8vw 0.4vw 0 0;
-  }
-  .activity-name{
+  .otherActivity-name{
     display: inline-block;
     height: 6.66vw;
     float: right;
   }
-  .activity-name input{
+  .otherActivity-name input{
     display: block;
     width: 64.66vw;
     height: 6vw;

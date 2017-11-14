@@ -1,5 +1,5 @@
 <template>
-  <div id="activity">
+  <div id="reduceActivity">
     <div class="activity-header">
       <div class="nav-bar help-navbar">
         <div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
@@ -10,107 +10,58 @@
       <div class="shopDetail-row">
         <div class="shopDetail-col">
           <div class="row-title">开始时间</div>
-          <div class="row-value"></div>
-          <div class="selectTime" @click="focus">{{beginTime}}</div>
+          <div class="selectTime" @click="selectBeginTime">
+            <div class="row-value">{{this.moment(beginTime).format('YYYY-MM-DD')}}</div>
+          </div>
         </div>
         <div class="shopDetail-col">
           <div class="row-title">结束时间</div>
-          <div class="row-value"></div>
-          <div class="selectTime" @click="focus1">{{endTime}}</div>
+          <div class="selectTime" @click="selectEndTime">
+            <div class="row-value">{{endTime?this.moment(endTime).format('YYYY-MM-DD'):''}}</div>
+          </div>
         </div>
       </div>
       <div class="shopDetail-row full">
-        <div class="shopDetail-col">
+        <p class="tips"><span>*</span>活动金额必须由小到大依次设置</p>
+        <div class="shopDetail-col" v-for="(item,index) in activityObj" :key="index">
           <div class="left">
             <div class="row-title">购满</div>
             <div class="activity-name">
-              <input type="number" placeholder="0.00">
+              <input type="number" placeholder="0.00" v-model="item.money">
             </div>
           </div>
-
           <div class="right">
             <div class="row-title">减</div>
             <div class="activity-name">
-              <input type="number" placeholder="0.00">
+              <input type="number" placeholder="0.00" v-model="item.reduceMoney">
             </div>
           </div>
-        </div>
-        <div class="shopDetail-col">
-          <div class="left">
-            <div class="row-title">购满</div>
-            <div class="activity-name">
-              <input type="number" placeholder="0.00">
-            </div>
-          </div>
-
-          <div class="right">
-            <div class="row-title">减</div>
-            <div class="activity-name">
-              <input type="number" placeholder="0.00">
-            </div>
-          </div>
-        </div>
-        <div class="shopDetail-col">
-          <div class="left">
-            <div class="row-title">购满</div>
-            <div class="activity-name">
-              <input type="number" placeholder="0.00">
-            </div>
-          </div>
-
-          <div class="right">
-            <div class="row-title">减</div>
-            <div class="activity-name">
-              <input type="number" placeholder="0.00">
-            </div>
-          </div>
-        </div>
-        <div class="shopDetail-col">
-          <div class="left">
-            <div class="row-title">购满</div>
-            <div class="activity-name">
-              <input type="number" placeholder="0.00">
-            </div>
-          </div>
-
-          <div class="right">
-            <div class="row-title">减</div>
-            <div class="activity-name">
-              <input type="number" placeholder="0.00">
-            </div>
-          </div>
-        </div>
-        <div class="shopDetail-col">
-          <div class="left">
-            <div class="row-title">购满</div>
-            <div class="activity-name">
-              <input type="number" placeholder="0.00">
-            </div>
-          </div>
-
-          <div class="right">
-            <div class="row-title">减</div>
-            <div class="activity-name">
-              <input type="number" placeholder="0.00">
-            </div>
+          <div class="operate">
+              <button class="btn add-btn" @click="addActivityItem">增加</button>
+              <button class="btn del-btn" @click="removeActivityItem(index)">删除</button>
           </div>
         </div>
       </div>
-      <button class="save">保存</button>
+      <button class="save" @click="saveActivity">保存</button>
     </div>
-    <mt-datetime-picker ref="start" type="date" @confirm="handleChange" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
-    <mt-datetime-picker ref="end" type="date" @confirm="handleChange1" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
+    <mt-datetime-picker ref="start" type="date" @confirm="setBeginTime" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
+    <mt-datetime-picker ref="end" type="date" @confirm="setEndTime" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
   </div>
 </template>
 <script>
+  import {addActivity} from '@/api/api'
   export default {
     name: 'fullReduceActivity',
     data: function (){
       return {
-        beginTime: this.moment(Date.now()).format('YYYY-MM-DD'),
-        endTime: '不限制',
+        beginTime: Date.now(),
+        endTime: '',
         startDate: '',
-        endDate: ''
+        endDate: '',
+        activityObj: [{
+            money: null,
+            reduceMoney: null
+        }]
       }
     },
     created: function(){
@@ -122,29 +73,72 @@
       this.endDate = new Date(thisEndDate);
     },
     methods: {
-      handleChange: function(value){
-        console.log(value);
-        this.beginTime = this.moment(value).format('YYYY-MM-DD')
-        //TODO
-        //fetch data
+      setBeginTime: function(value){
+        this.beginTime =new Date(value).getTime();
       },
-      handleChange1: function(value){
-        console.log(value);
-        this.endTime = this.moment(value).format('YYYY-MM-DD')
-        //TODO
-        //fetch data
+      setEndTime: function(value){
+        this.endTime =new Date(value).getTime();
       },
-      focus: function(){
+      selectBeginTime: function(){
         this.$refs.start.open()
       },
-      focus1: function(){
+      selectEndTime: function(){
         this.$refs.end.open()
+      },
+      addActivityItem: function(){
+        if(this.activityObj.length == 5){
+            this.$toast({
+              message: '最多添加5个活动',
+              duration: 1000
+            })
+            return;
+        }
+        this.activityObj.push({
+            money: null,
+            reduceMoney: null
+        })
+      },
+      removeActivityItem: function(index){
+        this.activityObj.splice(index, 1)
+      },
+      saveActivity: function(){
+        if(this.endTime && this.beginTime > this.endTime){
+            this.$toast({
+                message: '结束时间不能小于开始时间',
+                duration: 1500
+            })
+            return;
+        }
+        var activityContent = {};
+        this.activityObj.forEach((item,index) => {
+            activityContent['full'+(index+1)] = item.money
+            activityContent['subtract'+(index+1)] = item.reduceMoney
+        })
+        var activityParams = {
+            activityContent: activityContent,
+            activityType: "DELGOLD",
+            beginTime: this.beginTime,
+            endTime: this.endTime,
+            isValid: true,
+        }
+        this.$indicator.open();
+        addActivity(activityParams).then(() => {
+            this.$indicator.close();
+            this.$toast({
+                message: '添加成功',
+                duration: 1000
+            })
+            setTimeout(() => {
+                this.$router.isBack = true;
+                this.$router.back()
+            }, 1500)
+        })
       }
     }
   }
 </script>
 <style scoped>
-  #activity{
+  #reduceActivity{
     min-height: 100%;
     background-color: #f2f2f2;
   }
@@ -184,11 +178,17 @@
     line-height: 6.66vw;
   }
   .row-value{
+    width: 21vw;
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 0.8vw;
+  }
+  .selectTime{
     display: inline-block;
     float: right;
-    margin-top: 0.4vw;
   }
-  .row-value:after{
+  .selectTime:after{
     content: '';
     display: inline-block;
     width: 2vw;
@@ -197,11 +197,6 @@
     background-size: contain;
     vertical-align: middle;
     margin-top: 0.8vw;
-  }
-  .selectTime{
-    display: inline-block;
-    float: right;
-    margin: 0.8vw 0.4vw 0 0;
   }
   .shopDetail-row.full .shopDetail-col{
     border: none;
@@ -216,7 +211,7 @@
   }
   .right{
     float: left;
-    margin-left: 13.33vw;
+    margin-left: 4vw;
   }
   .activity-name{
     display: inline-block;
@@ -249,5 +244,35 @@
     bottom: 0;
     border: none;
     outline: none;
+  }
+  .tips{
+    padding: 0 2.66vw;
+  }
+  .tips span{
+    color: #ff0000;
+    margin-right: 1.33vw;
+  }
+  .operate{
+    float: left;
+    margin-left: 1.33vw;
+  }
+  .btn{
+    display: inline-block;
+    width: 14vw;
+    line-height: 8.66vw;
+    font-size: 3.72vw;
+    text-align: center;
+    margin: 0 0.33vw;
+    border: 0.13vw solid #f2f2f2;
+    border-radius: 3px;
+    outline: none;
+    border: none;
+    color: #fff;
+  }
+  .add-btn{
+    background-color: #0bb745;
+  }
+  .del-btn{
+    background-color: #ef4f4f;
   }
 </style>
