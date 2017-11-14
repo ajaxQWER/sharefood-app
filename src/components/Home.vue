@@ -211,8 +211,8 @@ export default {
 	width:1px;
 	position: absolute;
 	left: 0;
-    top: 50%;
-    margin-top: -5.33vw;
+  top: 50%;
+  margin-top: -5.33vw;
 	background-color: #b5b5b5;
 }
 .sales-title{

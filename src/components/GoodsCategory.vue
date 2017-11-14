@@ -104,7 +104,7 @@
 	margin: 5.33vw 0 5.33vw;
 	padding: 0;
 	list-style: none;
-	background-color:
+	background-color: #fff;
 }
 .category-item{
 	overflow: hidden;

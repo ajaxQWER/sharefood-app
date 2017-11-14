@@ -205,6 +205,15 @@ export const getSalesRank = params => {
 };
 
 
+//通知中心
+export const getNoticeLists = params => {
+  return ajax.get('seller/notice', params);
+};
+//删除某条通知
+export const deleteNoticeById = id => {
+  return ajax.delete('seller/notice/' + id);
+};
+
 //短信验证码
 export const getPhoneCode = phoneNumber => {
     return ajax.post('commons/phoneCode/' + phoneNumber);
