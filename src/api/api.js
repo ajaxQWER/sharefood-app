@@ -185,33 +185,42 @@ export const setBusinessPhoneNumber = phoneNumber => {
 
 //新客户趋势图
 export const getNewCustomerTendency = params => {
-  return ajax.get('seller/analysis/newCustomer', params);
+    return ajax.get('seller/analysis/newCustomer', params);
 };
 //订单量趋势图
 export const getOrderQuantity = params => {
-  return ajax.get('seller/analysis/orderQuantity', params);
+    return ajax.get('seller/analysis/orderQuantity', params);
 };
 //订单量趋势图
 export const getTurnover = params => {
-  return ajax.get('seller/analysis/turnover', params);
+    return ajax.get('seller/analysis/turnover', params);
 };
 //销售量趋势图
 export const getSalesTendency = params => {
-  return ajax.get('seller/analysis/goodsSales', params);
+    return ajax.get('seller/analysis/goodsSales', params);
 };
 //销售量排行
 export const getSalesRank = params => {
-  return ajax.get('seller/analysis/salesRank', params);
+    return ajax.get('seller/analysis/salesRank', params);
 };
 
 
 //通知中心
 export const getNoticeLists = params => {
-  return ajax.get('seller/notice', params);
+    return ajax.get('seller/notice', params);
 };
 //删除某条通知
 export const deleteNoticeById = id => {
-  return ajax.delete('seller/notice/' + id);
+    return ajax.delete('seller/notice/' + id);
+};
+
+//获取活动列表
+export const getActivityLists = params => {
+    return ajax.get('seller/activity', params);
+};
+//删除活动
+export const deleteActivityById = activityId => {
+    return ajax.delete('seller/activity/' + activityId);
 };
 
 //短信验证码

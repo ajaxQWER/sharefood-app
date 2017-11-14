@@ -191,22 +191,12 @@
 	        acceptOrder: function(orderId, orderType){
 	        	this.$messagebox.confirm('确定接单?').then(action => {
 	        		this.$indicator.open();
-	        		if(orderType == 'TAKEOUT'){
-	        			acceptOrderById(orderId).then(() => {
-	        				this.$toast({message:'操作成功',duration: 1000})
-	        				this.$indicator.close();
-	        				this.getOrders({pageId: this.pageId,orderStatus: this.orderStatus})
-	        			})
-	        		}else if(orderType == 'RESERVE'){
-	        			finishOrderById(orderId).then(() => {
-	        				this.$toast({message:'操作成功',duration: 1000})
-	        				this.$indicator.close();
-	        				this.getOrders({pageId: this.pageId,orderStatus: this.orderStatus})
-	        			})
-	        		}
-	        	}).catch(() => {
-	        		// this.$toast({message:'已取消',duration: 1000})
-	        	});
+        			acceptOrderById(orderId).then(() => {
+        				this.$toast({message:'操作成功',duration: 1000})
+        				this.$indicator.close();
+        				this.getOrders({pageId: this.pageId,orderStatus: this.orderStatus})
+        			})
+	        	}).catch(()=>{});
 	        }
 		}
 	}
