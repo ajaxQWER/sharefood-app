@@ -36,11 +36,11 @@
               <img src="../assets/images/discount-goods.png" alt="">
             </div>
           <!--</router-link>-->
-          <!--<router-link to="/salesRank">-->
+          <router-link to="/elseActivity" class="link">
           <div class="column-item flex-1">
             <img src="../assets/images/else-goods.png" alt="">
           </div>
-          <!--</router-link>-->
+          </router-link>
         </div>
       </div>
     </div>
