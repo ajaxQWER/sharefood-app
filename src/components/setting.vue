@@ -20,15 +20,23 @@
 							<div class="row-value"></div>
 					</div>
 				</router-link>
-				<div class="shopDetail-col">
-					<div class="row-title">支付密码修改</div>
-					<div class="row-value"></div>
-				</div>
+        <div class="shopDetail-col">
+          <div class="row-title">支付密码修改</div>
+          <div class="row-value"></div>
+        </div>
+
 				<div class="shopDetail-col">
 					<div class="row-title">结算设置</div>
 					<div class="row-value"></div>
 				</div>
-			</div>
+
+        <router-link class="jump" to="/printSetting">
+          <div class="shopDetail-col">
+            <div class="row-title">打印设置</div>
+            <div class="row-value"></div>
+          </div>
+        </router-link>
+      </div>
 			<div class="shopDetail-row">
 				<div class="shopDetail-col">
 					<div class="row-title">关于我们</div>

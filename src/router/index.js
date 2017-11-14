@@ -13,6 +13,8 @@ import ShopDetail from '@/components/ShopDetail.vue' //店铺信息
 import GoodsCategory from '@/components/GoodsCategory.vue' //商品分类
 import Setting from '@/components/Setting.vue' //设置
 import UpdatePassword from '@/components/UpdatePassword.vue' //修改密码
+import PrintSetting from '@/components/PrintSetting.vue' //打印设置
+import BondDevice from '@/components/BondDevice.vue' //打印设置
 import BusinessStatus from '@/components/BusinessStatus.vue' //营业时间
 import BusinessTime from '@/components/BusinessTime.vue' //营业时间
 import ShopContact from '@/components/ShopContact.vue' //联系电话
@@ -87,6 +89,14 @@ let routes = [{
     path: '/updatePassword',
     component: UpdatePassword,
     name: 'updatePassword'
+},{
+  path: '/printSetting',
+  component: PrintSetting,
+  name: 'printSetting'
+},{
+  path: '/bondDevice',
+  component: BondDevice,
+  name: 'bondDevice'
 },{
     path: '/businessStatus',
     component: BusinessStatus,
