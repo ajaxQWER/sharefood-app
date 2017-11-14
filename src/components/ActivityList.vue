@@ -8,49 +8,92 @@
 			</div>
 		</div>
 		<div class="activityList-content">
-			<ul class="activity-lists">
-				<li>
+			<div v-if="isEmpty" class="empty">
+				<img src="../assets/images/empty-img.png" alt="">
+			</div>
+			<ul class="activity-lists" v-else>
+				<li v-for="(item,index) in activityLists" :key="index">
 					<div class="activity-content">
 						<div class="activity-info">
-							<div class="activity-title"><span class="activity-icon type-1">返</span>满100送10元优惠券</div>
-							<div class="activity-type">购满就送</div>
+							<div class="activity-title"><span class="activity-icon type-1">{{formatActivityIconByType(item.activityType)}}</span>{{item.activityName}}</div>
+							<div class="activity-type">{{formatActivityType(item.activityType)}}</div>
 						</div>
-						<div class="activity-deadline">有效期：2017-01-01至2017-12-31</div>
+						<div class="activity-deadline">有效期：{{moment(item.beginTime).format('YYYY-MM-DD')}}至{{moment(item.endTime).format('YYYY-MM-DD')}}</div>
 					</div>
-					<div class="activity-delete-btn" @click="deleteActivity(item.goodsCategoryId)">删除</div>
-				</li>
-				<li>
-					<div class="activity-content">
-						<div class="activity-info">
-							<div class="activity-title"><span class="activity-icon type-1">返</span>满100送10元优惠券</div>
-							<div class="activity-type">购满就送</div>
-						</div>
-						<div class="activity-deadline">有效期：2017-01-01至2017-12-31</div>
-					</div>
-					<div class="activity-delete-btn">删除</div>
+					<div class="activity-delete-btn" @click="deleteActivity(item.activityId)">删除</div>
 				</li>
 			</ul>
 		</div>
 	</div>
 </template>
 <script>
+	import {getActivityLists,deleteActivityById} from '@/api/api'
 	export default {
 		name: 'activityList',
 		data: function(){
 			return {
-
+				isEmpty: false,
+				activityLists: []
 			}
 		},
+		created: function(){
+			this.getActivityList()
+		},
 		methods: {
+			getActivityList: function(){
+				this.$indicator.open();
+				getActivityLists({params: {pageSize: 9999, pageId: 1}}).then(res => {
+					console.log(res)
+					if(res.count > 0){
+						this.activityLists = res.list;
+						this.isEmpty = false;						
+					}else{
+						this.isEmpty = true;
+					}
+					this.$indicator.close();
+				})
+			},
 			deleteActivity: function(id){
-				this.$messagebox.confirm('确定删除该分类?').then(action => {
-					deleteGoodsCategoryById(id).then(() => {
+				this.$messagebox.confirm('确定删除该活动?').then(action => {
+					deleteActivityById(id).then(() => {
   						this.$toast({message:'删除成功',duration: 1000})
-						this.getGoodsCategoryList()
+						this.getActivityList()
 					})
 				}).catch(() => {
 					this.$toast({message:'已取消',duration: 1000})
 				});
+			},
+			formatActivityType: function(type){
+				switch (type) {
+					case 'FIRST':
+						return '首单立减';
+					case 'DELGOLD':
+						return '购满就减';
+					case 'COMPLIMENTARY':
+						return '购满就送';
+					case 'SPECIALPRICES':
+						return '特价商品';
+					case 'SALE':
+						return '折扣商品';
+					case 'SPECIFIC':
+						return '其他';
+				}
+			},
+			formatActivityIconByType: function(type){
+				switch (type) {
+					case 'FIRST':
+						return '首';
+					case 'DELGOLD':
+						return '减';
+					case 'COMPLIMENTARY':
+						return '返';
+					case 'SPECIALPRICES':
+						return '特';
+					case 'SALE':
+						return '折';
+					case 'SPECIFIC':
+						return '其';
+				}
 			}
 		}
 	}
@@ -132,6 +175,7 @@
 		text-align: center;
 		line-height: 4.5vw;
 		color: #fff;
+		margin-right: 1.33vw;
 		vertical-align: text-bottom;
 	}
 	.type-1{
