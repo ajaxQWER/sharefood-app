@@ -158,6 +158,12 @@
 	                    return '已取消';
 	                case 'TRANSACT_FINISHED':
 	                    return '已完成';
+	                case 'MERCHANT_CONFIRM_RECEIPT':
+	                    return '已接单';
+	                case 'PICKUPING':
+	                    return '取货中';
+	                case 'DELIVERED':
+	                    return '已送达';
 	                default:
 	                    break;
 	            }

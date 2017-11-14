@@ -23,7 +23,8 @@ import CustomerTendency from '@/components/CustomerTendencyChart.vue'  //新客�
 import OrderQuantity from '@/components/OrderQuantity.vue'  //订单量趋势图
 import Turnover from '@/components/Turnover.vue'  //营业额趋势图
 import SalesVolume from '@/components/SalesVolume.vue'  //销售量
-import SalesRank from '@/components/SalesRank.vue'  //销售量
+import SalesRank from '@/components/SalesRank.vue'  //销售量排行
+import Notice from '@/components/Notice.vue'  //通知中心
 import AddActivity from '@/components/AddActivity.vue'  //活动
 import ElseActivity from '@/components/ElseActivity.vue'  //其他 活动
 import FirstReduceActivity from '@/components/FirstReduceActivity.vue'  //首单立减 活动
@@ -130,25 +131,29 @@ let routes = [{
     component: SalesRank,
     name: 'salesRank'
 },{
-  path: '/activity',
-  component: AddActivity,
-  name: 'activity'
+    path: '/activity',
+    component: AddActivity,
+    name: 'activity'
 },{
-  path: '/elseActivity',
-  component: ElseActivity,
-  name: 'elseActivity'
+    path: '/notice',
+    component: Notice,
+    name: 'notice'
 },{
-  path: '/firstReduceActivity',
-  component: FirstReduceActivity,
-  name: 'firstReduceActivity'
+    path: '/elseActivity',
+    component: ElseActivity,
+    name: 'elseActivity'
 },{
-  path: '/fullReduceActivity',
-  component: FullReduceActivity,
-  name: 'fullReduceActivity'
+    path: '/firstReduceActivity',
+    component: FirstReduceActivity,
+    name: 'firstReduceActivity'
 },{
-  path: '/fullSendActivity',
-  component: FullSendActivity,
-  name: 'fullSendActivity'
+    path: '/fullReduceActivity',
+    component: FullReduceActivity,
+    name: 'fullReduceActivity'
+},{
+    path: '/fullSendActivity',
+    component: FullSendActivity,
+    name: 'fullSendActivity'
 }];
 
 export default routes;
