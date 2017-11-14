@@ -30,6 +30,7 @@ import ElseActivity from '@/components/ElseActivity.vue'  //其他 活动
 import FirstReduceActivity from '@/components/FirstReduceActivity.vue'  //首单立减 活动
 import FullReduceActivity from '@/components/FullReduceActivity.vue'  //购满就减 活动
 import FullSendActivity from '@/components/FullSendActivity.vue'  //购满就送 活动
+import ActivityList from '@/components/ActivityList.vue'  //活动管理-列表
 let routes = [{
     path: '/login',
     component: Login,
@@ -130,6 +131,10 @@ let routes = [{
     path: '/salesRank',
     component: SalesRank,
     name: 'salesRank'
+},{
+    path: '/activityList',
+    component: ActivityList,
+    name: 'activityList'
 },{
     path: '/activity',
     component: AddActivity,
