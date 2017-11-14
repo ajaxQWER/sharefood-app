@@ -16,7 +16,7 @@
         <div class="shopDetail-col">
           <div class="row-title">结束时间</div>
           <div class="row-value"></div>
-          <div class="selectTime" @click="focus">{{endTime}}</div>
+          <div class="selectTime" @click="focus1">{{endTime}}</div>
         </div>
       </div>
       <div class="shopDetail-row full">
@@ -98,8 +98,8 @@
       </div>
       <button class="save">保存</button>
     </div>
-    <mt-datetime-picker ref="time" type="date" @confirm="handleChange" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
-    <mt-datetime-picker ref="time" type="date" @confirm="handleChange1" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
+    <mt-datetime-picker ref="start" type="date" @confirm="handleChange" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
+    <mt-datetime-picker ref="end" type="date" @confirm="handleChange1" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
   </div>
 </template>
 <script>
@@ -135,7 +135,10 @@
         //fetch data
       },
       focus: function(){
-        this.$refs.time.open()
+        this.$refs.start.open()
+      },
+      focus1: function(){
+        this.$refs.end.open()
       }
     }
   }

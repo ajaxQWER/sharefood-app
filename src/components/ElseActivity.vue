@@ -16,19 +16,19 @@
         <div class="shopDetail-col">
           <div class="row-title">结束时间</div>
           <div class="row-value"></div>
-          <div class="selectTime" @click="focus">{{endTime}}</div>
+          <div class="selectTime" @click="focus1">{{endTime}}</div>
         </div>
         <div class="shopDetail-col">
           <div class="row-title">活动名称</div>
           <div class="activity-name">
-            <input type="text" placeholder="最多40个字符">
+            <input type="text" placeholder="最多40个字符" v-model="activityName">
           </div>
         </div>
       </div>
-      <button class="save">保存</button>
+      <button class="save" @click="save()">保存</button>
     </div>
-    <mt-datetime-picker ref="time" type="date" @confirm="handleChange" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
-    <mt-datetime-picker ref="time" type="date" @confirm="handleChange1" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
+    <mt-datetime-picker ref="start" type="date" @confirm="handleChange" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
+    <mt-datetime-picker ref="end" type="date" @confirm="handleChange1" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
   </div>
 </template>
 <script>
@@ -39,7 +39,8 @@
         beginTime: this.moment(Date.now()).format('YYYY-MM-DD'),
         endTime: '不限制',
         startDate: '',
-        endDate: ''
+        endDate: '',
+        activityName: ''
       }
     },
     created: function(){
@@ -64,8 +65,17 @@
         //fetch data
       },
       focus: function(){
-        this.$refs.time.open()
+        this.$refs.start.open()
+      },
+      focus1: function(){
+        this.$refs.end.open()
+      },
+      save: function () {
+        console.log(this.moment(this.beginTime).format());
+        console.log(this.endTime);
+        console.log(this.activityName);
       }
+
     }
   }
 </script>
