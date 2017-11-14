@@ -119,47 +119,25 @@
       }
     }),
     created: function () {
-      var that = this;
-      that.$indicator.open();
+      var _this = this;
+      _this.$indicator.open();
+      _this.line.xAxis.data = [];
+      _this.line.series[0].data = [];
+      _this.loading = true;
       getTurnover({params:{days:7}}).then(res => {
         console.log(res);
-        that.$indicator.close();
-        var weeks = [];
-        var turnoverCounts = [];
-
-        for(let i=res.length-1; i>=0; i--){
-          let t = res[i].finishDayTime;
-          let turnoverCount = that.formatMoney(res[i].turnoverCount);
-          let date = that.moment(t).format('MM-DD');
-          weeks.push(date);
-          turnoverCounts.push(turnoverCount);
-          console.log(turnoverCount);
-        }
-        that.line.xAxis.data = weeks;
-        that.line.series[0].data = turnoverCounts;
-        that.loading = false;
-        that.turnover = res;
+        res.sort((a,b) => {
+          return a.finishDayTime - b.finishDayTime;
+        }).forEach((item) => {
+          _this.line.xAxis.data.push(_this.moment(item.finishDayTime).format('MM-DD'));
+          _this.line.series[0].data.push(item.turnoverCount);
+          _this.loading = false;
+        })
+        _this.turnover = res;
+        _this.$indicator.close();
       })
     },
     methods: {
-      formatDate: function (t) {
-        switch (this.moment(t).day()) {
-          case 0:
-            return "周日";
-          case 1:
-            return "周一";
-          case 2:
-            return "周二";
-          case 3:
-            return "周三";
-          case 4:
-            return "周四";
-          case 5:
-            return "周五";
-          case 6:
-            return "周六";
-        }
-      },
       formatMoney: function(money){
         money = parseFloat((money + "").replace(/[^\d\.-]/g, "")).toFixed(2) + "";
         var l = money.split(".")[0].split("").reverse();

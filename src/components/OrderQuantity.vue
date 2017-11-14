@@ -120,47 +120,24 @@
       }
     }),
     created: function () {
-      var that = this;
-      that.$indicator.open();
+      var _this = this;
+      _this.$indicator.open();
+      _this.line.xAxis.data = [];
+      _this.line.series[0].data = [];
+      _this.loading = true;
       getOrderQuantity({params:{days:7}}).then(res => {
         console.log(res);
-        that.$indicator.close();
-        var weeks = [];
-        var orderCounts = [];
-
-        for(let i=res.length-1; i>=0; i--){
-          let t = res[i].finishDayTime;
-          let count = res[i].orderQuantity;
-          let date = that.moment(t).format('MM-DD');
-          weeks.push(date);
-          orderCounts.push(count);
-        }
-        that.line.xAxis.data = weeks;
-        that.line.series[0].data = orderCounts;
-        that.loading = false;
-        that.orders = res;
+        res.sort((a,b) => {
+          return a.finishDayTime - b.finishDayTime;
+        }).forEach((item) => {
+          _this.line.xAxis.data.push(_this.moment(item.finishDayTime).format('MM-DD'));
+          _this.line.series[0].data.push(item.orderQuantity);
+          _this.loading = false;
+        })
+        _this.orders = res;
+        _this.$indicator.close();
       })
     },
-    methods: {
-      formatDate: function (t) {
-        switch (this.moment(t).day()) {
-          case 0:
-            return "周日";
-          case 1:
-            return "周一";
-          case 2:
-            return "周二";
-          case 3:
-            return "周三";
-          case 4:
-            return "周四";
-          case 5:
-            return "周五";
-          case 6:
-            return "周六";
-        }
-      }
-    }
   }
 </script>
 <style scoped>

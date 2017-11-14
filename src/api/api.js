@@ -5,6 +5,7 @@ var ajax = axios.create({
     baseURL: process.env.BASE_URL, //测试
     // baseURL: 'http://api.gongxiangdiancan.com', //正式服
     headers: {},
+    timeout: 10000,
     withCredentials: true, //cookie
     crossDomain: true //跨域
 });
@@ -128,8 +129,12 @@ export const cancelOrderById = orderId => {
 export const finishOrderById = orderId => {
     return ajax.put('seller/order/setFinished/' + orderId);
 };
-//设置订单为配送
+//确认接单
 export const acceptOrderById = orderId => {
+    return ajax.put('seller/order/confirmReceipt/' + orderId);
+};
+//设置订单为配送
+export const setOrderShipping = orderId => {
     return ajax.put('seller/order/setShipping/' + orderId);
 };
 //获取订单详情
@@ -173,7 +178,7 @@ export const setBusinessTime = params => {
 };
 //设置联系电话
 export const setBusinessPhoneNumber = phoneNumber => {
-    return ajax.put('/seller/shopDetail/takeOutPhone/' + phoneNumber);
+    return ajax.put('seller/shopDetail/takeOutPhone/' + phoneNumber);
 };
 
 
@@ -189,6 +194,14 @@ export const getOrderQuantity = params => {
 //订单量趋势图
 export const getTurnover = params => {
   return ajax.get('seller/analysis/turnover', params);
+};
+//销售量趋势图
+export const getSalesTendency = params => {
+  return ajax.get('seller/analysis/goodsSales', params);
+};
+//销售量排行
+export const getSalesRank = params => {
+  return ajax.get('seller/analysis/salesRank', params);
 };
 
 
