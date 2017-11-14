@@ -81,15 +81,13 @@
 	    	    		<div class="column-name">设置</div>
 	    	    	</div>
 	    	    </router-link>
-	        	<router-link to="/setting" class="link">
+	        	<router-link to="/notice" class="link">
 	    	    	<div class="column-item flex-1">
 	    	    		<img src="../assets/images/shop-item12.png" alt="">
 	    	    		<div class="column-name">通知中心</div>
 	    	    	</div>
 	    	    </router-link>
-	    	    <!-- <div class="column-item flex-1 column-null">
-	    	    	
-	    	    </div> -->
+	    	    <!-- <div class="column-item flex-1 column-null"></div> -->
 		    	<!-- <router-link to="/employee" class="link">
 			    	<div class="column-item flex-1">
 			    		<img src="../assets/images/shop-item8.png" alt="">
