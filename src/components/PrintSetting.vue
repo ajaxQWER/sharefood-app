@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="setting-content">
-      <div class="shopDetail-row" v-if="true">
+      <div class="shopDetail-row" v-if="unbind">
         <router-link to="/bondDevice">
           <div class="shopDetail-col">
             <div class="row-title">设备ID</div>
@@ -23,8 +23,7 @@
           </div>
         </div>
       </div>
-
-      <div v-if="false">
+      <div v-else>
         <div class="shopDetail-row">
           <div class="shopDetail-col">
             <div class="row-title">设备ID</div>
@@ -35,7 +34,7 @@
           <div class="shopDetail-col">
             <div class="row-title">设备状态</div>
             <div class="deviceStatus">
-              <div class="row-value">在线</div>
+              <div class="row-value">{{status}}</div>
             </div>
           </div>
         </div>
@@ -45,6 +44,39 @@
     </div>
   </div>
 </template>
+<script>
+  import { getRealtimestatistics } from '@/api/api'
+  export default {
+    name: 'printSetting',
+    data: function() {
+      return {
+        shopSalesData: null,
+        unbind: true,
+        status: ''
+      }
+    },
+    created: function(){
+      this.$indicator.open();
+      getRealtimestatistics().then(res => {
+        console.log(res);
+        var status = res.printerStatus;
+        if(status == 'UNBIND'){
+          this.unbind = true;
+        }else{
+          this.unbind = false;
+          if(status == 'ONLINE') this.status = '在线';
+          if(status == 'OFFLINE') this.status = '离线';
+          if(status == 'ABNORMALITY') this.status = '异常';
+          if(status == 'PAPER_DEFICIENCY') this.status = '缺纸';
+        }
+
+        this.shopSalesData = res;
+        this.$indicator.close();
+      })
+    }
+  }
+
+</script>
 <style scoped>
   #printSetting{
     min-height: 100%;

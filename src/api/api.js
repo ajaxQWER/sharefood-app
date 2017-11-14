@@ -205,6 +205,16 @@ export const getSalesRank = params => {
 };
 
 
+//绑定打印机
+export const bindPrinter = params => {
+  return ajax.post('seller/printer/bind', params);
+};
+//解绑打印机
+export const unbindPrinter = () => {
+  return ajax.post('seller/printer/unbind');
+};
+
+
 //通知中心
 export const getNoticeLists = params => {
     return ajax.get('seller/notice', params);
