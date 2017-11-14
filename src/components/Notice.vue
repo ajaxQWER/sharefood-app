@@ -91,6 +91,9 @@
           deleteNoticeById(id,index).then(() => {
             this.$toast({message:'删除成功',duration: 1000});
             this.noticeList.splice(index,1);
+            if(this.noticeList.length == 0){
+              this.isEmpty = true;
+            }
           })
         }).catch(() => {
           this.$toast({message:'已取消',duration: 1000})
