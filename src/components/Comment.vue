@@ -9,8 +9,8 @@
 		<div class="comment-content" v-if="appraiseTotal">
 			<div class="comment-scroll-wrap">
 				<div class="comment-header-detail">
-					<div class="comment-grade"><span class="grades">{{appraiseTotal.comprehensiveApprise}}</span><br>综合评价<br>高于商圈{{appraiseTotal.businessCircleRatio}}%的商家</div>
-					<div class="comment-status">近7天评价回复率：{{appraiseTotal.reversionRate}}%<br>近7天差评回复率：{{appraiseTotal.reviewRate}}%</div>
+					<div class="comment-grade"><span class="grades">{{appraiseTotal.comprehensiveApprise}}</span><br>综合评价<br>高于商圈{{appraiseTotal.businessCircleRatio*100}}%的商家</div>
+					<div class="comment-status">近7天评价回复率：{{appraiseTotal.reversionRate*100}}%<br>近7天差评回复率：{{appraiseTotal.reviewRate*100}}%</div>
 				</div>
 				<div class="comment-filter">
 					<button v-for="(val,key) in replyObj" :class="['comment-filter-btn', 'large-btn', (replyIndex==val.index)?'active-filter':'']" @click="showReply('reply',val.index, val.reply)">{{val.name}}</button>
