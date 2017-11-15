@@ -8,15 +8,14 @@
     </div>
     <div class="setting-content">
       <div v-if="printer">
-        <div class="shopDetail-row" v-if="!bind">
-          <router-link to="/bondDevice">
-            <div class="shopDetail-col">
-              <div class="row-title">设备ID</div>
-              <div class="bonded">
-                <div class="row-value">绑定设备</div>
-              </div>
+        <div class="shopDetail-row" v-if="unbond">
+
+          <div class="shopDetail-col" @click="openPopup">
+            <div class="row-title">设备ID</div>
+            <div class="bonded">
+              <div class="row-value">绑定设备</div>
             </div>
-          </router-link>
+          </div>
           <div class="shopDetail-col">
             <div class="row-title">设备状态</div>
             <div class="deviceStatus">
@@ -43,18 +42,48 @@
         </div>
       </div>
     </div>
+    <mt-popup v-model="popupVisible3" position="right" class="mint-popup-3" :modal="false">
+      <div class="setting-header">
+        <div class="nav-bar help-navbar">
+          <div class="back"></div>
+          <div class="nav-title">打印设置</div>
+        </div>
+      </div>
+      <div class="bindPrinter">
+        <div class="shopDetail-row">
+          <div class="shopDetail-col">
+            <div class="row-title">设备ID</div>
+            <div class="deviceId">
+              <input type="text" placeholder="请输入设备ID" v-model="deviceId">
+            </div>
+          </div>
+          <div class="shopDetail-col">
+            <div class="row-title">设备密码</div>
+            <div class="password">
+              <input type="password" placeholder="请输入设备密码" v-model="secretKey">
+            </div>
+          </div>
+        </div>
+        <div class="bindBtns">
+          <button class="bond" @click="bind">绑定设备</button>
+          <button class="bond" @click="closePopup">关闭</button>
+        </div>
+
+      </div>
+    </mt-popup>
   </div>
 </template>
 <script>
-  import { getRealtimestatistics } from '@/api/api'
-  import { getPrinterInfo } from '@/api/api'
-  import { unbindPrinter } from '@/api/api'
+  import {getPrinterInfo,bindPrinter,unbindPrinter} from '@/api/api'
   export default {
     name: 'printSetting',
     data: function() {
       return {
         printer: null,
-        bind: true
+        unbond: true,
+        popupVisible3: false,
+        deviceId: '',
+        secretKey: ''
       }
     },
     created: function(){
@@ -68,9 +97,9 @@
           var printerStatus = res.printerStatus;
 
           if(printerStatus == 'UNBIND'){
-            this.bind = false;
+            this.unbond = true;
           }else{
-            this.bind = true;
+            this.unbond = false;
           }
           this.printer = res;
           this.$indicator.close();
@@ -90,16 +119,54 @@
             return '缺纸';
         }
       },
+      openPopup: function () {
+        this.popupVisible3 = true;
+      },
+      bind: function () {
+        if(!this.deviceId){
+          this.$toast({
+            message: '请输入设备ID',
+            duration: 1000,
+            className: 'goodscategory-toast'
+          });
+          return;
+        }
+        if(!this.secretKey){
+          this.$toast({
+            message: '请输入设备密码',
+            duration: 1000,
+            className: 'goodscategory-toast'
+          });
+          return;
+        }
+        var params = {
+          deviceId: this.deviceId,
+          secretKey: this.secretKey
+        };
+        console.log(params);
+        bindPrinter(params).then(res => {
+          console.log(res);
+          this.$toast({message:'绑定成功',duration: 1000});
+          this.popupVisible3 = false;
+          this.deviceId = '';
+          this.secretKey = '';
+          this.getPrinter();
+        })
+      },
       unbind: function () {
         unbindPrinter().then(res => {
           console.log(res);
           this.$toast({message:'解绑成功',duration: 1000});
           this.getPrinter();
         })
+      },
+      closePopup: function(){
+        this.popupVisible3 = false;
+        this.deviceId = '';
+        this.secretKey = '';
       }
     }
   }
-
 </script>
 <style scoped>
   #printSetting{
@@ -108,14 +175,21 @@
   }
   .setting-header{
     width: 100%;
-    position: fixed;
   }
   .setting-content{
     box-sizing: border-box;
     height: 100vh;
     overflow: hidden;
     zoom: 1;
-    padding: 13.06vw 0 14.39vw;
+  }
+  .mint-popup-3 {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+  }
+  .bindPrinter{
+    width: 100%;
+    height: 100%;
   }
   .shopDetail-row{
     margin-top: 2.66vw;
@@ -163,6 +237,38 @@
     height: 10.66vw;
     color: #fff;
     margin: 9.33vw auto;
+    background: url(../assets/images/help-navbar.jpg) no-repeat center center;
+    background-size: cover;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    font-size: 4.26vw;
+  }
+  .deviceId,.password{
+    float: left;
+    margin-left: 3.33vw;
+  }
+  .deviceId input,.password input{
+    display: inline-block;
+    line-height: 6.66vw;
+    border: none;
+    outline: none;
+    font-size: 4vw;
+  }
+  input::placeholder,input:-ms-input-placeholder,
+  input:-moz-placeholder,input::-webkit-input-placeholder{
+    color: #959595;
+    font-size: 4vw;
+  }
+  .bindBtns{
+    margin-top: 7.33vw;
+  }
+  .bond{
+    display: block;
+    width: 93.33vw;
+    height: 10.66vw;
+    color: #fff;
+    margin: 2vw auto;
     background: url(../assets/images/help-navbar.jpg) no-repeat center center;
     background-size: cover;
     border: none;

@@ -8,6 +8,14 @@
 		        	<h3 class="shop-name">{{loginUser}}</h3>
 		        	<router-link to="/shopDetail" class="shop-detail">点击查看门店详情</router-link>
 		        </div>
+            <div class="admin-shop-status" v-if="shopSalesData">
+              <div class="shop-status">
+                <img :src="shopStatusImg" alt="">
+              </div>
+              <div class="printer-status">
+                <img :src="printerStatusImg" alt="">
+              </div>
+            </div>
 	      	</div>
 	      	<div class="sales-info flex" v-if="shopSalesData">
 		      	<div class="flex-1 sales-item">
@@ -121,7 +129,9 @@ export default {
 		return {
 			loginShopId: JSON.parse(localStorage.getItem('seller')).shopId,
 			loginUser: JSON.parse(localStorage.getItem('seller')).sellerName,
-			shopSalesData: null
+			shopSalesData: null,
+      shopStatusImg: '',
+      printerStatusImg: ''
 		}
 	},
 	created: function(){
@@ -129,6 +139,12 @@ export default {
 		getRealtimestatistics().then(res => {
 			console.log(res)
 			this.shopSalesData = res;
+			if(res.operatingState){
+			  this.shopStatusImg = '/static/images/shop-open.png';
+      }else{
+        this.shopStatusImg = '/static/images/shop-close.png';
+      }
+			this.printerStatusImg = '/static/images/'+ res.printerStatus.toLowerCase() +'.png';
 			this.$indicator.close();
 		})
 	},
@@ -158,13 +174,27 @@ export default {
   font-size: 4.8vw;
   color: #fff;
 }
-
 .admin-info {
   overflow: hidden;
   zoom: 1;
   padding: 6.66vw 2.66vw;
 }
-
+.admin-shop-status{
+  float: right;
+  margin-top: 2.66vw;
+  margin-left: 2.66vw;
+}
+.shop-status,.printer-status{
+  float: right;
+  margin-left: 1.33vw;
+}
+.admin-shop-status img{
+  display: block;
+  float: right;
+  width: 10vw;
+  height: 10vw;
+  border-radius: 2px;
+}
 .admin-icon {
   width: 16vw;
   height: 16vw;
