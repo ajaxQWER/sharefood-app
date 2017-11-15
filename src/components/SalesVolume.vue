@@ -41,7 +41,7 @@
 			<ul class="search-datalist">
 				<li v-for="(item,index) in searchData" :key="index" @click="fetchData(item.goodsId)">{{item.goodsName}}</li>
 			</ul>
-	    </mt-popup>
+    </mt-popup>
 	</div>
 </template>
 <script>
