@@ -27,7 +27,7 @@
           <div class="shopDetail-row">
             <div class="shopDetail-col">
               <div class="row-title">设备ID</div>
-              <div class="deviceId">
+              <div class="deviceId1">
                 <div class="row-value">{{printer.deviceId}}</div>
               </div>
             </div>
@@ -217,7 +217,7 @@
     vertical-align: middle;
     margin-top: 0.8vw;
   }
-  .bonded,.deviceStatus,.deviceId{
+  .bonded,.deviceStatus,.deviceId1{
     display: inline-block;
     float: right;
   }
