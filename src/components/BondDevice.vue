@@ -12,20 +12,63 @@
         <div class="shopDetail-col">
           <div class="row-title">设备ID</div>
           <div class="deviceId">
-            <input type="text" placeholder="请输入设备ID">
+            <input type="text" placeholder="请输入设备ID" v-model="deviceId">
           </div>
         </div>
         <div class="shopDetail-col">
           <div class="row-title">设备密码</div>
           <div class="password">
-            <input type="password" placeholder="请输入设备密码">
+            <input type="password" placeholder="请输入设备密码" v-model="secretKey">
           </div>
         </div>
       </div>
-      <button class="bond">绑定设备</button>
+      <button class="bond" @click="bind">绑定设备</button>
+
     </div>
   </div>
 </template>
+<script>
+  import {bindPrinter} from '@/api/api'
+  export default {
+    name: 'bondDevice',
+    data: function () {
+      return {
+        deviceId: '',
+        secretKey: '',
+      }
+    },
+    methods: {
+      bind: function () {
+        if(!this.deviceId){
+          this.$toast({
+            message: '请输入设备ID',
+            duration: 1000
+          })
+          return;
+        }
+        if(!this.secretKey){
+          this.$toast({
+            message: '请输入设备密码',
+            duration: 1000
+          });
+          return;
+        }
+        var params = {
+          deviceId: this.deviceId,
+          secretKey: this.secretKey
+        };
+        console.log(params);
+        bindPrinter(params).then(res => {
+          console.log(res);
+          this.$toast({message:'绑定成功',duration: 1000});
+          setTimeout(() => {
+            this.$router.push('/printSetting')
+          }, 1300)
+        })
+      }
+    }
+  }
+</script>
 <style scoped>
   #printSetting{
     min-height: 100%;

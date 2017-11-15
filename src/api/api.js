@@ -204,14 +204,17 @@ export const getSalesRank = params => {
     return ajax.get('seller/analysis/salesRank', params);
 };
 
-
+//绑定打印机
+export const getPrinterInfo = () => {
+  return ajax.get('seller/printer');
+};
 //绑定打印机
 export const bindPrinter = params => {
   return ajax.post('seller/printer/bind', params);
 };
 //解绑打印机
 export const unbindPrinter = () => {
-  return ajax.post('seller/printer/unbind');
+  return ajax.post('seller/printer/unBind');
 };
 
 

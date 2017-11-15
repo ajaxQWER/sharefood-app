@@ -7,72 +7,96 @@
       </div>
     </div>
     <div class="setting-content">
-      <div class="shopDetail-row" v-if="unbind">
-        <router-link to="/bondDevice">
-          <div class="shopDetail-col">
-            <div class="row-title">设备ID</div>
-            <div class="bonded">
-              <div class="row-value">绑定设备</div>
+      <div v-if="printer">
+        <div class="shopDetail-row" v-if="!bind">
+          <router-link to="/bondDevice">
+            <div class="shopDetail-col">
+              <div class="row-title">设备ID</div>
+              <div class="bonded">
+                <div class="row-value">绑定设备</div>
+              </div>
             </div>
-          </div>
-        </router-link>
-        <div class="shopDetail-col">
-          <div class="row-title">设备状态</div>
-          <div class="deviceStatus">
-            <div class="row-value">未绑定</div>
-          </div>
-        </div>
-      </div>
-      <div v-else>
-        <div class="shopDetail-row">
-          <div class="shopDetail-col">
-            <div class="row-title">设备ID</div>
-            <div class="deviceId">
-              <div class="row-value">4025843610</div>
-            </div>
-          </div>
+          </router-link>
           <div class="shopDetail-col">
             <div class="row-title">设备状态</div>
             <div class="deviceStatus">
-              <div class="row-value">{{status}}</div>
+              <div class="row-value">{{formatPrinterStatus(printer.printerStatus)}}</div>
             </div>
           </div>
         </div>
-        <button class="unbond">解绑设备</button>
+        <div v-else>
+          <div class="shopDetail-row">
+            <div class="shopDetail-col">
+              <div class="row-title">设备ID</div>
+              <div class="deviceId">
+                <div class="row-value">{{printer.deviceId}}</div>
+              </div>
+            </div>
+            <div class="shopDetail-col">
+              <div class="row-title">设备状态</div>
+              <div class="deviceStatus">
+                <div class="row-value">{{formatPrinterStatus(printer.printerStatus)}}</div>
+              </div>
+            </div>
+          </div>
+          <button class="unbond" @click="unbind">解绑设备</button>
+        </div>
       </div>
-
     </div>
   </div>
 </template>
 <script>
   import { getRealtimestatistics } from '@/api/api'
+  import { getPrinterInfo } from '@/api/api'
+  import { unbindPrinter } from '@/api/api'
   export default {
     name: 'printSetting',
     data: function() {
       return {
-        shopSalesData: null,
-        unbind: true,
-        status: ''
+        printer: null,
+        bind: true
       }
     },
     created: function(){
-      this.$indicator.open();
-      getRealtimestatistics().then(res => {
-        console.log(res);
-        var status = res.printerStatus;
-        if(status == 'UNBIND'){
-          this.unbind = true;
-        }else{
-          this.unbind = false;
-          if(status == 'ONLINE') this.status = '在线';
-          if(status == 'OFFLINE') this.status = '离线';
-          if(status == 'ABNORMALITY') this.status = '异常';
-          if(status == 'PAPER_DEFICIENCY') this.status = '缺纸';
-        }
+      this.getPrinter();
+    },
+    methods: {
+      getPrinter: function () {
+        this.$indicator.open();
+        getPrinterInfo().then(res => {
+          console.log(res);
+          var printerStatus = res.printerStatus;
 
-        this.shopSalesData = res;
-        this.$indicator.close();
-      })
+          if(printerStatus == 'UNBIND'){
+            this.bind = false;
+          }else{
+            this.bind = true;
+          }
+          this.printer = res;
+          this.$indicator.close();
+        })
+      },
+      formatPrinterStatus: function (status) {
+        switch (status){
+          case 'UNBIND':
+            return '未绑定';
+          case 'ONLINE':
+            return '在线';
+          case 'OFFLINE':
+            return '离线';
+          case 'ABNORMALITY':
+            return '异常';
+          case 'PAPER_DEFICIENCY':
+            return '缺纸';
+        }
+      },
+      unbind: function () {
+        unbindPrinter().then(res => {
+          console.log(res);
+          this.$toast({message:'解绑成功',duration: 1000});
+          this.getPrinter();
+        })
+      }
     }
   }
 
