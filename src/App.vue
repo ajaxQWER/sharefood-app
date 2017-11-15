@@ -154,7 +154,7 @@ body {
     opacity: 1;  
     -webkit-transform: translate(-100vw, 0);  
     transform: translate(-100vw, 0);  
-}  
+}
 img[lazy=error] {
     background: url(assets/images/default.jpg) no-repeat center center;
     background-size: cover;
@@ -171,7 +171,6 @@ img[lazy=loading] {
     width: 27.86vw;
     height: 28.66vw;
 }
-
 .goodscategory-toast{
     z-index: 9999!important;
 }
