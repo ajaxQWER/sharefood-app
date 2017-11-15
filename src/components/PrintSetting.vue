@@ -66,7 +66,7 @@
         </div>
         <div class="bindBtns">
           <button class="bond" @click="bind">绑定设备</button>
-          <button class="bond" @click="closePopup">关闭</button>
+          <button class="bond red" @click="closePopup">关闭</button>
         </div>
 
       </div>
@@ -201,7 +201,7 @@
     zoom: 1;
     color: #4d4d4d;
   }
-  .shopDetail-col:not(:last-child){
+  .shopDetail-col:not(:last-child), .bindPrinter .shopDetail-col{
     border-bottom: 0.13vw solid #f2f2f2;
   }
   .row-title{
@@ -230,6 +230,9 @@
     background-size: contain;
     vertical-align: middle;
     margin-top: 0.8vw;
+  }
+  .bond.red{
+      background: #ef4f4f;
   }
   .unbond{
     display: block;
