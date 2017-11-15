@@ -154,7 +154,7 @@ body {
     opacity: 1;  
     -webkit-transform: translate(-100vw, 0);  
     transform: translate(-100vw, 0);  
-}  
+}
 img[lazy=error] {
     background: url(assets/images/default.jpg) no-repeat center center;
     background-size: cover;
