@@ -14,6 +14,7 @@
 		</div>
 		<div class="order-content">
 			<div v-if="!isEmpty">
+				<mt-loadmore :top-method="loadTop" ref="loadmore">
 				<div class="order-lists" v-if="orderList.length">
 		    		<ul>
 		    			<li v-for="(item,index) in orderList" :key="index">
@@ -33,9 +34,16 @@
 		    						<div class="order-item order-money">订单金额<span>￥{{item.orderPrice}}</span></div>
 		    						<div class="order-item">订单类型<span>{{formatOrderType(item.orderType)}}</span></div>
 		    					</div>
-		    					<div v-if="item.orderStatus=='PAYED'" class="operate-btn">
-		    						<button @click.prevent="cancelOrder(item.orderId)" class="btn">取消订单</button>
-		    						<button @click.prevent="acceptOrder(item.orderId,item.orderType)" class="btn deal-btn">接单</button>
+		    					<div v-if="item.orderType=='TAKEOUT'" class="operate-btn">
+		    						<div v-if="item.orderStatus=='PAYED'">
+			    						<button @click.prevent="cancelOrder(item.orderId)" class="btn">取消订单</button>
+			    						<button @click.prevent="acceptOrder(item.orderId,item.orderType)" class="btn deal-btn">接单</button>
+		    						</div>
+		    					</div>
+		    					<div v-else class="operate-btn">
+		    						<div v-if="item.orderStatus=='MERCHANT_CONFIRM_RECEIPT'">
+			    						<button @click.prevent="finishOrder(item.orderId)" class="btn deal-btn">完成</button>
+		    						</div>
 		    					</div>
 		    				</div>
 		    				</router-link>
@@ -43,6 +51,7 @@
 		    		</ul>
 		    		<div v-show="canLoad" class="loadmore" @click="loadBottom">点击加载</div>
 	    		</div>
+	    		</mt-loadmore>
 			</div>
 			<div v-else class="empty">
 				<img src="../assets/images/empty-img.png" alt="">
@@ -94,10 +103,18 @@
 			this.getOrders({pageId: this.pageId, orderStatus: this.orderStatus})
 		},
 		methods: {
+			loadTop() {
+				this.init = true;
+				this.canLoad = true;
+				this.isEmpty = false;
+				this.pageId = 1;
+				this.getOrders({pageId: this.pageId, orderStatus: this.orderStatus})
+			},
 			getOrders: function(order){
 				this.$indicator.open();
 				getOrderList({params: {pageSize: 10, pageId: order.pageId, orderStatus: order.orderStatus}}).then(res => {
 					console.log(res.list)
+					this.$refs.loadmore.onTopLoaded();
 					if(this.init){
 						this.orderList = res.list
 					}else{
@@ -192,6 +209,16 @@
 	        	this.$messagebox.confirm('确定接单?').then(action => {
 	        		this.$indicator.open();
         			acceptOrderById(orderId).then(() => {
+        				this.$toast({message:'操作成功',duration: 1000})
+        				this.$indicator.close();
+        				this.getOrders({pageId: this.pageId,orderStatus: this.orderStatus})
+        			})
+	        	}).catch(()=>{});
+	        },
+	        finishOrder: function(orderId){
+	        	this.$messagebox.confirm('确定完成预定订单?').then(action => {
+	        		this.$indicator.open();
+        			finishOrderById(orderId).then(() => {
         				this.$toast({message:'操作成功',duration: 1000})
         				this.$indicator.close();
         				this.getOrders({pageId: this.pageId,orderStatus: this.orderStatus})

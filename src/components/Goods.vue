@@ -145,15 +145,6 @@
 		width: 100%;
 		position: fixed;
 	}
-	/* .nav-title:after{
-		content: '';
-		display: inline-block;
-		width: 3.6vw;
-		height: 2.26vw;
-		background: url(../assets/images/selecct-down.png) no-repeat center center;
-		background-size: contain;
-		margin-left: 2.66vw;
-	} */
 	.goods-nav-right{
 		position: absolute;
 		overflow: hidden;
@@ -196,11 +187,9 @@
 		list-style: none;
 	}
 	.goods-type-item{
-		width: 100%;
-		height: 7.50vh;
-		line-height: 7.50vh;
+		padding: 4vw 2.66vw;
 		background-color: #e5e5e5;
-		font-size: 4.26vw;
+		font-size: 3.73vw;
 		text-align: center;
 	}
 	.current-goods-type{

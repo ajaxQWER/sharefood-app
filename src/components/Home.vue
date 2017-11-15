@@ -13,7 +13,7 @@
 		      	<div class="flex-1 sales-item">
 		      		<div class="sales-title">今日营业额</div>
 		      		<div class="sales-money">{{formatMoney(shopSalesData.todayTurnover)}}</div>
-		  			<div class="sales-title-small">昨日{{formatMoney(shopSalesData.yesterdayOrderQuantity)}}</div>
+		  			<div class="sales-title-small">昨日{{formatMoney(shopSalesData.yesterdayTurnover)}}</div>
 		      	</div>
 		      	<div class="flex-1 sales-item">
 		      		<div class="sales-title">今日订单</div>
