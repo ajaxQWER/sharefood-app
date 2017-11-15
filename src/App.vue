@@ -171,7 +171,6 @@ img[lazy=loading] {
     width: 27.86vw;
     height: 28.66vw;
 }
-
 .goodscategory-toast{
     z-index: 9999!important;
 }

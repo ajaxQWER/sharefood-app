@@ -20,8 +20,12 @@
 						<li class="goods-detail" v-for="(item,index) in goodsList" :key="index">
 							<div class="goods-detail-wrap">
 								<div class="goods-image">
+<<<<<<< HEAD
 									<!-- <img :src="UPLOADURL + item.goodsImgUrl" alt=""> -->
 									<img v-lazy="UPLOADURL + item.goodsImgUrl" alt="">
+=======
+									<img :src="UPLOADURL + item.goodsImgUrl" alt="">
+>>>>>>> !1 2017-11-10 17:37 dev-&gt;master
 								</div>
 								<div class="goods-info">
 									<h3 class="goods-name">{{item.goodsName}}</h3>
@@ -145,6 +149,18 @@
 		width: 100%;
 		position: fixed;
 	}
+<<<<<<< HEAD
+=======
+	/* .nav-title:after{
+		content: '';
+		display: inline-block;
+		width: 3.6vw;
+		height: 2.26vw;
+		background: url(../assets/images/selecct-down.png) no-repeat center center;
+		background-size: contain;
+		margin-left: 2.66vw;
+	} */
+>>>>>>> !1 2017-11-10 17:37 dev-&gt;master
 	.goods-nav-right{
 		position: absolute;
 		overflow: hidden;
