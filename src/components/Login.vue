@@ -124,6 +124,7 @@ export default {
 	    		console.log(res)
 	    		localStorage.setItem('jwt',res.jwt)
 	    		localStorage.setItem('seller',JSON.stringify(res.seller))
+	    		localStorage.setItem('shopName',res.shopName)
 	    		this.$router.push('/home')
 	    	}).catch(err=>{
 	    		this.$indicator.close();
@@ -145,6 +146,7 @@ export default {
         	    		console.log(res)
         	    		localStorage.setItem('jwt',res.jwt)
         	    		localStorage.setItem('seller',JSON.stringify(res.seller))
+        	    		localStorage.setItem('shopName',res.shopName)
         	    		_this.$router.push('/home')
         	    	}).catch(err=>{
         	    		_this.$indicator.close();

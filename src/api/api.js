@@ -163,6 +163,10 @@ export const getShopAppraise = params => {
 export const getShopAppraiseById = id => {
     return ajax.get('seller/shopAppraise/' + id);
 };
+//店家回复
+export const commentReply = params => {
+    return ajax.put('seller/reply', params);
+};
 
 //营业状态-营业
 export const setBusinessOpen = () => {

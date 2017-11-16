@@ -61,7 +61,7 @@
 				<img src="../assets/images/empty-img.png" alt="">
 			</div>
 		</div>
-		<div class="add-goods" @click="addGoods">添加商品</div>
+		<!-- <div class="add-goods" @click="addGoods">添加商品</div> -->
 	</div>
 </template>
 <script>
@@ -281,7 +281,7 @@
 		/* overflow: hidden; */
 		/* zoom: 1; */
 		/* padding-bottom: 13.06vw; */
-		padding: 22.39vw 0 13.06vw;
+		padding-top: 22.39vw;
 	}
 	.order-lists{
 		box-sizing: border-box;
@@ -383,7 +383,7 @@
 		text-align: right;
 	}
 	.btn{
-		width: 18.66vw;
+		width: 20vw;
 		height: 5.33vw;
 		line-height: 5.33vw;
 		text-align: center;

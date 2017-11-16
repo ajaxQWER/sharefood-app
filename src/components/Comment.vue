@@ -47,7 +47,7 @@
 									</div>
 								</div>
 								<div class="reply-btn">
-									<button class="comment-filter-btn active-filter">回复</button>
+									<button class="comment-filter-btn active-filter" @click="replyAppraise(item.shopAppraiseId)">回复</button>
 								</div>
 							</li>
 						</ul>
@@ -64,7 +64,7 @@
 	</div>
 </template>
 <script>
-	import {getShopAppraiseHead,getShopAppraise,getShopAppraiseById} from '@/api/api'
+	import {getShopAppraiseHead,getShopAppraise,getShopAppraiseById,commentReply} from '@/api/api'
 	export default {
 		name: 'comment',
 		data: function(){
@@ -183,13 +183,45 @@
 			showReply: function(type, index, options){
 				if(type == 'reply'){
 					this.replyIndex = index;
-					this.reply = options;
+					this.reply = options;6
 				}else if(type == 'star'){
 					this.starIndex = index;
 					this.shopAppraise = options;
 				}
 				this.init = true;
 				this.showShopAppraise()
+			},
+			replyAppraise: function(id){
+				console.log(id)
+				this.$messagebox({
+					title: '',
+					message: '请输入回复内容',
+				  	showCancelButton: true,
+				  	showInput: true,
+				  	inputPlaceholder: '回复内容',
+				  	$type: 'prompt'
+				}).then(({value})=>{
+					// console.log(value)
+					if(!value){
+						return;
+					}
+					var params = {
+						commentContent: value,
+						shopAppraiseId: id
+					}
+					console.log(params)
+					this.$indicator.open();
+					commentReply(params).then(() => {
+						this.$indicator.close();
+						this.$toast({
+	            		    message: '操作成功',
+	            		    duration: 1000
+	            		})
+        				setTimeout(() => {
+        		            this.showShopAppraise()
+        		        }, 1500)
+					})
+				}).catch(()=>{});
 			}
 		}
 	}

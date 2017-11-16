@@ -128,7 +128,7 @@ export default {
     data: function() {
         return {
             loginShopId: JSON.parse(localStorage.getItem('seller')).shopId,
-            loginUser: JSON.parse(localStorage.getItem('seller')).shopName,
+            loginUser: localStorage.getItem('shopName'),
             shopSalesData: null,
             shopStatusImg: '',
             printerStatusImg: ''

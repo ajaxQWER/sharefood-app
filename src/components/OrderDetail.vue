@@ -66,7 +66,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="add-goods" @click="addGoods">添加商品</div>
+		<!-- <div class="add-goods" @click="addGoods">添加商品</div> -->
 	</div>
 </template>
 <script>
@@ -141,7 +141,7 @@
 		height: 100vh;
 		overflow: hidden;
 		zoom: 1;
-		padding: 13.06vw 0 14.39vw;
+		padding-top: 13.06vw;
 	}
 	.order-lists{
 		box-sizing: border-box;
