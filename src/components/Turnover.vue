@@ -85,7 +85,7 @@ export default {
                 }
             },
             series: [{
-                name: '',
+                name: '营业额',
                 type: 'line',
                 data: null,
                 itemStyle: {

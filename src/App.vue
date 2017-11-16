@@ -202,4 +202,13 @@ img[lazy=loading] {
     z-index: 9999!important;
 }
 
+.mint-msgbox input{
+    /*display: inline-block;*/
+    box-sizing: border-box;
+    height: 10vw;
+    font-size: 3.73vw;
+}
+.mint-msgbox-btn{
+    font-size: 3.73vw;
+}
 </style>

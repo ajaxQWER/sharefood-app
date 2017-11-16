@@ -39,7 +39,7 @@
 				<img src="../assets/images/empty-img.png" alt="">
 			</div>
 			<ul class="search-datalist">
-				<li v-for="(item,index) in searchData" :key="index" @click="fetchData(item.goodsId)">{{item.goodsName}}</li>
+				<li v-for="(item,index) in searchData" :key="index" @click="fetchData(item.goodsId,item.goodsName)">{{item.goodsName}}</li>
 			</ul>
     </mt-popup>
 	</div>
@@ -93,6 +93,7 @@ export default {
 			  	series: [{
 			    	type: 'line',
 			    	data: [],
+			    	name: '销售额',
 			    	itemStyle: {
 			      		normal: {
 			        		borderColor: '#05a2e9'
@@ -160,6 +161,7 @@ export default {
 				return;
 			}
 			getGoodsLists({params:{goodsNameLike: this.keywords,pageId: 1, pageSize: 9999}}).then(res => {
+
 				this.keywords = '';
 				this.$refs.searchBar.blur()
 				if(res.count > 0){
@@ -171,14 +173,16 @@ export default {
 				}
 			})
 		},
-		fetchData: function(goodsId){
+		fetchData: function(goodsId,goodsName){
 			//fetch data
 			console.log(goodsId)
+			this.line.series[0].name = goodsName;
 			this.popupVisible3 = false;
 			this.goodsId = goodsId;
 			this.getData();
 		},
 		closePopup: function(){
+			this.keywords = '';
 			this.popupVisible3 = false;
 			this.searchData = [];
 		}

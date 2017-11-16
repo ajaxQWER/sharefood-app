@@ -85,7 +85,7 @@ export default {
                 }
             },
             series: [{
-                name: '',
+                name: '订单量',
                 type: 'line',
                 data: null,
                 itemStyle: {

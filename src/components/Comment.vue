@@ -57,10 +57,25 @@
 						<img src="../assets/images/empty-img.png" alt="">
 					</div>
 				</div>
-				
+				<mt-popup v-model="popupVisible3" position="right" class="mint-popup-3" :modal="false">
+				    <div class="setting-header">
+				        <div class="nav-bar help-navbar">
+				            <div class="back" @click="closePopup"><img src="../assets/images/white-back.png" alt=""></div>
+				            <div class="nav-title">回复</div>
+				        </div>
+				    </div>
+				    <div class="reply-content">
+				        <div class="shopDetail-row">
+				        	<textarea class="reply-textarea" name="" id=""  v-model="commentContent" placeholder="请输入回复内容" maxlength="140"></textarea>
+				        </div>
+				        <div class="popup-reply">
+				            <button class="popup-reply-btn" @click="replyAction">回复</button>
+				        </div>
+				    </div>
+				</mt-popup>
 			</div>
 		</div>
-		<div class="add-goods" @click="addGoods">添加商品</div>
+		<!-- <div class="add-goods" @click="addGoods">添加商品</div> -->
 	</div>
 </template>
 <script>
@@ -73,7 +88,7 @@
 				pageId: 1,
 				counts: 0,
 				shopAppraise: '',
-				reply: false,
+				reply: true,
 				commentList: [],
 				init: true,
 				allLoaded: false,
@@ -82,12 +97,12 @@
 				isEmpty: false,
 				replyIndex: 1,
 				replyObj: [{
-					name: '未回复',
-					reply: false,
-					index: 1
-				},{
 					name: '已回复',
 					reply: true,
+					index: 1
+				},{
+					name: '未回复',
+					reply: false,
 					index: 2
 				}],
 				starIndex: 1,
@@ -115,7 +130,10 @@
 					name: '五星',
 					shopAppraise: '5',
 					index: 6
-				},]
+				}],
+				popupVisible3: false,
+				shopAppraiseId: 0,
+				commentContent: ''
 			}
 		},
 		created: function(){
@@ -183,7 +201,7 @@
 			showReply: function(type, index, options){
 				if(type == 'reply'){
 					this.replyIndex = index;
-					this.reply = options;6
+					this.reply = options;
 				}else if(type == 'star'){
 					this.starIndex = index;
 					this.shopAppraise = options;
@@ -192,36 +210,32 @@
 				this.showShopAppraise()
 			},
 			replyAppraise: function(id){
-				console.log(id)
-				this.$messagebox({
-					title: '',
-					message: '请输入回复内容',
-				  	showCancelButton: true,
-				  	showInput: true,
-				  	inputPlaceholder: '回复内容',
-				  	$type: 'prompt'
-				}).then(({value})=>{
-					// console.log(value)
-					if(!value){
-						return;
-					}
-					var params = {
-						commentContent: value,
-						shopAppraiseId: id
-					}
-					console.log(params)
-					this.$indicator.open();
-					commentReply(params).then(() => {
-						this.$indicator.close();
-						this.$toast({
-	            		    message: '操作成功',
-	            		    duration: 1000
-	            		})
-        				setTimeout(() => {
-        		            this.showShopAppraise()
-        		        }, 1500)
-					})
-				}).catch(()=>{});
+				this.shopAppraiseId = id;
+				this.popupVisible3 = true;
+			},
+			replyAction: function(){
+				var params = {
+					commentContent: this.commentContent,
+					shopAppraiseId: this.shopAppraiseId
+				}
+				console.log(params)
+				this.$indicator.open();
+				commentReply(params).then(() => {
+					this.$indicator.close();
+					this.$toast({
+            		    message: '操作成功',
+            		    duration: 1000,
+            		    className: 'goodscategory-toast'
+            		})
+    				setTimeout(() => {
+    		            this.closePopup()
+						this.showShopAppraise()
+    		        }, 1500)
+				})
+			},
+			closePopup: function(){
+				this.popupVisible3 = false;
+				this.commentContent = '';
 			}
 		}
 	}
@@ -240,7 +254,7 @@
 		height: 100vh;
 		overflow: hidden;
 		zoom: 1;
-		padding: 13.06vw 0 14.39vw;
+		padding-top: 13.06vw;
 	}
 	.comment-scroll-wrap{
 		box-sizing: border-box;
@@ -414,5 +428,44 @@
 	.loadmore{
 		text-align: center;
 		padding: 2.66vw;
+	}
+	.mint-popup-3 {
+	    width: 100%;
+	    height: 100%;
+	    background-color: #fff;
+	}
+	.mint-popup-3 .mint-button {
+		position: absolute;
+		width: 60px;
+		top: 0;
+		left: 0;
+	}
+	.reply-content{
+		margin-top: 2.66vw;
+	}
+	.shopDetail-row{
+		padding: 2.66vw;
+	}
+	.reply-textarea{
+		width: 100%;
+		min-height: 40vw;
+		box-sizing: border-box;
+		padding: 1.33vw;
+		outline: none;
+		resize: none;
+	}
+	.popup-reply{
+		padding: 0 2.66vw;
+	}
+	.popup-reply-btn{
+		width: 100%;
+	    height: 10.66vw;
+		background: url(../assets/images/help-navbar.jpg) no-repeat center center;
+		background-size: cover;
+		border: none;
+		outline: none;
+		border-radius: 5px;
+		font-size: 4.26vw;
+		color: #fff;
 	}
 </style>
