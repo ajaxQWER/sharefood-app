@@ -7,90 +7,93 @@
 			</div>
 		</div>
 		<div class="goodsDetail-content" v-if="goodsInfo">
-			<div class="goods-item">
-				<div class="row-title">商品图片</div>
-				<div class="row-value upload-img">
-					<img class="goods-imgage" :src="headerImage?headerImage:UPLOADURL + goodsInfo.goods.goodsImgUrl" alt="商品图片">
-				</div>
-				<div class="row-value upload-img upload">
-						<img class="goods-imgage" src="../assets/images/upload-btn.jpg" alt="点击上传" @click="popupVisible=true">
-				</div>
-			</div>
-			<div class="goods-item">
-				<div class="row-title">商品名称</div>
-				<div class="row-value">
-					<input type="text" placeholder="请输入商品名称" v-model="goodsInfo.goods.goodsName" maxlength="12">
-				</div>
-			</div>
-			<router-link :to="'/setGoodsCategory?goodsId='+goodsInfo.goods.goodsId+'&goodsCategoryList='+goodsInfo.goodsCategoryIdList" class="jump">
+			<div class="content">
 				<div class="goods-item">
-					<div class="row-title">商品分类</div>
-					<div class="row-value value-after">{{formatGoodsClass(goodsInfo.goods.goodsClassNames)}}</div>
+					<div class="row-title">商品图片</div>
+					<div class="row-value upload-img">
+						<img class="goods-imgage" :src="headerImage?headerImage:UPLOADURL + goodsInfo.goods.goodsImgUrl" alt="商品图片">
+					</div>
+					<div class="row-value upload-img upload">
+							<img class="goods-imgage" src="../assets/images/upload-btn.jpg" alt="点击上传" @click="popupVisible=true">
+					</div>
 				</div>
-			</router-link>
-			<div class="goods-item">
-				<div class="row-title">商品价格</div>
-				<div class="row-value">
-					<input type="text" placeholder="请输入商品价格" v-model="goodsInfo.goods.goodsPrice">
+				<div class="goods-item">
+					<div class="row-title">商品名称</div>
+					<div class="row-value">
+						<input type="text" placeholder="请输入商品名称" v-model="goodsInfo.goods.goodsName" maxlength="12">
+					</div>
 				</div>
+				<router-link :to="'/setGoodsCategory?goodsId='+goodsInfo.goods.goodsId+'&goodsCategoryList='+goodsInfo.goodsCategoryIdList" class="jump">
+					<div class="goods-item">
+						<div class="row-title">商品分类</div>
+						<div class="row-value value-after">{{formatGoodsClass(goodsInfo.goods.goodsClassNames)}}</div>
+					</div>
+				</router-link>
+				<div class="goods-item">
+					<div class="row-title">商品价格</div>
+					<div class="row-value">
+						<input type="text" placeholder="请输入商品价格" v-model="goodsInfo.goods.goodsPrice">
+					</div>
+				</div>
+				<div class="goods-item">
+					<div class="row-title">餐盒费</div>
+					<div class="row-value">
+						<input type="text" placeholder="请输入餐盒费" v-model="goodsInfo.goods.feeMeals">
+					</div>
+				</div>
+				<div class="goods-item">
+					<div class="row-title">商品简介</div>
+					<div class="row-value">
+						<textarea class="goods-intro" placeholder="最多255字" name="" id="" maxlength="255" v-model="goodsInfo.goods.goodsContent"></textarea>
+					</div>
+				</div>
+				<div class="save-goods" @click="updateGoods">保存</div>
 			</div>
-			<div class="goods-item">
-				<div class="row-title">餐盒费</div>
-				<div class="row-value">
-					<input type="text" placeholder="请输入餐盒费" v-model="goodsInfo.goods.feeMeals">
-				</div>
-			</div>
-			<div class="goods-item">
-				<div class="row-title">商品简介</div>
-				<div class="row-value">
-					<textarea class="goods-intro" placeholder="最多255字" name="" id="" maxlength="255" v-model="goodsInfo.goods.goodsContent"></textarea>
-				</div>
-			</div>
-			<div class="save-goods" @click="updateGoods">保存</div>
 		</div>
 		<div class="goodsDetail-content" v-else>
-			<div class="goods-item">
-				<div class="row-title">商品图片</div>
-				<div class="row-value upload-img">
-					<img class="goods-imgage" :src="headerImage?headerImage:''" alt="商品图片">
+			<div class="content">
+				<div class="goods-item">
+					<div class="row-title">商品图片</div>
+					<div class="row-value upload-img">
+						<img class="goods-imgage" :src="headerImage?headerImage:''" alt="商品图片">
+					</div>
+					<div class="row-value upload-img upload">
+						<img class="goods-imgage" src="../assets/images/upload-btn.jpg" alt="点击上传" @click="popupVisible=true">
+					</div>
 				</div>
-				<div class="row-value upload-img upload">
-					<img class="goods-imgage" src="../assets/images/upload-btn.jpg" alt="点击上传" @click="popupVisible=true">
+				<div class="goods-item">
+					<div class="row-title">商品名称</div>
+					<div class="row-value">
+						<input type="text" placeholder="请输入商品名称" v-model="newGoods.goods.goodsName" maxlength="12">
+					</div>
 				</div>
-			</div>
-			<div class="goods-item">
-				<div class="row-title">商品名称</div>
-				<div class="row-value">
-					<input type="text" placeholder="请输入商品名称" v-model="newGoods.goods.goodsName" maxlength="12">
+				<div class="goods-item" @click="showGoodsCategoryPopup">
+					<!-- <router-link to="/setGoodsCategory" class="jump"> -->
+						<div class="row-title">商品分类</div>
+						<div class="row-value value-after">{{newGoods.goods.goodsClassNames}}</div>
+					<!-- </router-link> -->
 				</div>
-			</div>
-			<div class="goods-item" @click="showGoodsCategoryPopup">
-				<!-- <router-link to="/setGoodsCategory" class="jump"> -->
-					<div class="row-title">商品分类</div>
-					<div class="row-value value-after">{{newGoods.goods.goodsClassNames}}</div>
-				<!-- </router-link> -->
-			</div>
-			<div class="goods-item">
-				<div class="row-title">商品价格</div>
-				<div class="row-value">
-					<input type="text" placeholder="请输入商品价格" v-model.number="newGoods.goods.goodsPrice">
+				<div class="goods-item">
+					<div class="row-title">商品价格</div>
+					<div class="row-value">
+						<input type="text" placeholder="请输入商品价格" v-model.number="newGoods.goods.goodsPrice">
+					</div>
 				</div>
-			</div>
-			<div class="goods-item">
-				<div class="row-title">餐盒费</div>
-				<div class="row-value">
-					<input type="text" placeholder="请输入餐盒费" v-model.number="newGoods.goods.feeMeals">
+				<div class="goods-item">
+					<div class="row-title">餐盒费</div>
+					<div class="row-value">
+						<input type="text" placeholder="请输入餐盒费" v-model.number="newGoods.goods.feeMeals">
+					</div>
 				</div>
-			</div>
-			<div class="goods-item">
-				<div class="row-title">商品简介</div>
-				<div class="row-value">
-					<textarea class="goods-intro" placeholder="最多255字" name="" id="" maxlength="255" v-model="newGoods.goods.goodsContent"></textarea>
+				<div class="goods-item">
+					<div class="row-title">商品简介</div>
+					<div class="row-value">
+						<textarea class="goods-intro" placeholder="最多255字" name="" id="" maxlength="255" v-model="newGoods.goods.goodsContent"></textarea>
+					</div>
 				</div>
+				<div class="save-goods" @click="updateGoods">保存</div>
 			</div>
-			<div class="save-goods" @click="updateGoods">保存</div>
 		</div>
-
 		<mt-popup
 		  v-model="popupVisible"
 		  position="bottom">
@@ -399,8 +402,15 @@
 }
 .goodsDetail-content{
     box-sizing: border-box;
+    height: 100vh;
+    overflow: hidden;
+	zoom: 1;
 	padding-top: 11.73vw;
 	padding-bottom: 13.2vw;
+}
+.content{
+	height: 100%;
+	overflow: scroll;
 }
 .goods-imgage{
 	display: block;

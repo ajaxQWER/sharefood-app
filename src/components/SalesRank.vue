@@ -57,7 +57,7 @@
 		methods: {
 			fetchData: function(){
 				this.$indicator.open();
-				getSalesRank({params: {quertDate: this.dateNow}}).then(res => {
+				getSalesRank({params: {queryDate: this.dateNow}}).then(res => {
 					console.log(res)
 					if(res.length){
 						this.rankData = res;

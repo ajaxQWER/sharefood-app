@@ -12,13 +12,15 @@
 				<img src="../assets/images/empty-img.png" alt="">
 			</div>
 			<ul class="activity-lists" v-else>
-				<li v-for="(item,index) in activityLists" :key="index">
+				<li v-for="(item,index) in activityLists" :key="index" >
 					<div class="activity-content">
-						<div class="activity-info">
-							<div class="activity-title"><span :class="['activity-icon', formatClassByType(item.activityType)]">{{formatActivityIconByType(item.activityType)}}</span>{{item.activityName}}</div>
-							<div class="activity-type">{{formatActivityType(item.activityType)}}</div>
-						</div>
-						<div class="activity-deadline">有效期：{{moment(item.beginTime).format('YYYY-MM-DD')}} 至 {{item.endTime?moment(item.endTime).format('YYYY-MM-DD'):'长期'}}</div>
+						<router-link :to="formatRouter(item.activityType,item.activityId)" class="link">
+							<div class="activity-info">
+								<div class="activity-title"><span :class="['activity-icon', formatClassByType(item.activityType)]">{{formatActivityIconByType(item.activityType)}}</span>{{item.activityName}}</div>
+								<div class="activity-type">{{formatActivityType(item.activityType)}}</div>
+							</div>
+							<div class="activity-deadline">有效期：{{moment(item.beginTime).format('YYYY-MM-DD')}} 至 {{item.endTime?moment(item.endTime).format('YYYY-MM-DD'):'长期'}}</div>
+						</router-link>
 					</div>
 					<div class="activity-delete-btn" @click="deleteActivity(item.activityId)">删除</div>
 				</li>
@@ -110,6 +112,22 @@
 					case 'SPECIFIC':
 						return 'type-1';
 				}
+			},
+			formatRouter: function(type, id){
+				switch (type) {
+					case 'FIRST':
+						return '/firstReduceActivity?id=' + id;
+					case 'DELGOLD':
+						return '/fullReduceActivity?id=' + id;
+					case 'COMPLIMENTARY':
+						return '';
+					case 'SPECIALPRICES':
+						return '/onSales?id=' + id;
+					case 'SALE':
+						return '折';
+					case 'SPECIFIC':
+						return '/elseActivity?id=' + id;
+				}
 			}
 		}
 	}
@@ -131,8 +149,8 @@
 		padding: 3.865vw 2.345vw;
 	}
 	.activity-add-btn img{
-		width: 100%;
-		height: 100%;
+		width: 4vw;
+		height: 4vw;
 	}
 	.activityList-content{
 	    box-sizing: border-box;
@@ -217,5 +235,12 @@
 	    background-color: #ef4f4f;
 	    color: #fff;
 	    font-size: 3.73vw;
+	}
+	.link{
+		display: inline-block;
+		overflow: hidden;
+		zoom: 1;
+		text-decoration: none;
+		color: #808080;
 	}
 </style>

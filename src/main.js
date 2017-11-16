@@ -21,6 +21,15 @@ const router = new VueRouter({
       return { x: 0, y: 0 }
     }
 })
+if (/Android/gi.test(navigator.userAgent)) {
+    window.addEventListener('resize', function() {
+        if (document.activeElement.tagName == 'INPUT' || document.activeElement.tagName == 'TEXTAREA') {
+            window.setTimeout(function() {
+                document.activeElement.scrollIntoViewIfNeeded();
+            }, 0);
+        }
+    })
+}
 
 
 //正式

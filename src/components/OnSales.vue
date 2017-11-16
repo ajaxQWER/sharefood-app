@@ -24,29 +24,25 @@
 			      	<div class="add-sales-goods">
 			      		<button @click="addOnSalesGoods">商品管理</button>
 			      	</div>
-			      	<div class="on-sales-goods-table">
-			      		<table>
-			      			<thead>
-			      				<tr>
-			      					<th>商品名称</th>
-			      					<th>原价</th>
-			      					<th>促销价</th>
-			      				</tr>
-			      			</thead>
-			      			<tbody>
-			      				<tr>
-			      					<td>湘西霸王鸭</td>
-			      					<td>￥24</td>
-			      					<td>￥18</td>
-			      				</tr>
-			      				<tr>
-			      					<td>湘西霸王鸭</td>
-			      					<td>￥24</td>
-			      					<td>￥18</td>
-			      				</tr>
-			      			</tbody>
-			      		</table>
-			      	</div>
+		      		<table class="on-sales-goods-table" v-if="goodsLists.length">
+		      			<thead>
+		      				<tr>
+		      					<th>商品名称</th>
+		      					<th>原价</th>
+		      					<th>促销价</th>
+		      				</tr>
+		      			</thead>
+		      			<tbody>
+		      				<tr v-for="(item,index) in goodsLists" :key="index">
+		      					<td>{{item.goodsName}}</td>
+		      					<td>￥24</td>
+		      					<td>￥18</td>
+		      				</tr>
+		      			</tbody>
+		      		</table>
+		      		<div v-else class="empty">
+						<img src="../assets/images/empty-img.png" alt="">
+					</div>
 			    </div>
 		  	</div>
 		</div>
@@ -55,7 +51,7 @@
 	</div>
 </template>
 <script>
-	import {addActivity} from '@/api/api'
+	import {getActivityLists,addActivity,updateActivity,getActivityGoods} from '@/api/api'
 	export default {
 		name: 'OnSales',
 		data: function(){
@@ -63,7 +59,8 @@
 				beginTime: Date.now(),
 				endTime: '',
 				startDate: '',
-				endDate: ''
+				endDate: '',
+				goodsLists: []
 			}
 		},
 		created: function(){
@@ -73,6 +70,24 @@
 			var thisEndDate = thisYear + '-12-31';
 			this.startDate = new Date(thisStartDate);
 			this.endDate = new Date(thisEndDate);
+
+			var id = this.$route.query.id;
+			if(id){
+			    this.$indicator.open();
+			    getActivityLists({params: {activityId: id}}).then(res => {
+			        console.log(res)
+			        var data = res.list[0];
+			        this.beginTime = data.beginTime;
+			        this.endTime = data.endTime;
+			        this.$indicator.close();
+			    })
+			    getActivityGoods(id).then(res => {
+			    	console.log(res)
+			    	if(res.length){
+			    		this.goodsLists = res;
+			    	}
+			    })
+			}
 		},
 		methods: {
 			setBeginTime: function(value){
@@ -103,9 +118,17 @@
 				    endTime: this.endTime,
 				    isValid: true,
 				}
-				addActivity(activityParams).then(res => {
-					console.log(res)
-				})
+				var id = this.$route.query.id;
+				if(id){
+					this.$router.push('/goodsManager?type=sales&id='+ id);
+				}else{
+	            	this.$indicator.open();
+					addActivity(activityParams).then(res => {
+						console.log(res)
+		            	this.$indicator.close();
+						this.$router.push('/goodsManager?type=sales&id='+ res.activityId);
+					})
+				}
 			}
 		}
 	}
@@ -124,7 +147,7 @@
 		height: 100vh;
 		overflow: hidden;
 		zoom: 1;
-		padding: 13.06vw 0 14.39vw;
+		padding-top: 13.06vw;
 	}
 	.shopDetail-row{
 		margin-top: 2.66vw;
@@ -171,7 +194,7 @@
 		float: right;
 	}
 	.OnSales-name input{
-		display: block;
+		display: inline-block;
 		width: 64.66vw;
 		height: 6vw;
 		font-size: 3.72vw;
@@ -180,5 +203,30 @@
 		border: 1px solid #f2f2f2;
 		border-radius: 3px;
 		outline: none;
+	}
+	.add-sales-goods{
+		padding: 2.66vw 0;
+	}
+	.add-sales-goods button{
+		display: inline-block;
+		height: 6.4vw;
+		line-height: 6.4vw;
+		background-color: #fff;
+		border: 1px solid #808080;
+		outline: none;
+		color: #808080;
+		border-radius: 3px;
+		font-size: 3.73vw;
+	}
+	.on-sales-goods-table{
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 3.73vw;
+	}
+	.on-sales-goods-table th,
+	.on-sales-goods-table td{
+		text-align: center;
+		border: 1px solid #808080;
+		line-height: 8vw;
 	}
 </style>

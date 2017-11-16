@@ -26,8 +26,7 @@
                     </router-link>
                 </div>
                 <div class="column flex">
-                    <router-link to="/onSales
-">
+                    <router-link to="/onSales">
                         <div class="column-item flex-1">
                             <img src="../assets/images/bargain-goods.png" alt="">
                         </div>

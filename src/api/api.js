@@ -239,6 +239,14 @@ export const deleteActivityById = activityId => {
 export const addActivity = params => {
     return ajax.put('seller/activity', params);
 };
+//修改活动
+export const updateActivity = (id, params) => {
+    return ajax.post('seller/activity/' + id, params);
+};
+//修改活动
+export const getActivityGoods = id => {
+    return ajax.get('seller/activityGoods/' + id);
+};
 
 //短信验证码
 export const getPhoneCode = phoneNumber => {
