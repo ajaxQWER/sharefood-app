@@ -45,7 +45,7 @@
             <div class="setting-header">
                 <div class="nav-bar help-navbar">
                     <div class="back"></div>
-                    <div class="nav-title">打印设置</div>
+                    <div class="nav-title">绑定设备</div>
                 </div>
             </div>
             <div class="bindPrinter">
@@ -217,10 +217,16 @@ export default {
 }
 
 .row-title {
+    width: 18vw;
     font-size: 4.26vw;
     display: inline-block;
     float: left;
     line-height: 6.66vw;
+    text-align:justify;
+    text-justify:distribute-all-lines;/*ie6-8*/
+    text-align-last:justify;/* ie9*/
+    -moz-text-align-last:justify;/*ff*/
+    -webkit-text-align-last:justify;/*chrome 20+*/
 }
 
 .row-value {
@@ -269,6 +275,7 @@ export default {
 
 .deviceId,
 .password {
+    width: 70vw;
     float: left;
     margin-left: 3.33vw;
 }
@@ -276,6 +283,7 @@ export default {
 .deviceId input,
 .password input {
     display: inline-block;
+    width: 100%;
     line-height: 6.66vw;
     border: none;
     outline: none;
