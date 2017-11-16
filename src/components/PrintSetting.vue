@@ -154,11 +154,15 @@
         })
       },
       unbind: function () {
-        unbindPrinter().then(res => {
-          console.log(res);
-          this.$toast({message:'解绑成功',duration: 1000});
-          this.getPrinter();
-        })
+          this.$messagebox.confirm('确定解绑打印机?').then(action => {
+              unbindPrinter().then(res => {
+                  console.log(res);
+                  this.$toast({message: '解绑成功', duration: 1000});
+                  this.getPrinter();
+              })
+          }).catch(() => {
+              this.$toast({message:'已取消',duration: 1000})
+          });
       },
       closePopup: function(){
         this.popupVisible3 = false;
