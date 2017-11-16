@@ -41,6 +41,10 @@
 		    						</div>
 		    					</div>
 		    					<div v-else class="operate-btn">
+		    						<div v-if="item.orderStatus=='PAYED'">
+			    						<button @click.prevent="cancelOrder(item.orderId)" class="btn">取消订单</button>
+			    						<button @click.prevent="acceptOrder(item.orderId,item.orderType)" class="btn deal-btn">接单</button>
+		    						</div>
 		    						<div v-if="item.orderStatus=='MERCHANT_CONFIRM_RECEIPT'">
 			    						<button @click.prevent="finishOrder(item.orderId)" class="btn deal-btn">完成</button>
 		    						</div>
