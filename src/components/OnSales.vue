@@ -35,8 +35,8 @@
 		      			<tbody>
 		      				<tr v-for="(item,index) in goodsLists" :key="index">
 		      					<td>{{item.goodsName}}</td>
-		      					<td>￥24</td>
-		      					<td>￥18</td>
+		      					<td>￥{{item.goodsPrice}}</td>
+		      					<td>￥{{item.specialsPrice}}</td>
 		      				</tr>
 		      			</tbody>
 		      		</table>
@@ -71,7 +71,7 @@
 			this.startDate = new Date(thisStartDate);
 			this.endDate = new Date(thisEndDate);
 
-			var id = this.$route.query.id;
+			var id = this.$route.query.id || localStorage.getItem('activityId');
 			if(id){
 			    this.$indicator.open();
 			    getActivityLists({params: {activityId: id}}).then(res => {
@@ -86,6 +86,7 @@
 			    	if(res.length){
 			    		this.goodsLists = res;
 			    	}
+			        this.$indicator.close();
 			    })
 			}
 		},
@@ -118,7 +119,7 @@
 				    endTime: this.endTime,
 				    isValid: true,
 				}
-				var id = this.$route.query.id;
+				var id = this.$route.query.id || localStorage.getItem('activityId');
 				if(id){
 					this.$router.push('/goodsManager?type=sales&id='+ id);
 				}else{

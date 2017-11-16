@@ -124,7 +124,7 @@
 					case 'SPECIALPRICES':
 						return '/onSales?id=' + id;
 					case 'SALE':
-						return '折';
+						return '/onDiscount?id=' + id;
 					case 'SPECIFIC':
 						return '/elseActivity?id=' + id;
 				}

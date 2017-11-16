@@ -33,6 +33,7 @@ import FullReduceActivity from '@/components/FullReduceActivity.vue'  //购满�
 import FullSendActivity from '@/components/FullSendActivity.vue'  //购满就送 活动
 import ActivityList from '@/components/ActivityList.vue'  //活动管理-列表
 import OnSales from '@/components/OnSales.vue'  //特价商品
+import OnDiscount from '@/components/OnDiscount.vue'  //特价商品
 import GoodsManager from '@/components/GoodsManager.vue'  //特价商品-商品管理
 let routes = [{
     path: '/login',
@@ -170,6 +171,10 @@ let routes = [{
     path: '/onSales',
     component: OnSales,
     name: 'onSales'
+},{
+    path: '/onDiscount',
+    component: OnDiscount,
+    name: 'onDiscount'
 },{
     path: '/goodsManager',
     component: GoodsManager,

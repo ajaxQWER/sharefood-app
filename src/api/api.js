@@ -247,6 +247,14 @@ export const updateActivity = (id, params) => {
 export const getActivityGoods = id => {
     return ajax.get('seller/activityGoods/' + id);
 };
+//特价商品
+export const setSalesActivityGoods = (id,params) => {
+    return ajax.put('seller/activity/specialsGoods/' + id, params);
+};
+//打折商品
+export const setDiscountActivityGoods = (id,params) => {
+    return ajax.put('seller/activity/discountGoods/' + id, params);
+};
 
 //短信验证码
 export const getPhoneCode = phoneNumber => {

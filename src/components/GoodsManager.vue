@@ -29,16 +29,16 @@
 	                        <td>{{item.goodsName}}</td>
 	                        <td>￥{{item.goodsPrice}}</td>
 	                        <td v-if="type=='sales'">
-	                            <input type="number" v-model="item.promotionPrice">
+	                            <input type="number" v-model="item.promotionPrice" :disabled="item.hasActivity">
 	                        </td>
 	                        <td v-else>
-	                            <input type="number" v-model="item.discount">
+	                            <input type="number" v-model="item.discount" :disabled="item.hasActivity">
 	                        </td>
 	                        <td>
-	                            <input type="number" v-model="item.limitation">
+	                            <input type="number" v-model="item.limitation" :disabled="item.hasActivity">
 	                        </td>
 	                        <td>
-	                            <input type="checkbox" name="goods" v-model="item.isActivity">
+	                            <input type="checkbox" name="goods" v-model="item.isActivity" :disabled="item.hasActivity">
 	                        </td>
 	                    </tr>
 	                </tbody>
@@ -52,7 +52,7 @@
     </div>
 </template>
 <script>
-import { getGoodsLists, addActivity, updateActivity } from '@/api/api'
+import { getGoodsLists, setSalesActivityGoods,setDiscountActivityGoods } from '@/api/api'
 export default {
     name: 'goodsManager',
     data: function() {
@@ -63,12 +63,12 @@ export default {
         }
     },
     created: function() {
+        var id = this.$route.query.id;
         var type = this.$route.query.type;
         this.type = type;
         if(type == 'sales'){
         	this.$indicator.open();
         	getGoodsLists({ params: { pageSize: 9999 } }).then(res => {
-        	    console.log(res)
         	    this.$indicator.close();
         	    if (res.count > 0) {
         	        this.isEmpty = false;
@@ -77,9 +77,10 @@ export default {
         	        		goodsName: item.goodsName,
         	        		goodsId: item.goodsId,
         	        		goodsPrice: item.goodsPrice,
-        	        		promotionPrice: null,
-        	        		limitation: null,
-        	        		isActivity: false
+        	        		promotionPrice: item.activityGoods ? item.activityGoods.specialsPrice : null,
+        	        		limitation: item.activityGoods ? item.activityGoods.limitedQuantity : null,
+        	        		isActivity: item.activityGoods ? true : false,
+        	        		hasActivity: item.activityGoods && (item.activityGoods.activityId != id) ? true : false
         	        	})
         	        })
         	    } else {
@@ -89,7 +90,7 @@ export default {
         }else{
             this.$indicator.open();
             getGoodsLists({ params: { pageSize: 9999 } }).then(res => {
-                console.log(res)
+            	console.log(res.list)
                 this.$indicator.close();
                 if (res.count > 0) {
                     this.isEmpty = false;
@@ -98,9 +99,10 @@ export default {
                     		goodsName: item.goodsName,
                     		goodsId: item.goodsId,
         	        		goodsPrice: item.goodsPrice,
-                    		discount: null,
-                    		limitation: null,
-                    		isActivity: false
+                    		discount:  item.activityGoods ? item.activityGoods.discount : null,
+                    		limitation: item.activityGoods ? item.activityGoods.limitedQuantity : null,
+                    		isActivity: item.activityGoods ? true : false,
+                    		hasActivity: item.activityGoods && (item.activityGoods.activityId != id) ? true : false
                     	})
                     })
                 } else {
@@ -108,22 +110,54 @@ export default {
                 }
             })
         }
+        console.log(this.goodsLists)
     },
     methods: {
         saveActivity: function() {
-        	// console.log(this.goodsLists)
         	var id = this.$route.query.id;
         	var params = {}
         	this.goodsLists.forEach((item) => {
-				params[item.goodsId] = {
-					goodsId: item.goodsId,
-					activityId: id,
-					specialsPrice: item.promotionPrice,
-					discount: item.discount,
-					limitedQuantity: item.limitation
-				}
+        		if(item.isActivity && !item.hasActivity){
+					params[item.goodsId] = {
+						goodsId: item.goodsId,
+						activityId: id,
+						specialsPrice: item.promotionPrice,
+						discount: item.discount,
+						limitedQuantity: item.limitation
+					}
+        		}
         	})
-        	console.log(params)
+        	if(this.type == 'sales'){
+            	this.$indicator.open();
+        		setSalesActivityGoods(id,params).then(res => {
+        			console.log(res)
+            		this.$indicator.open();
+            		this.$toast({
+            		    message: '操作成功',
+            		    duration: 1000
+            		})
+            		localStorage.setItem('activityId',id)
+            		setTimeout(() => {
+                        this.$router.isBack = true;
+                        this.$router.back()
+                    }, 1500)
+        		})
+        	}else{
+		    	this.$indicator.open();
+				setDiscountActivityGoods(id,params).then(res => {
+					console.log(res)
+		    		this.$indicator.open();
+		    		this.$toast({
+		    		    message: '操作成功',
+		    		    duration: 1000
+		    		})
+		    		localStorage.setItem('activityId',id)
+		    		setTimeout(() => {
+		                this.$router.isBack = true;
+		                this.$router.back()
+		            }, 1500)
+				})
+        	}
         }
     }
 }
