@@ -15,15 +15,15 @@
 				<li v-for="(item,index) in bonusList" :key="index">
 					<div class="bonus-info">
 						<div class="bonus-value">
-							<div class="bonus-face">￥<span>12</span></div>
-							<div class="bonus-condition">满30元可用</div>
+							<div class="bonus-face">￥<span>{{item.money}}</span></div>
+							<div class="bonus-condition">满{{item.minimum}}元可用</div>
 						</div>
 						<div class="bonus-detail">
-							<div class="bonus-name">红包名称红包名称红包名称红包名称</div>
-							<div class="bonus-deadline">2017-11-18到期</div>
+							<div class="bonus-name">{{item.couponName}}</div>
+							<div class="bonus-deadline">{{moment(item.endTime).format('YYYY-MM-DD HH:mm')}}到期</div>
 						</div>
 					</div>
-					<div class="bonus-del-btn" @click="deleteBonus()">删除</div>
+					<div class="bonus-del-btn" @click="deleteBonus(item.couponId)">删除</div>
 				</li>
 			</ul>
 		</div>
@@ -40,10 +40,34 @@
 			}
 		},
 		created: function(){
-
+			this.getBonusList()
 		},
 		methods: {
-
+			getBonusList: function(){
+        		this.$indicator.open();
+				getBonusLists({params: {pageSize: 9999}}).then(res => {
+					console.log(res)
+        			this.$indicator.close();
+					if(res.count > 0){
+						this.bonusList = res.list;
+						this.isEmpty = false;
+					}else{
+						this.isEmpty = true;
+					}
+				})
+			},
+			deleteBonus: function(id){
+				console.log(id)
+				return
+				this.$messagebox.confirm('确定删除该红包?').then(() => {
+				    deleteBonusById(id).then(() => {
+				        this.$toast({ message: '操作成功', duration: 1000 })
+				        setTimeout(() => {
+				            this.getBonusList()
+				        }, 1500)
+				    })
+				}).catch(() => {});
+			}
 		}
 	}
 </script>

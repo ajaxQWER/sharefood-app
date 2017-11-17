@@ -20,7 +20,7 @@
                 <table class="date-num">
                     <tbody>
                         <tr v-for="(item,index) in customers">
-                            <td>{{moment(item.finishDayTime).format('YYYY/MM/DD')}}</td>
+                            <td>{{moment(item.finishDay).format('YYYY/MM/DD')}}</td>
                             <td>{{item.newCustomerCount}}</td>
                         </tr>
                     </tbody>
@@ -127,9 +127,9 @@ export default {
         getNewCustomerTendency({ params: { days: 7 } }).then(res => {
             console.log(res);
             res.sort((a, b) => {
-                return a.finishDayTime - b.finishDayTime;
+                return a.finishDay - b.finishDay;
             }).forEach((item) => {
-                _this.line.xAxis.data.push(_this.moment(item.finishDayTime).format('MM-DD'));
+                _this.line.xAxis.data.push(_this.moment(item.finishDay).format('MM-DD'));
                 _this.line.series[0].data.push(item.newCustomerCount);
                 _this.loading = false;
             })
