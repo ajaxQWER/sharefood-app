@@ -17,14 +17,8 @@
                 <div class="shopDetail-col">
                     <div class="row-title">自助领取</div>
                     <div class="setBonus-name">
-                        <div class="radio">
-                            <input type="radio" name="automatic" value="0">
-                            <span>不允许</span>
-                        </div>
-                        <div class="radio">
-                            <input type="radio" name="automatic" value="1" checked>
-                            <span>允许</span>
-                        </div>
+                        <label for="allow"><input type="radio" name="automatic" id="allow" :value="true" v-model="isAllow">允许</label>
+                        <label for="notAllow"><input type="radio" name="automatic" id="notAllow" :value="false" v-model="isAllow">不允许</label>
                     </div>
                 </div>
                 <div class="shopDetail-col">
@@ -74,7 +68,8 @@
                 endTime: '',
                 startDate: '',
                 endDate: '',
-                activityName: ''
+                activityName: '',
+                isAllow: true
             }
         },
         created: function() {
@@ -112,6 +107,8 @@
                 this.$refs.end.open()
             },
             save: function() {
+                console.log(this.isAllow)
+                return
                 if (this.endTime && this.beginTime > this.endTime) {
                     this.$toast({
                         message: '结束时间不能小于开始时间',
@@ -236,10 +233,10 @@
     .setBonus-name {
         display: inline-block;
         height: 6.66vw;
+        line-height: 6.66vw;
         float: right;
     }
-    .setBonus-name input {
-        display: block;
+    .setBonus-name input[type='text'], .setBonus-name input[type='number']{
         width: 64.66vw;
         height: 6vw;
         font-size: 3.72vw;
@@ -248,19 +245,11 @@
         border: none;
         outline: none;
     }
-    .radio{
-        float: right;
-        text-align: center;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        margin-left: 5.33vw;
+    .setBonus-name label{
+        margin-left: 2.66vw;
+        vertical-align: middle;
     }
 
-    .setBonus-name input[type='radio']{
-        width: 5vw;
-        display: inline-block;
-    }
     input::placeholder,
     input:-ms-input-placeholder,
     input:-moz-placeholder,
