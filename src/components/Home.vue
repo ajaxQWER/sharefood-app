@@ -109,15 +109,21 @@
 			    	</div>
 			    </router-link> -->
             </div>
-            <!-- <div class="column flex">
-		    	<router-link to="/bills" class="link">
+            <div class="column flex">
+                <router-link to="/bonusList" class="link">
+                    <div class="column-item flex-1">
+                        <img src="../assets/images/shop-item13.png" alt="">
+                        <div class="column-name">红包</div>
+                    </div>
+                </router-link>
+		    	<!-- <router-link to="/bills" class="link">
 			    	<div class="column-item flex-1">
 		    			<img src="../assets/images/shop-item10.png" alt="">
 		    			<div class="column-name">对账单</div>
 			    	</div>
-			    </router-link>
-		    	<div class="column-item flex-1 column-null"></div>
-		    </div> -->
+			    </router-link> -->
+		    	<!-- <div class="column-item flex-1 column-null"></div> -->
+		    </div>
         </div>
     </div>
 </template>
