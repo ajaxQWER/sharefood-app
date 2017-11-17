@@ -10,18 +10,20 @@
             <div class="shopDetail-row">
                 <div class="shopDetail-col">
                     <div class="row-title">开始时间</div>
-                    <div class="row-value"></div>
-                    <div class="selectTime" @click="focus">{{beginTime}}</div>
+                    <div class="selectTime" @click="selectBeginTime">
+                        <div class="row-value">{{this.moment(beginTime).format('YYYY-MM-DD')}}</div>
+                    </div>
                 </div>
                 <div class="shopDetail-col">
                     <div class="row-title">结束时间</div>
-                    <div class="row-value"></div>
-                    <div class="selectTime" @click="focus1">{{endTime}}</div>
+                    <div class="selectTime" @click="selectEndTime">
+                        <div class="row-value">{{endTime?this.moment(endTime).format('YYYY-MM-DD'):''}}</div>
+                    </div>
                 </div>
                 <div class="shopDetail-col">
                     <div class="row-title">最低金额</div>
                     <div class="activity-name">
-                        <input type="number" placeholder="0.00">
+                        <input type="number" placeholder="请输入最低金额" v-model="money">
                     </div>
                 </div>
                 <div class="shopDetail-col">
@@ -37,7 +39,7 @@
                 <div class="shopDetail-col">
                     <div class="row-title">红包数量</div>
                     <div class="activity-name">
-                        <input type="number" placeholder="1">
+                        <input type="number" placeholder="请输入红包数量" v-model="couponCount">
                     </div>
                 </div>
             </div>
@@ -52,10 +54,13 @@ export default {
     name: 'firstReduceActivity',
     data: function() {
         return {
-            beginTime: this.moment(Date.now()).format('YYYY-MM-DD'),
-            endTime: '不限制',
+            beginTime: Date.now(),
+            endTime: '',
             startDate: '',
-            endDate: ''
+            endDate: '',
+            money: '',
+            couponCount: '',
+            COMPLIMENTARY:''
         }
     },
     created: function() {
@@ -68,21 +73,15 @@ export default {
     },
     methods: {
         handleChange: function(value) {
-            console.log(value);
-            this.beginTime = this.moment(value).format('YYYY-MM-DD')
-            //TODO
-            //fetch data
+            this.beginTime = new Date(value).getTime();
         },
         handleChange1: function(value) {
-            console.log(value);
-            this.endTime = this.moment(value).format('YYYY-MM-DD')
-            //TODO
-            //fetch data
+            this.endTime = new Date(value).getTime();
         },
-        focus: function() {
+        selectBeginTime: function() {
             this.$refs.start.open()
         },
-        focus1: function() {
+        selectEndTime: function() {
             this.$refs.end.open()
         }
     }
@@ -132,12 +131,19 @@ export default {
 }
 
 .row-value {
+    width: 21vw;
+    text-align: center;
     display: inline-block;
-    float: right;
-    margin-top: 0.4vw;
+    vertical-align: middle;
+    margin-top: 0.8vw;
 }
 
-.row-value:after {
+.selectTime {
+    display: inline-block;
+    float: right;
+}
+
+.selectTime:after {
     content: '';
     display: inline-block;
     width: 2vw;
@@ -147,39 +153,28 @@ export default {
     vertical-align: middle;
     margin-top: 0.8vw;
 }
-
-.selectTime {
-    display: inline-block;
-    float: right;
-    margin: 0.8vw 0.4vw 0 0;
-}
-
 .activity-name {
     display: inline-block;
-    height: 6.66vw;
+    width: 70vw;
+    line-height: 6.66vw;
     float: right;
-    border: 1px solid #f2f2f2;
-    border-radius: 3px;
+    text-align: right;
 }
 
 .activity-name input {
-    display: block;
-    width: 64.66vw;
-    height: 6vw;
+    display: inline-block;
+    width: 96%;
+    height: 100%;
     font-size: 3.72vw;
     text-align: right;
-    padding-right: 2.66vw;
     outline: none;
     border: none;
 }
 
 .activity-name select {
-    display: block;
-    width: 67.2vw;
-    height: 6.67vw;
+    height: 6.66vw;
     font-size: 3.72vw;
-    text-align: right;
-    padding: 0.1vw 2.67vw;
+    color: #808080;
     border: none;
     outline: none;
 }

@@ -18,7 +18,7 @@ ajax.interceptors.request.use(function(config) {
     return config;
 }, function(err) {
     console.error(err);
-    MintUI.Toast({message:'请求发生错误,请稍后再试!',duration: 1500});
+    MintUI.Toast({message:'请求发生错误,请稍后再试!',duration: 1500,className:'goodscategory-toast'});
     MintUI.Indicator.close();
     //Do something with request error
     return Promise.reject(err);
@@ -27,7 +27,7 @@ ajax.interceptors.request.use(function(config) {
 ajax.interceptors.response.use(function(res) {
     //在这里对返回的数据进行处理
     if (!res.data.status) {
-        MintUI.Toast({message:res.data.message,duration: 1500});
+        MintUI.Toast({message:res.data.message,duration: 1500,className:'goodscategory-toast'});
         MintUI.Indicator.close();
         if(res.data.errorCode == 401){
             console.log('请登录')
@@ -39,7 +39,7 @@ ajax.interceptors.response.use(function(res) {
     return (res.data.data?res.data.data:res.data.status);
 }, function(err) {
     console.error(err);
-    MintUI.Toast({message:'响应发生错误,请稍后再试!',duration: 1500});
+    MintUI.Toast({message:'响应发生错误,请稍后再试!',duration: 1500,className:'goodscategory-toast'});
     MintUI.Indicator.close();
     //Do something with response error
     return Promise.reject(err);

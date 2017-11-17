@@ -44,10 +44,10 @@
                     <div class="row-title">当前版本</div>
                     <div class="row-key">1.0.0</div>
                 </div>
-                <!-- <div class="shopDetail-col">
+                <div class="shopDetail-col" @click="cleanCache">
                     <div class="row-title">清理缓存</div>
-                    <div class="row-key">0KB</div>
-                </div> -->
+                    <div class="row-key"></div>
+                </div>
             </div>
             <div class="shopDetail-row">
                 <div class="shopDetail-col contact">客服电话&emsp;<a class="contact" href="tel:028-67673333">028-67673333</a></div>
@@ -80,11 +80,17 @@ export default {
                 // this.$toast({message:'已取消',duration: 1000})
             });
         },
-        test() {
-
-        },
-        tese: function() {
-
+        cleanCache() {
+            var ua = navigator.userAgent.toLocaleLowerCase();
+            if(ua.indexOf('iphone') == -1){
+                //安卓
+                android.cleanCache()
+            }else{
+                //ios
+                this.setupWebViewJavascriptBridge(function(bridge) {
+                    bridge.callHandler('cleanCache', null, null)
+                })
+            }
         }
     }
 }

@@ -59,7 +59,7 @@
                     <div class="shopDetail-col">
                         <div class="row-title">设备密码</div>
                         <div class="password">
-                            <input type="password" placeholder="请输入设备密码" v-model="secretKey">
+                            <input type="text" placeholder="请输入设备密码" v-model="secretKey">
                         </div>
                     </div>
                 </div>

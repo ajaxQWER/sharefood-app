@@ -45,7 +45,8 @@ html {
     -webkit-tap-highlight-color: transparent;
 }
 
-input[type="input"]{
+input[type="input"],
+select{
     background-color: transparent;
     border-color: transparent;
     -webkit-appearance: none;
@@ -203,7 +204,6 @@ img[lazy=loading] {
 }
 
 .mint-msgbox input{
-    /*display: inline-block;*/
     box-sizing: border-box;
     height: 10vw;
     font-size: 3.73vw;

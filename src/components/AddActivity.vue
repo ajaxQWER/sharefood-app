@@ -9,11 +9,11 @@
         <div class="addActivity-content">
             <div class="column-wrap">
                 <div class="column flex">
-                    <!-- <router-link to="/fullSendActivity" class="link"> -->
-                    <div class="column-item flex-1" @click="tips">
+                    <router-link to="/fullSendActivity" class="link">
+                    <div class="column-item flex-1">
                         <img src="../assets/images/full-send.png" alt="">
                     </div>
-                    <!-- </router-link> -->
+                    </router-link>
                     <router-link to="/firstReduceActivity" class="link">
                         <div class="column-item flex-1">
                             <img src="../assets/images/first-reduce.png" alt="">
