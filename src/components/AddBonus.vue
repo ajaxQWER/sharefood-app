@@ -11,20 +11,20 @@
                 <div class="shopDetail-col">
                     <div class="row-title">红包名称</div>
                     <div class="setBonus-name">
-                        <input type="text" placeholder="红包名称,最多10个字符" v-model="activityName" maxlength="10">
+                        <input type="text" placeholder="红包名称,最多10个字符" v-model="bonusName" maxlength="10">
                     </div>
                 </div>
                 <div class="shopDetail-col">
                     <div class="row-title">自助领取</div>
                     <div class="setBonus-name">
-                        <label for="allow"><input type="radio" name="automatic" id="allow" :value="true" v-model="isAllow">允许</label>
-                        <label for="notAllow"><input type="radio" name="automatic" id="notAllow" :value="false" v-model="isAllow">不允许</label>
+                        <label for="allow"><input type="radio" name="automatic" id="allow" value="HAND" v-model="checkValue">允许</label>
+                        <label for="notAllow"><input type="radio" name="automatic" id="notAllow" value="CONSUME" v-model="checkValue">不允许</label>
                     </div>
                 </div>
                 <div class="shopDetail-col">
                     <div class="row-title">红包金额</div>
                     <div class="setBonus-name">
-                        <input type="number" placeholder="红包金额" v-model="activityName">
+                        <input type="number" placeholder="红包金额" v-model="bonusVolume">
                     </div>
                 </div>
                 <div class="shopDetail-col">
@@ -42,13 +42,13 @@
                 <div class="shopDetail-col">
                     <div class="row-title">最大领取量</div>
                     <div class="setBonus-name">
-                        <input type="number" placeholder="留空为不限制" v-model="activityName">
+                        <input type="number" placeholder="留空为不限制" v-model="maxNum">
                     </div>
                 </div>
                 <div class="shopDetail-col">
                     <div class="row-title">最低消费额度</div>
                     <div class="setBonus-name">
-                        <input type="number" placeholder="留空为不限制" v-model="activityName">
+                        <input type="number" placeholder="留空为不限制" v-model="minPayment">
                     </div>
                 </div>
             </div>
@@ -59,7 +59,7 @@
     </div>
 </template>
 <script>
-    import { getActivityLists,addActivity,updateActivity } from '@/api/api'
+    import { getActivityLists,getBonusById,updateBonusById,addBonus } from '@/api/api'
     export default {
         name: 'setBonus',
         data: function() {
@@ -68,8 +68,11 @@
                 endTime: '',
                 startDate: '',
                 endDate: '',
-                activityName: '',
-                isAllow: true
+                bonusName: '',
+                bonusVolume: '',
+                maxNum: '',
+                minPayment: '',
+                checkValue: 'HAND'
             }
         },
         created: function() {
@@ -107,7 +110,7 @@
                 this.$refs.end.open()
             },
             save: function() {
-                console.log(this.isAllow)
+                console.log(this.checkValue);
                 return
                 if (this.endTime && this.beginTime > this.endTime) {
                     this.$toast({
