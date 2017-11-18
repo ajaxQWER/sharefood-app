@@ -18,14 +18,16 @@
 				<div v-if="isEmpty" class="empty">
 					<img src="../assets/images/empty-img.png" alt="">
 				</div>
-				<table class="date-num" v-else>
-					<tbody>
-						<tr v-for="(item,index) in rankData" :key="index">
-							<td>{{item.goodsName}}</td>
-							<td>{{item.salesCount}}</td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="table-body" v-else>
+					<table class="date-num">
+						<tbody>
+							<tr v-for="(item,index) in rankData" :key="index">
+								<td>{{item.goodsName}}</td>
+								<td>{{item.salesCount}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 		<mt-datetime-picker ref="time" type="date" @confirm="handleChange" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
@@ -89,7 +91,7 @@
 }
 .chart-info{
 	width: 100vw;
-	height: 104vw;
+	height: 106vw;
 	overflow: hidden;
 	background-color: #fff;
 }
@@ -100,7 +102,6 @@
 	-ms-flex-align: center;
 	align-items: center;
 	text-align: center;
-	margin-bottom: 4vw;
 }
 .column-item{
 	line-height: 12vw;
@@ -142,5 +143,10 @@ tr td:last-child{
 	color: #999;
 	margin: 0 2vw;
     vertical-align: middle;
+}
+.table-body{
+	margin-top: 2vw;
+	height: 90vw;
+	overflow: auto;
 }
 </style>
