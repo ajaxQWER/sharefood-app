@@ -13,19 +13,22 @@
 			</div>
 			<ul class="bonus-lists" v-else>
 				<li v-for="(item,index) in bonusList" :key="index">
-					<div class="bonus-info">
-						<div class="bonus-value">
-							<div class="bonus-face">￥<span>{{item.money}}</span></div>
-							<div class="bonus-condition">满{{item.minimum}}元可用</div>
+					<router-link :to="'/addBonus?id='+item.couponId" class="link">
+						<div class="bonus-info">
+							<div class="bonus-value">
+								<div class="bonus-face">￥<span>{{item.money}}</span></div>
+								<div class="bonus-condition">{{item.minimum?'满'+item.minimum+'元可用':'任意金额可用'}}</div>
+							</div>
+							<div class="bonus-detail">
+								<div class="bonus-name">{{item.couponName}}</div>
+								<div class="bonus-deadline">{{item.endTime?(moment(item.endTime).format('YYYY-MM-DD HH:mm')+'到期'):'无限期'}}</div>
+							</div>
 						</div>
-						<div class="bonus-detail">
-							<div class="bonus-name">{{item.couponName}}</div>
-							<div class="bonus-deadline">{{moment(item.endTime).format('YYYY-MM-DD HH:mm')}}到期</div>
-						</div>
-					</div>
+					</router-link>
 					<div class="bonus-del-btn" @click="deleteBonus(item.couponId)">删除</div>
 				</li>
 			</ul>
+
 		</div>
 	</div>
 </template>
@@ -57,10 +60,10 @@
 				})
 			},
 			deleteBonus: function(id){
-				console.log(id)
-				return
 				this.$messagebox.confirm('确定删除该红包?').then(() => {
+        			this.$indicator.open();
 				    deleteBonusById(id).then(() => {
+        				this.$indicator.close();
 				        this.$toast({ message: '操作成功', duration: 1000 })
 				        setTimeout(() => {
 				            this.getBonusList()
@@ -173,5 +176,9 @@
 		float: right;
 		background-color: #ff3a2f;
 		color: #fff;
+	}
+	.link{
+		display: inline-block;
+		color: #333;
 	}
 </style>

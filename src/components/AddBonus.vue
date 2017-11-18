@@ -11,68 +11,70 @@
                 <div class="shopDetail-col">
                     <div class="row-title">红包名称</div>
                     <div class="setBonus-name">
-                        <input type="text" placeholder="红包名称,最多10个字符" v-model="bonusName" maxlength="10">
+                        <input type="text" placeholder="红包名称,最多10个字符" v-model="bonusObj.couponName" maxlength="10">
                     </div>
                 </div>
                 <div class="shopDetail-col">
                     <div class="row-title">自助领取</div>
                     <div class="setBonus-name">
-                        <label for="allow"><input type="radio" name="automatic" id="allow" value="HAND" v-model="checkValue">允许</label>
-                        <label for="notAllow"><input type="radio" name="automatic" id="notAllow" value="CONSUME" v-model="checkValue">不允许</label>
+                        <label for="allow"><input type="radio" name="automatic" id="allow" value="HAND" v-model="bonusObj.pickUpType">允许</label>
+                        <label for="notAllow"><input type="radio" name="automatic" id="notAllow" value="CONSUME" v-model="bonusObj.pickUpType">不允许</label>
                     </div>
                 </div>
                 <div class="shopDetail-col">
                     <div class="row-title">红包金额</div>
                     <div class="setBonus-name">
-                        <input type="number" placeholder="红包金额" v-model="bonusVolume">
+                        <input type="number" placeholder="红包金额" v-model.number="bonusObj.money">
                     </div>
                 </div>
                 <div class="shopDetail-col">
                     <div class="row-title">开始时间</div>
-                    <div class="selectTime" @click="selectBeginTime">
-                        <div class="row-value">{{this.moment(beginTime).format('YYYY-MM-DD')}}</div>
+                    <div class="selectTime" @click="selectStartTime">
+                        <div class="row-value">{{this.moment(bonusObj.startTime).format('YYYY-MM-DD')}}</div>
                     </div>
                 </div>
                 <div class="shopDetail-col">
                     <div class="row-title">结束时间</div>
                     <div class="selectTime" @click="selectEndTime">
-                        <div class="row-value">{{endTime?this.moment(endTime).format('YYYY-MM-DD'):''}}</div>
+                        <div class="row-value">{{bonusObj.endTime?this.moment(bonusObj.endTime).format('YYYY-MM-DD'):''}}</div>
                     </div>
                 </div>
                 <div class="shopDetail-col">
                     <div class="row-title">最大领取量</div>
                     <div class="setBonus-name">
-                        <input type="number" placeholder="留空为不限制" v-model="maxNum">
+                        <input type="number" placeholder="留空为不限制" v-model.number="bonusObj.maxPickUpNumber">
                     </div>
                 </div>
                 <div class="shopDetail-col">
                     <div class="row-title">最低消费额度</div>
                     <div class="setBonus-name">
-                        <input type="number" placeholder="留空为不限制" v-model="minPayment">
+                        <input type="number" placeholder="留空为不限制" v-model.number="bonusObj.minimum">
                     </div>
                 </div>
             </div>
-            <button class="save" @click="save()">保存</button>
+            <button class="save" @click="saveBonus">保存</button>
         </div>
-        <mt-datetime-picker ref="start" type="date" @confirm="setBeginTime" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
+        <mt-datetime-picker ref="start" type="date" @confirm="setStartTime" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
         <mt-datetime-picker ref="end" type="date" @confirm="setEndTime" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
     </div>
 </template>
 <script>
-    import { getActivityLists,getBonusById,updateBonusById,addBonus } from '@/api/api'
+    import { getBonusById,updateBonusById,addBonus } from '@/api/api'
     export default {
         name: 'setBonus',
         data: function() {
             return {
-                beginTime: Date.now(),
-                endTime: '',
                 startDate: '',
                 endDate: '',
-                bonusName: '',
-                bonusVolume: '',
-                maxNum: '',
-                minPayment: '',
-                checkValue: 'HAND'
+                bonusObj: {
+                    startTime: Date.now(),
+                    endTime: '',
+                    couponName: '',
+                    money: null,
+                    maxPickUpNumber: null,
+                    minimum: null,
+                    pickUpType: 'HAND'
+                }
             }
         },
         created: function() {
@@ -86,58 +88,58 @@
             var id = this.$route.query.id;
             if(id){
                 this.$indicator.open();
-                getActivityLists({params: {activityId: id}}).then(res => {
+                getBonusById(id).then(res => {
                     console.log(res)
-                    var data = res.list[0];
-                    this.beginTime = data.beginTime;
-                    this.endTime = data.endTime;
-                    this.activityName = data.activityName;
                     this.$indicator.close();
+                    this.bonusObj.startTime = res.startTime;
+                    this.bonusObj.endTime = res.endTime;
+                    this.bonusObj.couponName = res.couponName;
+                    this.bonusObj.pickUpType = res.pickUpType;
+                    this.bonusObj.money = res.money;
+                    this.bonusObj.maxPickUpNumber = res.maxPickUpNumber;
+                    this.bonusObj.minimum = res.minimum;
                 })
             }
         },
         methods: {
-            setBeginTime: function(value) {
-                this.beginTime = new Date(value).getTime();
+            setStartTime: function(value) {
+                this.bonusObj.startTime = new Date(value).getTime();
             },
             setEndTime: function(value) {
-                this.endTime = new Date(value).getTime();
+                this.bonusObj.endTime = new Date(value).getTime();
             },
-            selectBeginTime: function() {
+            selectStartTime: function() {
                 this.$refs.start.open()
             },
             selectEndTime: function() {
                 this.$refs.end.open()
             },
-            save: function() {
-                console.log(this.checkValue);
-                return
-                if (this.endTime && this.beginTime > this.endTime) {
+            saveBonus: function() {
+                if (!this.bonusObj.couponName) {
+                    this.$toast({
+                        message: '请输入红包名称',
+                        duration: 1500
+                    })
+                    return;
+                }
+                if (!this.bonusObj.money) {
+                    this.$toast({
+                        message: '请输入红包金额',
+                        duration: 1500
+                    })
+                    return;
+                }
+                if (this.bonusObj.endTime && this.bonusObj.startTime > this.bonusObj.endTime) {
                     this.$toast({
                         message: '结束时间不能小于开始时间',
                         duration: 1500
                     })
                     return;
                 }
-                if (!this.activityName) {
-                    this.$toast({
-                        message: '请输入活动名称',
-                        duration: 1500
-                    })
-                    return;
-                }
-                var activityParams = {
-                    activityContent: {
-                        content: this.activityName
-                    },
-                    activityType: "SPECIFIC",
-                    beginTime: this.beginTime,
-                    endTime: this.endTime,
-                    isValid: true,
-                }
                 var id = this.$route.query.id;
                 if(id){
-                    updateActivity(id, activityParams).then(res => {
+                    this.$indicator.open();
+                    updateBonusById(id, this.bonusObj).then(res => {
                         console.log(res)
                         this.$indicator.close();
                         this.$toast({
@@ -151,7 +153,7 @@
                     })
                 }else{
                     this.$indicator.open();
-                    addActivity(activityParams).then(() => {
+                    addBonus(this.bonusObj).then(() => {
                         this.$indicator.close();
                         this.$toast({
                             message: '添加成功',

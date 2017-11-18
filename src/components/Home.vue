@@ -1,7 +1,7 @@
 <template>
     <div id="home">
         <div class="top-bg">
-            <div class="nav-bar bar-title">门店管理</div>
+            <!-- <div class="nav-bar bar-title">门店管理</div> -->
             <div class="admin-info">
                 <img :src="UPLOADURL+'/shopLogo/'+loginShopId+'.png'" alt="" class="admin-icon">
                 <div class="admin-shop">
@@ -10,10 +10,8 @@
                 </div>
                 <div class="admin-shop-status" v-if="shopSalesData">
                     <div class="shop-status">
-                        <img :src="shopStatusImg" alt="">
-                    </div>
-                    <div class="printer-status">
                         <img :src="printerStatusImg" alt="">
+                        <img :src="shopStatusImg" alt="">
                     </div>
                 </div>
             </div>
@@ -174,7 +172,9 @@ export default {
     min-height: 100%;
     background-color: #f2f2f2;
 }
-
+.top-bg{
+    height: 48vw;
+}
 .bar-title {
     text-align: center;
     line-height: 11.73vw;
@@ -191,18 +191,13 @@ export default {
 .admin-shop-status {
     float: right;
     margin-top: 2.66vw;
-    margin-left: 2.66vw;
 }
 
-.shop-status,
-.printer-status {
-    float: right;
+.shop-status{
     margin-left: 1.33vw;
 }
 
 .admin-shop-status img {
-    display: block;
-    float: right;
     width: 10vw;
     height: 10vw;
     border-radius: 2px;
@@ -217,6 +212,7 @@ export default {
 }
 
 .admin-shop {
+    width: 53vw;
     float: left;
     margin-top: 2.66vw;
     margin-left: 2.66vw;
@@ -226,6 +222,9 @@ export default {
     font-size: 4.26vw;
     margin: 0;
     color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .shop-detail {
