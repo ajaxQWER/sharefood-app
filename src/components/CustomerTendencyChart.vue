@@ -166,7 +166,7 @@ export default {
 
 .chart-info {
     width: 100vw;
-    height: 104vw;
+    height: 90vw;
     overflow: hidden;
     background-color: #fff;
 }
