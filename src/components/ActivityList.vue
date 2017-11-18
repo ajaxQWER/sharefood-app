@@ -88,13 +88,12 @@
 					case 'DELGOLD':
 						return '减';
 					case 'COMPLIMENTARY':
-						return '返';
+					case 'SPECIFIC':
+						return '惠';
 					case 'SPECIALPRICES':
 						return '特';
 					case 'SALE':
 						return '折';
-					case 'SPECIFIC':
-						return '其';
 				}
 			},
 			formatClassByType: function(type){
@@ -102,14 +101,11 @@
 					case 'FIRST':
 						return 'type-3';
 					case 'DELGOLD':
-						return 'type-2';
 					case 'COMPLIMENTARY':
-						return 'type-1';
-					case 'SPECIALPRICES':
-						return 'type-3';
-					case 'SALE':
 						return 'type-2';
+					case 'SALE':
 					case 'SPECIFIC':
+					case 'SPECIALPRICES':
 						return 'type-1';
 				}
 			},
