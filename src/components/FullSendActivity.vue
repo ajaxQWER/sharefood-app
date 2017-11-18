@@ -23,33 +23,33 @@
                 <div class="shopDetail-col">
                     <div class="row-title">最低金额</div>
                     <div class="activity-name">
-                        <input type="number" placeholder="请输入最低金额" v-model="money">
+                        <input type="number" placeholder="请输入最低消费金额" v-model.number="full">
                     </div>
                 </div>
                 <div class="shopDetail-col">
                     <div class="row-title">选择红包</div>
                     <div class="activity-name">
-                        <select name="redPacket" id="">
-                            <option value="0">2元红包(2017-01-01~2018-01-01)</option>
-                            <option value="1">5元红包(2017-01-01~2018-01-01)</option>
-                            <option value="2">10元红包(2017-01-01~2018-01-01)</option>
+                        <select name="redPacket" v-model="couponId" v-if="bonusList.length>0">
+                            <option v-for="(item,index) in bonusList" :key="index" :value="item.couponId">{{item.couponName}}&nbsp;{{item.endTime?moment(item.endTime).format('YYYY-MM-DD HH:mm')+'到期':'无限期'}}</option>
                         </select>
+                        <div v-else class="selectTips" @click="selectBonus"></div>
                     </div>
                 </div>
                 <div class="shopDetail-col">
                     <div class="row-title">红包数量</div>
                     <div class="activity-name">
-                        <input type="number" placeholder="请输入红包数量" v-model="couponCount">
+                        <input type="number" placeholder="请输入赠送红包数量" v-model.number="couponCount">
                     </div>
                 </div>
             </div>
-            <button class="save">保存</button>
+            <button class="save" @click="saveActivity">保存</button>
         </div>
         <mt-datetime-picker ref="start" type="date" @confirm="handleChange" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
         <mt-datetime-picker ref="end" type="date" @confirm="handleChange1" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
     </div>
 </template>
 <script>
+import {getActivityLists,addActivity,updateActivity,getBonusLists} from '@/api/api'
 export default {
     name: 'firstReduceActivity',
     data: function() {
@@ -58,9 +58,10 @@ export default {
             endTime: '',
             startDate: '',
             endDate: '',
-            money: '',
             couponCount: '',
-            COMPLIMENTARY:''
+            couponId: '',
+            full: '',
+            bonusList: []
         }
     },
     created: function() {
@@ -70,6 +71,26 @@ export default {
         var thisEndDate = thisYear + '-12-31';
         this.startDate = new Date(thisStartDate);
         this.endDate = new Date(thisEndDate);
+
+        getBonusLists({params: {pageSize: 9999}}).then(res => {
+            console.log(res)
+            this.bonusList = res.list;
+        })
+
+        var id = this.$route.query.id;
+        if(id){
+            this.$indicator.open();
+            getActivityLists({params: {activityId: id}}).then(res => {
+                console.log(res)
+                var data = res.list[0];
+                this.beginTime = data.beginTime;
+                this.endTime = data.endTime;
+                this.full = data.activityContent.full;
+                this.couponId = data.activityContent.couponId;
+                this.couponCount = data.activityContent.couponCount;
+                this.$indicator.close();
+            })
+        }
     },
     methods: {
         handleChange: function(value) {
@@ -83,6 +104,55 @@ export default {
         },
         selectEndTime: function() {
             this.$refs.end.open()
+        },
+        selectBonus: function(){
+            if(!this.bonusList.length){
+                alert('暂无可用红包，请添加红包后再添加活动');
+                this.$router.push('/addBonus');
+            }
+        },
+        saveActivity: function(){
+            var activityParams = {
+                activityContent: {
+                    couponCount: this.couponCount,
+                    couponId: this.couponId,
+                    full: this.full,
+                },
+                activityType: 'COMPLIMENTARY',
+                beginTime: this.beginTime,
+                endTime: this.endTime,
+                isValid: true
+            }
+            
+            console.log(activityParams)
+            var id = this.$route.query.id;
+            if(id){
+                this.$indicator.open();
+                updateActivity(id, activityParams).then(() => {
+                    this.$indicator.close();
+                    this.$toast({
+                        message: '修改成功',
+                        duration: 1000
+                    })
+                    setTimeout(() => {
+                        this.$router.isBack = true;
+                        this.$router.back()
+                    }, 1500)
+                })
+            }else{
+                this.$indicator.open();
+                addActivity(activityParams).then(() => {
+                    this.$indicator.close();
+                    this.$toast({
+                        message: '添加成功',
+                        duration: 1000
+                    })
+                    setTimeout(() => {
+                        this.$router.isBack = true;
+                        this.$router.back()
+                    }, 1500)
+                })
+            }
         }
     }
 }
@@ -156,6 +226,7 @@ export default {
 .activity-name {
     display: inline-block;
     width: 70vw;
+    height: 100%;
     line-height: 6.66vw;
     float: right;
     text-align: right;
@@ -169,21 +240,27 @@ export default {
     text-align: right;
     outline: none;
     border: none;
+    color: #808080;
 }
 
 .activity-name select {
+    width: 100%;
     height: 6.66vw;
     font-size: 3.72vw;
     color: #808080;
     border: none;
     outline: none;
+    direction: rtl;
+    -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
 }
 
 input::placeholder,
 input:-ms-input-placeholder,
 input:-moz-placeholder,
 input::-webkit-input-placeholder {
-    color: #ccc;
+    color: #808080;
 }
 
 .save {
@@ -198,5 +275,8 @@ input::-webkit-input-placeholder {
     border: none;
     outline: none;
 }
-
+.selectTips{
+    width: 100%;
+    height: 6.66vw;
+}
 </style>

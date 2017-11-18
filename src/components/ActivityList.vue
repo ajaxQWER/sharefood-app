@@ -120,7 +120,7 @@
 					case 'DELGOLD':
 						return '/fullReduceActivity?id=' + id;
 					case 'COMPLIMENTARY':
-						return '';
+						return '/fullSendActivity?id=' + id;
 					case 'SPECIALPRICES':
 						return '/onSales?id=' + id;
 					case 'SALE':
