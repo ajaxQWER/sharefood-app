@@ -36,6 +36,12 @@
                                 <div class="row-value">{{formatPrinterStatus(printer.printerStatus)}}</div>
                             </div>
                         </div>
+                        <div class="shopDetail-col">
+                            <div class="row-title">打印份数</div>
+                            <div class="deviceStatus">
+                                <div class="row-value">{{printer.copies}}</div>
+                            </div>
+                        </div>
                     </div>
                     <button class="unbond" @click="unbind">解绑设备</button>
                 </div>
@@ -62,6 +68,12 @@
                             <input type="text" placeholder="请输入设备密码" v-model="secretKey">
                         </div>
                     </div>
+                    <div class="shopDetail-col">
+                        <div class="row-title">打印份数</div>
+                        <div class="password">
+                            <input type="number" placeholder="请输入打印份数,最小为1，最大为4" v-model.number="copies">
+                        </div>
+                    </div>
                 </div>
                 <div class="bindBtns">
                     <button class="bond" @click="bind">绑定设备</button>
@@ -81,7 +93,8 @@ export default {
             unbond: true,
             popupVisible3: false,
             deviceId: '',
-            secretKey: ''
+            secretKey: '',
+            copies: ''
         }
     },
     created: function() {
@@ -99,7 +112,9 @@ export default {
                 } else {
                     this.unbond = false;
                 }
-                this.printer = res;
+                // this.printer = res;
+                this.printer = {};
+                    this.unbond = true;
                 this.$indicator.close();
             })
         },
@@ -139,21 +154,27 @@ export default {
             }
             var params = {
                 deviceId: this.deviceId,
-                secretKey: this.secretKey
+                secretKey: this.secretKey,
+                copies: this.copies
             };
             console.log(params);
+            this.$indicator.open();
             bindPrinter(params).then(res => {
                 console.log(res);
+                this.$indicator.close();
                 this.$toast({ message: '绑定成功', duration: 1000 });
                 this.popupVisible3 = false;
                 this.deviceId = '';
                 this.secretKey = '';
+                this.copies = '';
                 this.getPrinter();
             })
         },
         unbind: function() {
             this.$messagebox.confirm('确定解绑打印机?').then(action => {
+                this.$indicator.open();
                 unbindPrinter().then(res => {
+                    this.$indicator.close();
                     console.log(res);
                     this.$toast({ message: '解绑成功', duration: 1000 });
                     this.getPrinter();
@@ -166,6 +187,7 @@ export default {
             this.popupVisible3 = false;
             this.deviceId = '';
             this.secretKey = '';
+            this.copies = '';
         }
     }
 }
