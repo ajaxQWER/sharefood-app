@@ -174,8 +174,7 @@ export default {
     height: 10.66vw;
     color: #fff;
     margin: 9.33vw auto;
-    background: url(../assets/images/help-navbar.jpg) no-repeat center center;
-    background-size: cover;
+    background-color: #ef4f4f;
     border: none;
     outline: none;
     border-radius: 6px;
