@@ -39,7 +39,11 @@
                         <div class="shopDetail-col">
                             <div class="row-title">打印份数</div>
                             <div class="deviceStatus">
-                                <div class="row-value">{{printer.copies}}</div>
+                                <div class="row-value">
+                                    <select name="" id="" v-model="printer.copies" class="copies" @change="changeCopies">
+                                        <option v-for="n in 9" :value="n" :key="n">{{n}}</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -68,12 +72,6 @@
                             <input type="text" placeholder="请输入设备密码" v-model="secretKey">
                         </div>
                     </div>
-                    <div class="shopDetail-col">
-                        <div class="row-title">打印份数</div>
-                        <div class="password">
-                            <input type="number" placeholder="请输入打印份数,最小为1，最大为4" v-model.number="copies">
-                        </div>
-                    </div>
                 </div>
                 <div class="bindBtns">
                     <button class="bond" @click="bind">绑定设备</button>
@@ -84,7 +82,7 @@
     </div>
 </template>
 <script>
-import { getPrinterInfo, bindPrinter, unbindPrinter } from '@/api/api'
+import { getPrinterInfo, bindPrinter, unbindPrinter,setCopies } from '@/api/api'
 export default {
     name: 'printSetting',
     data: function() {
@@ -93,8 +91,7 @@ export default {
             unbond: true,
             popupVisible3: false,
             deviceId: '',
-            secretKey: '',
-            copies: ''
+            secretKey: ''
         }
     },
     created: function() {
@@ -112,9 +109,7 @@ export default {
                 } else {
                     this.unbond = false;
                 }
-                // this.printer = res;
-                this.printer = {};
-                    this.unbond = true;
+                this.printer = res;
                 this.$indicator.close();
             })
         },
@@ -154,8 +149,7 @@ export default {
             }
             var params = {
                 deviceId: this.deviceId,
-                secretKey: this.secretKey,
-                copies: this.copies
+                secretKey: this.secretKey
             };
             console.log(params);
             this.$indicator.open();
@@ -166,7 +160,6 @@ export default {
                 this.popupVisible3 = false;
                 this.deviceId = '';
                 this.secretKey = '';
-                this.copies = '';
                 this.getPrinter();
             })
         },
@@ -187,7 +180,14 @@ export default {
             this.popupVisible3 = false;
             this.deviceId = '';
             this.secretKey = '';
-            this.copies = '';
+        },
+        changeCopies: function(){
+            console.log(this.printer.copies)
+            this.$indicator.open();
+            setCopies(this.printer.copies).then(res => {
+                this.$indicator.close();
+                this.$toast({ message: '修改成功', duration: 1000 });
+            })
         }
     }
 }
@@ -253,7 +253,7 @@ export default {
 
 .row-value {
     width: 21vw;
-    text-align: center;
+    text-align: right;
     display: inline-block;
     vertical-align: middle;
     margin-top: 0.8vw;
@@ -278,7 +278,7 @@ export default {
 }
 
 .bond.red {
-    background: #ef4f4f;
+    background-color: #ef4f4f;
 }
 
 .unbond {
@@ -287,8 +287,7 @@ export default {
     height: 10.66vw;
     color: #fff;
     margin: 9.33vw auto;
-    background: url(../assets/images/help-navbar.jpg) no-repeat center center;
-    background-size: cover;
+    background-color: #ef4f4f;
     border: none;
     outline: none;
     border-radius: 6px;
@@ -337,5 +336,9 @@ input::-webkit-input-placeholder {
     border-radius: 6px;
     font-size: 4.26vw;
 }
-
+.copies{
+    width: 100%;
+    color: #4d4d4d;
+    direction: rtl;
+}
 </style>

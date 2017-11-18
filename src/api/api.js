@@ -208,7 +208,7 @@ export const getSalesRank = params => {
     return ajax.get('seller/analysis/salesRank', params);
 };
 
-//绑定打印机
+//获取打印机信息
 export const getPrinterInfo = () => {
   return ajax.get('seller/printer');
 };
@@ -220,6 +220,11 @@ export const bindPrinter = params => {
 export const unbindPrinter = () => {
   return ajax.post('seller/printer/unBind');
 };
+//设置打印份数
+export const setCopies = copies => {
+  return ajax.post('seller/printer/copies/' + copies);
+};
+
 
 
 //通知中心
