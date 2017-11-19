@@ -292,7 +292,6 @@ export default {
                 } else {
                     this.newGoods.goods.goodsImgUrl = data.originalUrl;
                 }
-
             }).catch(err => {
                 console.log(err)
                 this.$toast({

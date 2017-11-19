@@ -17,7 +17,7 @@
                             <div class="info">
                                 <p class="name-time">
                                     <span class="name">{{item.title}}</span>
-                                    <span class="time">{{moment(item.createTime).format('MM-DD hh:mm')}}</span>
+                                    <span class="time">{{moment(item.createTime).format('MM-DD HH:mm')}}</span>
                                 </p>
                                 <p class="desc">{{item.content}}</p>
                             </div>
