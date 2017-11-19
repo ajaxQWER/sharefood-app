@@ -32,13 +32,13 @@
                 <div class="goods-item">
                     <div class="row-title">商品价格</div>
                     <div class="row-value">
-                        <input type="text" placeholder="请输入商品价格" v-model="goodsInfo.goods.goodsPrice">
+                        <input type="number" placeholder="请输入商品价格" v-model="goodsInfo.goods.goodsPrice">
                     </div>
                 </div>
                 <div class="goods-item">
                     <div class="row-title">餐盒费</div>
                     <div class="row-value">
-                        <input type="text" placeholder="请输入餐盒费" v-model="goodsInfo.goods.feeMeals">
+                        <input type="number" placeholder="请输入餐盒费" v-model.number="goodsInfo.goods.feeMeals">
                     </div>
                 </div>
                 <div class="goods-item">
@@ -76,13 +76,13 @@
                 <div class="goods-item">
                     <div class="row-title">商品价格</div>
                     <div class="row-value">
-                        <input type="text" placeholder="请输入商品价格" v-model.number="newGoods.goods.goodsPrice">
+                        <input type="number" placeholder="请输入商品价格" v-model.number="newGoods.goods.goodsPrice">
                     </div>
                 </div>
                 <div class="goods-item">
                     <div class="row-title">餐盒费</div>
                     <div class="row-value">
-                        <input type="text" placeholder="请输入餐盒费" v-model.number="newGoods.goods.feeMeals">
+                        <input type="number" placeholder="请输入餐盒费" v-model.number="newGoods.goods.feeMeals">
                     </div>
                 </div>
                 <div class="goods-item">
@@ -341,12 +341,8 @@ export default {
                     this.$toast({ message: '请输入商品价格', duration: 1000 })
                     return;
                 }
-                if (!this.newGoods.goods.feeMeals) {
+                if (this.newGoods.goods.feeMeals == '') {
                     this.$toast({ message: '请输入餐盒费', duration: 1000 })
-                    return;
-                }
-                if (!this.newGoods.goods.goodsContent) {
-                    this.$toast({ message: '请输入商品简介', duration: 1000 })
                     return;
                 }
                 this.$indicator.open();
