@@ -30,13 +30,13 @@
                 <div class="shopDetail-col">
                     <div class="row-title">开始时间</div>
                     <div class="selectTime" @click="selectStartTime">
-                        <div class="row-value">{{this.moment(bonusObj.startTime).format('YYYY-MM-DD')}}</div>
+                        <div class="row-value">{{moment(bonusObj.startTime).format('YYYY-MM-DD')}}</div>
                     </div>
                 </div>
                 <div class="shopDetail-col">
                     <div class="row-title">结束时间</div>
                     <div class="selectTime" @click="selectEndTime">
-                        <div class="row-value">{{bonusObj.endTime?this.moment(bonusObj.endTime).format('YYYY-MM-DD'):''}}</div>
+                        <div class="row-value">{{bonusObj.endTime?moment(bonusObj.endTime).format('YYYY-MM-DD'):''}}</div>
                     </div>
                 </div>
                 <div class="shopDetail-col">
