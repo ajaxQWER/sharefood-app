@@ -122,8 +122,8 @@ export const getOrderList = params => {
     return ajax.get('seller/order/', params);
 };
 //取消订单
-export const cancelOrderById = orderId => {
-    return ajax.put('seller/order/orderCancel/' + orderId);
+export const cancelOrderById = params => {
+    return ajax.put('seller/order/orderCancel', params);
 };
 //完成订单
 export const finishOrderById = orderId => {
