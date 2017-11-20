@@ -37,6 +37,7 @@ import OnDiscount from '@/components/OnDiscount.vue'  //特价商品
 import GoodsManager from '@/components/GoodsManager.vue'  //特价商品-商品管理
 import BonusList from '@/components/BonusList.vue'  //红包管理
 import AddBonus from '@/components/AddBonus.vue'  //添加红包
+import GetBonus from '@/components/GetBonus.vue'  //领取红包
 let routes = [{
     path: '/login',
     component: Login,
@@ -189,6 +190,10 @@ let routes = [{
     path: '/addBonus',
     component: AddBonus,
     name: 'addBonus'
+},{
+    path: '/getBonus',
+    component: GetBonus,
+    name: 'getBonus'
 }];
 
 export default routes;
