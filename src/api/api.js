@@ -184,6 +184,10 @@ export const setBusinessTime = params => {
 export const setBusinessPhoneNumber = phoneNumber => {
     return ajax.put('seller/shopDetail/takeOutPhone/' + phoneNumber);
 };
+//设置起送金额
+export const setMinDeliveryPrice = minDeliveryPrice => {
+    return ajax.put('seller/shopDetail/updateMinDeliveryPrice/' + minDeliveryPrice);
+};
 
 
 

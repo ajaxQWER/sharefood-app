@@ -15,6 +15,7 @@ import Setting from '@/components/Setting.vue' //设置
 import UpdatePassword from '@/components/UpdatePassword.vue' //修改密码
 import PrintSetting from '@/components/PrintSetting.vue' //打印设置
 import BusinessStatus from '@/components/BusinessStatus.vue' //营业时间
+import SetMinDeliveryPrice from '@/components/SetMinDeliveryPrice.vue' //营业时间
 import BusinessTime from '@/components/BusinessTime.vue' //营业时间
 import ShopContact from '@/components/ShopContact.vue' //联系电话
 import SetDelivery from '@/components/SetDelivery.vue' //配送设置
@@ -102,6 +103,10 @@ let routes = [{
     path: '/businessStatus',
     component: BusinessStatus,
     name: 'businessStatus'
+},{
+    path: '/setMinDeliveryPrice',
+    component: SetMinDeliveryPrice,
+    name: 'setMinDeliveryPrice'
 },{
     path: '/businessTime',
     component: BusinessTime,

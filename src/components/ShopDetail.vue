@@ -51,6 +51,14 @@
 					</div>
 				</router-link>
 			</div>
+            <div class="shopDetail-row">
+                <router-link :to="'/setMinDeliveryPrice?minDeliveryPrice='+shopDetail.minDeliveryPrice" class="jump">
+                    <div class="shopDetail-col shop-after">
+                        <div class="row-key row-title">最低配送金额</div>
+                        <div class="row-value row-value-after">{{shopDetail.minDeliveryPrice?shopDetail.minDeliveryPrice:''}}</div>
+                    </div>
+                </router-link>
+            </div>
 			<div class="shopDetail-row">
 				<div class="shopDetail-col shop-after">
 					<div class="row-key row-title">营业类型</div>
