@@ -431,7 +431,7 @@
 		text-align: right;
 	}
 	.btn{
-		width: 20vw;
+		width: 21vw;
 		height: 5.33vw;
 		line-height: 5.33vw;
 		text-align: center;
