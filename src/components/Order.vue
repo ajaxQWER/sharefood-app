@@ -36,22 +36,22 @@
 		    					</div>
 		    					<div v-if="item.orderType=='TAKEOUT'" class="operate-btn">
 		    						<div v-if="item.orderStatus=='PAYED'">
-			    						<button @click.prevent="cancelOrder(item.orderId)" class="btn">取消订单</button>
+			    						<button @click.prevent="cancelOrder(item.orderId)" class="btn danger">拒绝接单</button>
 			    						<button @click.prevent="acceptOrder(item.orderId,item.orderType)" class="btn deal-btn">接单</button>
 		    						</div>
 		    						<div v-if="item.orderStatus=='MERCHANT_CONFIRM_RECEIPT'">
-		    							<button @click.prevent="cancelOrder(item.orderId)" class="btn">取消订单</button>
+		    							<button @click.prevent="cancelOrder(item.orderId)" class="btn danger">取消订单</button>
 		    						</div>
 		    						<div v-if="item.orderStatus=='WAIT_PICKUP'">
-		    							<button @click.prevent="cancelOrder(item.orderId)" class="btn">取消订单</button>
+		    							<button @click.prevent="cancelOrder(item.orderId)" class="btn danger">取消订单</button>
 		    						</div>
 		    						<div v-if="item.orderStatus=='PICKUPING'">
-		    							<button @click.prevent="cancelOrder(item.orderId)" class="btn">取消订单</button>
+		    							<button @click.prevent="cancelOrder(item.orderId)" class="btn danger">取消订单</button>
 		    						</div>
 		    					</div>
 		    					<div v-else class="operate-btn">
 		    						<div v-if="item.orderStatus=='PAYED'">
-			    						<button @click.prevent="cancelOrder(item.orderId)" class="btn">取消订单</button>
+			    						<button @click.prevent="cancelOrder(item.orderId)" class="btn danger">拒绝接单</button>
 			    						<button @click.prevent="acceptOrder(item.orderId,item.orderType)" class="btn deal-btn">接单</button>
 		    						</div>
 		    						<div v-if="item.orderStatus=='MERCHANT_CONFIRM_RECEIPT'">
@@ -210,7 +210,7 @@
 	                    return '已完成';
 	                case 'MERCHANT_CONFIRM_RECEIPT':
 	                    return '已接单';
-	                case 'WAIT_PICKUP ':
+	                case 'WAIT_PICKUP':
 	                    return '待取货';
 	                case 'PICKUPING':
 	                    return '取货中';
@@ -486,6 +486,11 @@
 	}
 	.popup-reply{
 		padding: 0 2.66vw;
+	}
+	.danger{
+		color: #fff;
+		background-color: #ef4f4f;
+		border-color: #ef4f4f;
 	}
 	.popup-reply-btn{
 		width: 100%;
