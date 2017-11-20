@@ -476,9 +476,13 @@
 		width: 100%;
 		min-height: 40vw;
 		box-sizing: border-box;
+		border-radius: 5px;
 		padding: 1.33vw;
 		outline: none;
 		resize: none;
+		font-size: 3.37vw;
+		box-shadow:0px 0px 0px rgba(0,0,0,0);
+	    -webkit-appearance:none;
 	}
 	.popup-reply{
 		padding: 0 2.66vw;
