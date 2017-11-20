@@ -69,6 +69,23 @@
 			<div v-else class="empty">
 				<img src="../assets/images/empty-img.png" alt="">
 			</div>
+			<mt-popup v-model="popupVisible3" position="right" class="mint-popup-3" :modal="false">
+				    <div class="setting-header">
+				        <div class="nav-bar help-navbar">
+				            <div class="back" @click="closePopup"><img src="../assets/images/white-back.png" alt=""></div>
+				            <div class="nav-title">取消订单</div>
+				        </div>
+				    </div>
+				    <div class="reply-content">
+				        <div class="shopDetail-row">
+				        	<textarea class="reply-textarea" name="" id=""  v-model="cancelContent" placeholder="请输入取消理由" maxlength="140"></textarea>
+				        </div>
+				        <div class="popup-reply">
+				            <button class="popup-reply-btn" @click="cancelOrderFn">取消订单</button>
+				        </div>
+				    </div>
+				</mt-popup>
+			</div>
 		</div>
 		<!-- <div class="add-goods" @click="addGoods">添加商品</div> -->
 	</div>
@@ -109,7 +126,10 @@
 				orderStatus: '',
 				orderList: [],
 				canLoad: false,
-				isEmpty: false
+				isEmpty: false,
+				popupVisible3: false,
+				orderId: 0,
+				cancelContent: ''
 			}	
 		},
 		created: function(){
@@ -211,14 +231,27 @@
 	            }
 	        },
 	        cancelOrder: function(orderId){
-	        	this.$messagebox.confirm('确定取消接单?').then(action => {
-	        		this.$indicator.open();
-	        		cancelOrderById(orderId).then(() => {
-	        			this.$toast({message:'操作成功',duration: 1000})
-        				this.$indicator.close();
-        				this.getOrders({pageId: this.pageId,orderStatus: this.orderStatus})
-	        		})
-	        	}).catch(()=>{});
+	        	this.popupVisible3 = true;
+	        	this.orderId = orderId;
+	        },
+	        cancelOrderFn: function(){
+	        	if(!this.cancelContent.trim()){
+	        		this.$toast({message:'请输入取消理由',duration: 1000, className: 'goodscategory-toast'})
+	        		this.cancelContent = ''
+	        		return;
+	        	}
+	        	var params = {
+	        		cancelContent: this.cancelContent,
+	        		orderId: this.orderId
+	        	}
+	        	console.log(params)
+    			this.$indicator.open();
+    			this.closePopup()
+        		cancelOrderById(params).then(() => {
+        			this.$toast({message:'操作成功',duration: 1000})
+    				this.$indicator.close();
+    				this.getOrders({pageId: this.pageId,orderStatus: this.orderStatus})
+        		})
 	        },
 	        acceptOrder: function(orderId, orderType){
 	        	this.$messagebox.confirm('确定接单?').then(action => {
@@ -239,7 +272,11 @@
         				this.getOrders({pageId: this.pageId,orderStatus: this.orderStatus})
         			})
 	        	}).catch(()=>{});
-	        }
+	        },
+	        closePopup: function(){
+				this.popupVisible3 = false;
+				this.cancelContent = '';
+			}
 		}
 	}
 </script>
@@ -417,5 +454,45 @@
 	}
 	.link{
 		text-decoration: none;
+	}
+	.mint-popup-3 {
+	    width: 100%;
+	    height: 100%;
+	    background-color: #fff;
+	}
+	.mint-popup-3 .mint-button {
+		position: absolute;
+		width: 60px;
+		top: 0;
+		left: 0;
+	}
+	.reply-content{
+		margin-top: 2.66vw;
+	}
+	.shopDetail-row{
+		padding: 2.66vw;
+	}
+	.reply-textarea{
+		width: 100%;
+		min-height: 40vw;
+		box-sizing: border-box;
+		padding: 1.33vw;
+		outline: none;
+		resize: none;
+	}
+	.popup-reply{
+		padding: 0 2.66vw;
+	}
+	.popup-reply-btn{
+		width: 100%;
+	    height: 10.66vw;
+		/*background: url(../assets/images/help-navbar.jpg) no-repeat center center;*/
+		/*background-size: cover;*/
+		background-color: #ef4f4f;
+		border: none;
+		outline: none;
+		border-radius: 5px;
+		font-size: 4.26vw;
+		color: #fff;
 	}
 </style>
