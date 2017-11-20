@@ -6,9 +6,7 @@
         </div>
         <div class="rules">
             <div class="title">
-                <hr class="divider">
-                <span class="name">活动规则</span>
-                <hr class="divider">
+                <img src="../assets/images/title.png" alt="">
             </div>
 
             <ul class="graph">
@@ -41,26 +39,14 @@
         width: 100vw;
         height: 66.66vw;
     }
+    .title{
+        text-align: center;
+    }
+    .title img{
+        width: 90.66vw;
+    }
     .rules{
         padding: 0 2.66vw;
-    }
-    .title{
-        font-size: 3.73vw;
-        font-weight: bold;
-        color: #517914;
-        overflow: hidden;
-    }
-    .title .name,.title .divider{
-        display: inline-block;
-        float: left;
-    }
-    .title .name{
-        margin: 0 0.5vw;
-    }
-    .title .divider{
-        width: 38.55vw;
-        border: 0.166vw solid #517914;
-        margin-top: 2.66vw;
     }
     .graph{
         clear: both;
