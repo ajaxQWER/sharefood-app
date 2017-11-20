@@ -137,7 +137,6 @@
 		height: 8.66vw;
 		background: url(../assets/images/bonus-before.png) no-repeat center center;
 		background-size: contain;
-
 	}
 	.bonus-face{
 		font-size: 3.73vw;
