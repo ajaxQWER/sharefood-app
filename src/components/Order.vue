@@ -39,9 +39,9 @@
 			    						<button @click.prevent="cancelOrder(item.orderId)" class="btn">取消订单</button>
 			    						<button @click.prevent="acceptOrder(item.orderId,item.orderType)" class="btn deal-btn">接单</button>
 		    						</div>
-		    						<!-- <div v-if="item.orderStatus=='MERCHANT_CONFIRM_RECEIPT'"> -->
+		    						<div v-if="item.orderStatus=='MERCHANT_CONFIRM_RECEIPT'">
 		    							<button @click.prevent="cancelOrder(item.orderId)" class="btn">取消订单</button>
-		    						<!-- </div> -->
+		    						</div>
 		    						<div v-if="item.orderStatus=='WAIT_PICKUP'">
 		    							<button @click.prevent="cancelOrder(item.orderId)" class="btn">取消订单</button>
 		    						</div>
