@@ -20,6 +20,7 @@
 		    			<li v-for="(item,index) in orderList" :key="index">
 		    				<router-link :to="'/orderDetail?orderId='+item.orderId" class="link">
 		    				<div class="order-row">
+		    					<div class="order-number-sub">#{{item.orderNum.toString().substr(-4)}}</div>
 		    					<div class="order-number">{{item.orderNum}}</div>
 		    					<div :class="['order-type',item.orderStatus=='CANCELLATION'?'cancel':'']">{{formatOrderStatus(item.orderStatus)}}</div>
 		    				</div>
@@ -555,5 +556,10 @@
 		border-radius: 5px;
 		font-size: 4.26vw;
 		color: #fff;
+	}
+	.order-number-sub{
+		font-size: 5vw;
+		font-weight: bold;
+		color: #333;
 	}
 </style>

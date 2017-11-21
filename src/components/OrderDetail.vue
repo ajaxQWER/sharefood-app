@@ -11,6 +11,7 @@
 				<ul class="order-lists" v-if="orderDetail">
 					<li>
 						<div class="order-row">
+							<div class="order-number-sub">#{{orderDetail.orderNum.toString().substr(-4)}}</div>
 							<div class="order-number">{{orderDetail.orderNum}}</div>
 							<div :class="['order-type',orderDetail.orderStatus=='CANCELLATION'?'cancel':'']">{{formatOrderStatus(orderDetail.orderStatus)}}</div>
 						</div>
@@ -278,4 +279,10 @@
         width: 100%;
         height: 100%;
     }
+    
+	.order-number-sub{
+		font-size: 5vw;
+		font-weight: bold;
+		color: #333;
+	}
 </style>
