@@ -37,6 +37,12 @@
 								<div class="phone">{{orderDetail.orderContact.contactName}}({{formatGender(orderDetail.orderContact.gender)}})&emsp;{{orderDetail.orderContact.contactPhone}}</div>
 							</div>
 						</div>
+                        <div class="order-row" v-if="carrier">
+                            <div class="order-item goods-name">骑手信息</div>
+                            <div class="goods-number">
+                                <span class="carrier-info"><span>{{carrier.carrierName}}{{carrier.carrierPhone}}</span><a @click.stop="stopEvent" :href="'tel:'+carrier.carrierPhone" class="phone"><img src="../assets/images/phone.png" alt=""></a></span>
+                            </div>
+                        </div>
 						<div class="order-row">
 							<div class="order-item goods-name">送达时间</div>
 							<div class="goods-number"><span>尽快送达[{{moment(orderDetail.orderTakeout.deliveryTime).format('HH:mm:ss')}}]</span></div>
@@ -70,13 +76,14 @@
 	</div>
 </template>
 <script>
-	import {getOrderById} from '@/api/api'
+	import {getOrderById,getCarrierInfoById} from '@/api/api'
 	export default {
 		name: 'order',
 		data: function(){
 			return {
 				orderId: '',
-				orderDetail: null
+				orderDetail: null,
+                carrier: null,
 			}
 		},
 		created: function(){
@@ -88,7 +95,12 @@
 					console.log(res)
 					this.orderDetail = res;
 					this.$indicator.close();
-				})
+				});
+                getCarrierInfoById(orderId).then(res => {
+                    console.log(res);
+                    this.carrier = res;
+                    this.$indicator.close();
+                })
 			}
 		},
 		methods: {
@@ -124,6 +136,9 @@
 						return '女士';
 				}
 			},
+            stopEvent: function(){
+                return;
+            },
 		}
 	}
 </script>
@@ -187,6 +202,7 @@
 		font-size: 3.73vw;
 		color: #4c4c4c;
 	}
+
 	.order-type{
 		float: right;
 		font-size: 3.73vw;
@@ -248,4 +264,24 @@
 		color: #808080;
 		/* text-align: right; */
 	}
+    .carrier-info{
+        display: inline-block;
+        overflow: hidden;
+        text-align: center;
+    }
+    .carrier-info span{
+        display: inline-block;
+        margin-left: 0;
+        float: left;
+    }
+    a.phone{
+        display: inline-block;
+        width: 5.06vw;
+        height: 5.06vw;
+        margin-left: 1.33vw;
+    }
+    a.phone img{
+        width: 100%;
+        height: 100%;
+    }
 </style>

@@ -141,6 +141,10 @@ export const setOrderShipping = orderId => {
 export const getOrderById = orderId => {
     return ajax.get('seller/order/' + orderId);
 };
+export const getCarrierInfoById = orderId => {
+    return ajax.get('seller/order/carrier/' + orderId);
+};
+
 
 //获取店铺信息
 export const getShopDetail = () => {
