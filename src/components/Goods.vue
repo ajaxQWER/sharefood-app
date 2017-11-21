@@ -90,9 +90,9 @@
 			formatStatus: function(status){
 				switch (status) {
 					case 'PUTAWAY':
-						return '估清';
+						return '下架';
 					case 'SOLD_OUT':
-						return '恢复';
+						return '上架';
 				}
 			},
 			getGoodsById: function(id,index){
