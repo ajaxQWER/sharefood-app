@@ -59,6 +59,12 @@
 		    						</div>
 		    					</div>
 		    				</div>
+                            <div class="order-row" v-if="item.orderTakeout.carrierDriverName">
+                                <div class="order-item goods-name">骑手信息</div>
+                                <div class="goods-number">
+                                    <span class="carrier-info"><span>{{item.orderTakeout.carrierDriverName}}{{item.orderTakeout.carrierDriverphone}}</span><a @click.stop="stopEvent" :href="'tel:'+item.orderTakeout.carrierDriverphone" class="telephone"><img src="../assets/images/phone.png" alt=""></a></span>
+                                </div>
+                            </div>
 		    				</router-link>
 		    			</li>
 		    		</ul>
@@ -101,8 +107,8 @@
 					orderStatus: '',
 					index: 1
 				},{
-					name: '新订单',
-					orderStatus: 'PAYED',
+					name: '已接单',
+					orderStatus: 'MERCHANT_CONFIRM_RECEIPT',
 					index: 2
 				},{
 					name: '配送中',
@@ -130,7 +136,7 @@
 				popupVisible3: false,
 				orderId: 0,
 				cancelContent: ''
-			}	
+			}
 		},
 		created: function(){
 			this.getOrders({pageId: this.pageId, orderStatus: this.orderStatus})
@@ -160,7 +166,7 @@
 						this.isEmpty = true;
 					}else{
 						this.canLoad = true;
-						this.isEmpty = false;						
+						this.isEmpty = false;
 					}
 					if(Math.ceil(this.counts / 10) == this.pageId){
 						this.allLoaded = true;
@@ -401,6 +407,52 @@
 		width: 100%;
 		height: 100%;
 	}
+    .goods-name{
+        float: left;
+        display: inline-block;
+    }
+    .goods-number{
+        float: right;
+        display: inline-block;
+    }
+    .goods-number span{
+        margin-left: 12vw;
+        font-size: 3.73vw;
+        color: #808080;
+        text-align: right;
+    }
+    .goods-number .discount{
+        color: #ff0000;
+    }
+    .goods-address{
+        width: 58vw;
+        color: #808080;
+    }
+    .phone{
+        font-size: 3.73vw;
+        color: #808080;
+        /* text-align: right; */
+    }
+    .carrier-info{
+        display: inline-block;
+        overflow: hidden;
+        text-align: center;
+    }
+    .carrier-info span{
+        display: inline-block;
+        margin-left: 0;
+        float: left;
+    }
+    a.telephone{
+        display: inline-block;
+        width: 5.06vw;
+        height: 5.06vw;
+        margin-left: 1.33vw;
+    }
+    a.telephone img{
+        width: 100%;
+        height: 100%;
+    }
 	.order-owner span{
 		margin-left: 2.66vw;
 	}
