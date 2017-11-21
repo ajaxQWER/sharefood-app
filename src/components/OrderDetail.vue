@@ -37,10 +37,10 @@
 								<div class="phone">{{orderDetail.orderContact.contactName}}({{formatGender(orderDetail.orderContact.gender)}})&emsp;{{orderDetail.orderContact.contactPhone}}</div>
 							</div>
 						</div>
-                        <div class="order-row" v-if="carrier">
+                        <div class="order-row">
                             <div class="order-item goods-name">骑手信息</div>
                             <div class="goods-number">
-                                <span class="carrier-info"><span>{{carrier.carrierName}}{{carrier.carrierPhone}}</span><a @click.stop="stopEvent" :href="'tel:'+carrier.carrierPhone" class="phone"><img src="../assets/images/phone.png" alt=""></a></span>
+                                <span class="carrier-info"><span>{{orderDetail.orderTakeout.carrierDriverName}}{{orderDetail.orderTakeout.carrierDriverphone}}</span><a @click.stop="stopEvent" :href="'tel:'+orderDetail.orderTakeout.carrierDriverphone" class="phone"><img src="../assets/images/phone.png" alt=""></a></span>
                             </div>
                         </div>
 						<div class="order-row">
@@ -76,14 +76,13 @@
 	</div>
 </template>
 <script>
-	import {getOrderById,getCarrierInfoById} from '@/api/api'
+	import {getOrderById} from '@/api/api'
 	export default {
 		name: 'order',
 		data: function(){
 			return {
 				orderId: '',
 				orderDetail: null,
-                carrier: null,
 			}
 		},
 		created: function(){
@@ -96,11 +95,6 @@
 					this.orderDetail = res;
 					this.$indicator.close();
 				});
-                getCarrierInfoById(orderId).then(res => {
-                    console.log(res);
-                    this.carrier = res;
-                    this.$indicator.close();
-                })
 			}
 		},
 		methods: {
