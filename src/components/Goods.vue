@@ -21,7 +21,7 @@
 							<div class="goods-detail-wrap">
 								<div class="goods-image">
 									<!-- <img :src="UPLOADURL + item.goodsImgUrl" alt=""> -->
-									<img v-lazy="UPLOADURL + item.goodsImgUrl" alt="">
+									<img v-lazy="UPLOADURL + item.goodsImgUrl+'/goods.png'" alt="">
 								</div>
 								<div class="goods-info">
 									<h3 class="goods-name">{{item.goodsName}}</h3>

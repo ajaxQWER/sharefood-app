@@ -3,7 +3,7 @@
         <div class="top-bg">
             <!-- <div class="nav-bar bar-title">门店管理</div> -->
             <div class="admin-info">
-                <img :src="UPLOADURL+'/shopLogo/'+loginShopId+'.png'" alt="" class="admin-icon">
+                <img :src="UPLOADURL+'/shopLogo/'+loginShopId+'.png/shopLogo.png'" alt="" class="admin-icon">
                 <div class="admin-shop">
                     <h3 class="shop-name">{{loginUser}}</h3>
                     <router-link to="/shopDetail" class="shop-detail">点击查看门店详情</router-link>
