@@ -37,7 +37,7 @@
 								<div class="phone">{{orderDetail.orderContact.contactName}}({{formatGender(orderDetail.orderContact.gender)}})&emsp;{{orderDetail.orderContact.contactPhone}}</div>
 							</div>
 						</div>
-                        <div class="order-row">
+                        <div class="order-row" v-if="orderDetail.orderTakeout.carrierDriverName">
                             <div class="order-item goods-name">骑手信息</div>
                             <div class="goods-number">
                                 <span class="carrier-info"><span>{{orderDetail.orderTakeout.carrierDriverName}}{{orderDetail.orderTakeout.carrierDriverphone}}</span><a @click.stop="stopEvent" :href="'tel:'+orderDetail.orderTakeout.carrierDriverphone" class="phone"><img src="../assets/images/phone.png" alt=""></a></span>
