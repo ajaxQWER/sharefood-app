@@ -38,7 +38,7 @@
 		    					<div v-if="item.orderType=='TAKEOUT'" class="operate-btn">
 		    						<div v-if="item.orderStatus=='PAYED'">
 			    						<button @click.prevent="cancelOrder(item.orderId)" class="btn danger">拒绝接单</button>
-			    						<button @click.prevent="acceptOrder(item.orderId,item.orderType)" class="btn deal-btn">接单</button>
+			    						<button @click.prevent="acceptOrder(item.orderId,item.orderType)" class="btn deal-btn">&emsp;接单&emsp;</button>
 		    						</div>
 		    						<div v-if="item.orderStatus=='MERCHANT_CONFIRM_RECEIPT'">
 		    							<button @click.prevent="cancelOrder(item.orderId)" class="btn danger">取消订单</button>
@@ -56,7 +56,7 @@
 			    						<button @click.prevent="acceptOrder(item.orderId,item.orderType)" class="btn deal-btn">接单</button>
 		    						</div>
 		    						<div v-if="item.orderStatus=='MERCHANT_CONFIRM_RECEIPT'">
-			    						<button @click.prevent="finishOrder(item.orderId)" class="btn deal-btn">完成</button>
+			    						<button @click.prevent="finishOrder(item.orderId)" class="btn deal-btn">&emsp;完成&emsp;</button>
 		    						</div>
 		    					</div>
 		    				</div>
@@ -332,8 +332,8 @@
 		position: relative;
 		/* top: 22.39vw; */
 	    box-sizing: border-box;
-		/* height: 100vh; */
-		/* overflow: hidden; */
+		 height: 100vh; 
+		 overflow: scroll; 
 		/* zoom: 1; */
 		/* padding-bottom: 13.06vw; */
 		padding-top: 22.39vw;
@@ -484,9 +484,9 @@
 		text-align: right;
 	}
 	.btn{
-		width: 21vw;
-		height: 5.33vw;
-		line-height: 5.33vw;
+		/*width: 21vw;*/
+		height: 7vw;
+		line-height: 7vw;
 		text-align: center;
 		font-size: 3.46vw;
 		border-radius: 5px;
