@@ -5,13 +5,23 @@ import App from './App'
 import VueRouter from 'vue-router'
 import routes from './router'
 import moment from 'moment'
+import VueAMap from 'vue-amap'
 // import Scrollactive from 'vue-scrollactive'
 
 Vue.use(MintUI);
-Vue.use(VueRouter)
+Vue.use(VueRouter);
+Vue.use(VueAMap);
 // Vue.use(Scrollactive);
 
 // Vue.config.productionTip = false
+
+// 初始化vue-amap
+VueAMap.initAMapApiLoader({
+    // 高德的key
+    key: 'ff339b1e4c406691fb1af1fc4fa012e5', //正式aaef257a849413a2d9329e1b2a0fbb6e
+    // 插件集合
+    plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor','AMap.Geolocation','AMap.Geocoder','AMap.DistrictSearch','AMap.Polygon']
+});
 
 
 const router = new VueRouter({

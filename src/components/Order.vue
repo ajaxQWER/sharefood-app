@@ -332,8 +332,8 @@
 		position: relative;
 		/* top: 22.39vw; */
 	    box-sizing: border-box;
-		 height: 100vh; 
-		 overflow: scroll; 
+		 height: 100vh;
+		 overflow: scroll;
 		/* zoom: 1; */
 		/* padding-bottom: 13.06vw; */
 		padding-top: 22.39vw;
