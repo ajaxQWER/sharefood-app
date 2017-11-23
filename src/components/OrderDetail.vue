@@ -12,26 +12,27 @@
                     <ul class="order-lists" v-if="orderDetail">
                         <li>
                             <div class="order-row">
-                                <div class="order-number-sub">#{{orderDetail.orderNum.toString().substr(-4)}}</div>
-                                <div class="order-number">{{orderDetail.orderNum}}</div>
-                                <div :class="['order-type',orderDetail.orderStatus=='CANCELLATION'?'cancel':'']">{{formatOrderStatus(orderDetail.orderStatus)}}</div>
+                                <div class="order-number-row">
+                                    <div class="order-number order-number-sub">#{{orderDetail.orderNum.toString().substr(-4)}}</div>
+                                    <div class="order-cancelType" v-if="orderDetail.orderCancel.cancelType">{{formatCancelType(orderDetail.orderCancel.cancelType)}}</div>
+                                </div>
+                                <div class="order-number-row">
+                                    <div class="order-number">{{orderDetail.orderNum}}</div>
+                                    <div :class="['order-type',orderDetail.orderStatus=='CANCELLATION'?'cancel':'']">{{formatOrderStatus(orderDetail.orderStatus)}}</div>
+                                </div>
                             </div>
-                            <!-- <div class="order-row order-owner">
-                                <div class="order-item">薛将军先生<span>13679085354</span></div>
-                                <div class="order-address">锦江区东大街1号</div>
-                                <a href="tel:13679085354" class="phone"><img src="../assets/images/phone.png" alt=""></a>
-                            </div> -->
                             <div class="order-row">
                                 <div class="order-detail">
                                     <div class="order-item order-time">下单时间<span>{{moment(orderDetail.addTime).format('YYYY-MM-DD HH:mm:ss')}}</span></div>
                                     <div class="order-item order-money">订单金额<span>￥{{orderDetail.orderPrice}}</span></div>
+                                    <div class="order-item">订单备注<span>{{orderDetail.orderContent?orderDetail.orderContent:'无'}}</span></div>
                                 </div>
                             </div>
                         </li>
                         <li>
-                            <div class="order-row">
+                            <!-- <div class="order-row">
                                 <div class="order-item">配送信息</div>
-                            </div>
+                            </div> -->
                             <div class="order-row">
                                 <div class="order-item goods-name">收货地址</div>
                                 <div class="goods-number">
@@ -53,7 +54,7 @@
                             <div class="order-row">
                                 <div class="order-item goods-name">骑手位置</div>
                                 <el-amap vid="amapDemo" class="amap" :zoom="zoom" :center="mapCenter">
-                                    <el-amap-marker v-for="(marker,index) in markers" :key="index" :position="marker.position"></el-amap-marker>
+                                    <el-amap-marker v-for="(marker,index) in markers" :key="index" :position="marker.position" :icon="marker.icon"></el-amap-marker>
                                 </el-amap>
                             </div>
                         </li>
@@ -100,7 +101,7 @@
                 store: null,
                 orderContactPosition: [],
                 shopPosition: [],
-                zoom: 16,
+                zoom: 14,
                 mapCenter: [104.067861,30.550391],
                 markers: [],
                 plugin: [{
@@ -137,7 +138,8 @@
                     this.orderContactPosition = [res.orderContact.longitude, res.orderContact.latitude];
 //                    this.shopPosition = [];
                     this.markers = [{
-                        position: [104.067861,30.550391]
+                        position: [104.067861,30.550391],
+                        icon: 'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3068272394,3148521573&fm=58'
                     },{
                         position: [104.066,30.552]
                     }];
@@ -219,6 +221,22 @@
             stopEvent: function(){
                 return;
             },
+            formatCancelType: function(type){
+                switch(type){
+                    case 'USER':
+                        return '用户取消';
+                    case 'SHOP':
+                        return '商家取消';
+                    case 'WAIT_PAY_TIMEOUT':
+                        return '支付超时';
+                    case 'RECEIVING_TIMEOUT':
+                        return '接单超时';
+                    case 'DELIVERY_REJECT':
+                        return '配送拒绝';
+                    default:
+                        return '-'
+                }
+            }
 		}
 	}
 </script>
@@ -290,7 +308,7 @@
 		color: #0bb745;
 	}
 	.order-type.cancel{
-		color: #808080;
+		color: #ff0000;
 	}
 	.order-owner{
 		position: relative;
@@ -376,5 +394,16 @@
         width: 100%;
         height: 80vw;
         padding-top: 2.66vw;
+    }
+
+    .order-number-row{
+        overflow: hidden;
+        zoom: 1;
+    }
+
+    .order-cancelType{
+        float: right;
+        font-size: 3.73vw;
+        color: #ff0000;
     }
 </style>
