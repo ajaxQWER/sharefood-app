@@ -35,93 +35,94 @@
         </div>
         <div class="column-wrap">
             <div class="column flex">
-                <router-link to="/goods" class="link">
-                    <div class="column-item flex-1">
+                <div class="column-item flex-1">
+                    <router-link to="/goods" class="link">
                         <img src="../assets/images/shop-item1.png" alt="">
                         <div class="column-name">商品</div>
-                    </div>
-                </router-link>
-                <router-link to="/order" class="link">
-                    <div class="column-item flex-1">
+                    </router-link>
+                </div>
+                <div class="column-item flex-1">
+                    <router-link to="/order" class="link">
                         <img src="../assets/images/shop-item2.png" alt="">
                         <div class="column-name">订单</div>
-                    </div>
-                </router-link>
-                <router-link to="/comment" class="link">
-                    <div class="column-item flex-1">
+                    </router-link>
+                </div>
+                <div class="column-item flex-1">
+                    <router-link to="/comment" class="link">
                         <img src="../assets/images/shop-item3.png" alt="">
                         <div class="column-name">评价</div>
-                    </div>
-                </router-link>
+                    </router-link>
+                </div>
             </div>
             <div class="column flex">
-                <router-link to="/analyze" class="link">
-                    <div class="column-item flex-1">
+                <div class="column-item flex-1">
+                    <router-link to="/analyze" class="link">
                         <img src="../assets/images/shop-item4.png" alt="">
                         <div class="column-name">营业分析</div>
-                    </div>
-                </router-link>
-                <router-link to="/shopDetail" class="link">
-                    <div class="column-item flex-1">
+                    </router-link>
+                </div>
+                <div class="column-item flex-1">
+                    <router-link to="/shopDetail" class="link">
                         <img src="../assets/images/shop-item5.png" alt="">
                         <div class="column-name">门店信息</div>
-                    </div>
-                </router-link>
-                <router-link to="/activityList" class="link">
-                    <div class="column-item flex-1">
+                    </router-link>
+                </div>
+                <div class="column-item flex-1">
+                    <router-link to="/activityList" class="link">
                         <img src="../assets/images/shop-item6.png" alt="">
                         <div class="column-name">活动</div>
-                    </div>
-                </router-link>
+                    </router-link>
+                </div>
             </div>
             <div class="column flex">
-                <router-link to="/goodsCategory" class="link">
-                    <div class="column-item flex-1">
+                <div class="column-item flex-1">
+                    <router-link to="/goodsCategory" class="link">
                         <img src="../assets/images/shop-item7.png" alt="">
                         <div class="column-name">商品分类</div>
-                    </div>
-                </router-link>
-                <router-link to="/setting" class="link">
-                    <div class="column-item flex-1">
+                    </router-link>
+                </div>
+                <div class="column-item flex-1">
+                    <router-link to="/setting" class="link">
                         <img src="../assets/images/shop-item11.png" alt="">
                         <div class="column-name">设置</div>
-                    </div>
-                </router-link>
-                <router-link to="/notice" class="link">
-                    <div class="column-item flex-1">
+                    </router-link>
+                </div>
+                <div class="column-item flex-1">
+                    <router-link to="/notice" class="link">
                         <img src="../assets/images/shop-item12.png" alt="">
                         <div class="column-name">通知中心</div>
-                    </div>
-                </router-link>
+                    </router-link>
+                </div>
                 <!-- <div class="column-item flex-1 column-null"></div> -->
                 <!-- <router-link to="/employee" class="link">
-			    	<div class="column-item flex-1">
-			    		<img src="../assets/images/shop-item8.png" alt="">
-			    		<div class="column-name">员工</div>
-			    	</div>
-			    </router-link>
-		    	<router-link to="/sequence" class="link">
-			    	<div class="column-item flex-1">
-			    		<img src="../assets/images/shop-item9.png" alt="">
-			    		<div class="column-name">桌号</div>
-			    	</div>
-			    </router-link> -->
-            </div>
-            <div class="column flex">
-                <router-link to="/bonusList" class="link">
                     <div class="column-item flex-1">
-                        <img src="../assets/images/shop-item13.png" alt="">
-                        <div class="column-name">红包</div>
+                        <img src="../assets/images/shop-item8.png" alt="">
+                        <div class="column-name">员工</div>
                     </div>
                 </router-link>
-		    	<!-- <router-link to="/bills" class="link">
-			    	<div class="column-item flex-1">
-		    			<img src="../assets/images/shop-item10.png" alt="">
-		    			<div class="column-name">对账单</div>
-			    	</div>
-			    </router-link> -->
-		    	<!-- <div class="column-item flex-1 column-null"></div> -->
-		    </div>
+                <router-link to="/sequence" class="link">
+                    <div class="column-item flex-1">
+                        <img src="../assets/images/shop-item9.png" alt="">
+                        <div class="column-name">桌号</div>
+                    </div>
+                </router-link> -->
+                <!-- <router-link to="/bills" class="link">
+                    <div class="column-item flex-1">
+                        <img src="../assets/images/shop-item10.png" alt="">
+                        <div class="column-name">对账单</div>
+                    </div>
+                </router-link> -->
+            </div>
+            <div class="column flex">
+                <div class="column-item flex-1">
+                    <router-link to="/bonusList" class="link">
+                        <img src="../assets/images/shop-item13.png" alt="">
+                        <div class="column-name">红包</div>
+                    </router-link>
+                </div>
+                <div class="column-item flex-1 column-null"></div>
+                <div class="column-item flex-1 column-null"></div>
+            </div>
         </div>
     </div>
 </template>
@@ -172,9 +173,11 @@ export default {
     min-height: 100%;
     background-color: #f2f2f2;
 }
-.top-bg{
+
+.top-bg {
     height: 48vw;
 }
+
 .bar-title {
     text-align: center;
     line-height: 11.73vw;
@@ -193,7 +196,7 @@ export default {
     margin-top: 2.66vw;
 }
 
-.shop-status{
+.shop-status {
     margin-left: 1.33vw;
 }
 
@@ -297,7 +300,7 @@ export default {
 .column-item {
     width: 33.06vw;
     padding: 4vw 0;
-    margin: 0.2666vw 0.1366vw;
+    margin: 1px;
     text-align: center;
     background-color: #fff;
 }
