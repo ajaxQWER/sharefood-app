@@ -135,12 +135,19 @@
                     console.log(res)
                     this.orderDetail = res;
                     this.orderContactPosition = [res.orderContact.longitude, res.orderContact.latitude];
-//                    this.shopPosition = [];
-
+                    this.shopPosition = [res.longitude, res.latitude];
                     this.$indicator.close();
                     if(this.judgeHasCarrier(res.orderStatus)){
                         this.hasCarrier = true;
-                        this.getCarrierInfo(orderId, res.orderStatus);
+//                        this.getCarrierInfo(orderId, res.orderStatus);
+                        this.markers = [{
+                            position: this.shopPosition,
+                            icon: 'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3068272394,3148521573&fm=58'
+                        },{
+                            position: this.orderContactPosition,
+//                        icon: ''
+                        }];
+                        console.log(this.markers);
                     }else{
                         this.hasCarrier = false;
                     }
@@ -154,31 +161,24 @@
                     var lng = res.longitude,
                         lat = res.latitude,
                         center = {};
-//                    if(orderStatus == 'MERCHANT_CONFIRM_RECEIPT' || orderStatus == 'WAIT_PICKUP' ||
-//                        orderStatus == 'PICKUPING'){
-//                        center = {
-//                            lng: this.shopPosition[0] + lng,
-//                            lat: this.shopPosition[1] + lat
-//                        };
-//                    }else{
+                    if(orderStatus == 'MERCHANT_CONFIRM_RECEIPT' || orderStatus == 'WAIT_PICKUP' ||
+                        orderStatus == 'PICKUPING'){
+                        center = {
+                            lng: this.shopPosition[0] + lng,
+                            lat: this.shopPosition[1] + lat
+                        };
+                    }else{
                         center = {
                             lng: (this.orderContactPosition[0] + lng)/2,
                             lat: (this.orderContactPosition[1] + lat)/2
                         };
-//                    }
+                    }
 
                     this.mapCenter = [center.lng, center.lat];
-                    this.markers = [{
-                        position: [104.067861,30.550391],
-                        icon: 'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3068272394,3148521573&fm=58'
-                    },{
-                        position: [104.066,30.552],
-//                        icon: ''
-                    },{
-                        position: [104.077,30.567],
-//                        icon: ''
-                    }]
-                    console.log(this.markers);
+//                    this.markers.push({
+//                        position: [lng, lat],
+////                        icon: ''
+//                    });
 
                 })
             },
