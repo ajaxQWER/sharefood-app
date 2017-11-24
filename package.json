@@ -15,6 +15,7 @@
     "mint-ui": "^2.2.9",
     "moment": "^2.19.1",
     "vue": "^2.5.2",
+    "vue-amap": "^0.4.1",
     "vue-echarts-v3": "^1.0.5",
     "vue-router": "^3.0.1"
   },
