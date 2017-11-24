@@ -21,27 +21,10 @@
                                 <div class="order-address">锦江区东大街1号</div>
                                 <a href="tel:13679085354" class="phone"><img src="../assets/images/phone.png" alt=""></a>
                             </div> -->
-                            <div class="order-row">
-                                <div class="order-detail">
-                                    <div class="order-item order-time">下单时间<span>{{moment(orderDetail.addTime).format('YYYY-MM-DD HH:mm:ss')}}</span></div>
-                                    <div class="order-item order-money">订单金额<span>￥{{orderDetail.orderPrice}}</span></div>
-                                </div>
-                            </div>
                         </li>
                         <li>
                             <div class="order-row">
                                 <div class="order-item">配送信息</div>
-                            </div>
-                            <div class="order-row">
-                                <div class="order-item goods-name">收货地址</div>
-                                <div class="goods-number">
-                                    <div class="goods-address">{{orderDetail.orderContact.address}}</div>
-                                    <div class="phone">{{orderDetail.orderContact.contactName}}({{formatGender(orderDetail.orderContact.gender)}})&emsp;{{orderDetail.orderContact.contactPhone}}</div>
-                                </div>
-                            </div>
-                            <div class="order-row">
-                                <div class="order-item goods-name">送达时间</div>
-                                <div class="goods-number"><span>尽快送达[{{moment(orderDetail.orderTakeout.deliveryTime).format('HH:mm:ss')}}]</span></div>
                             </div>
                             <div class="order-row" v-if="orderDetail.orderTakeout.carrierDriverName">
                                 <div class="order-item goods-name">骑手信息</div>
@@ -55,6 +38,26 @@
                                 <el-amap vid="amapDemo" class="amap" :zoom="zoom" :center="mapCenter">
                                     <el-amap-marker v-for="(marker,index) in markers" :key="index" :position="marker.position"></el-amap-marker>
                                 </el-amap>
+                            </div>
+                            <div class="order-row">
+                                <div class="order-item goods-name">收货地址</div>
+                                <div class="goods-number">
+                                    <div class="goods-address">{{orderDetail.orderContact.address}}</div>
+                                    <div class="phone">{{orderDetail.orderContact.contactName}}({{formatGender(orderDetail.orderContact.gender)}})&emsp;{{orderDetail.orderContact.contactPhone}}</div>
+                                </div>
+                            </div>
+                            <div class="order-row">
+                                <div class="order-item goods-name">送达时间</div>
+                                <div class="goods-number"><span>尽快送达[{{moment(orderDetail.orderTakeout.deliveryTime).format('HH:mm:ss')}}]</span></div>
+                            </div>
+
+                        </li>
+                        <li>
+                            <div class="order-row">
+                                <div class="order-detail">
+                                    <div class="order-item order-time">下单时间<span>{{moment(orderDetail.addTime).format('YYYY-MM-DD HH:mm:ss')}}</span></div>
+                                    <div class="order-item order-money">订单金额<span>￥{{orderDetail.orderPrice}}</span></div>
+                                </div>
                             </div>
                         </li>
                         <li>
@@ -100,7 +103,7 @@
                 store: null,
                 orderContactPosition: [],
                 shopPosition: [],
-                zoom: 16,
+                zoom: 14,
                 mapCenter: [104.067861,30.550391],
                 markers: [],
                 plugin: [{
@@ -134,7 +137,7 @@
                 getOrderById(orderId).then(res => {
                     console.log(res)
                     this.orderDetail = res;
-                    this.orderContactPosition = [res.orderContact.longitude, res.orderContact.latitude];
+//                    this.orderContactPosition = [res.orderContact.longitude, res.orderContact.latitude];
 //                    this.shopPosition = [];
                     this.markers = [{
                         position: [104.067861,30.550391]
@@ -173,6 +176,9 @@
                     }
 
                     this.mapCenter = [center.lng, center.lat];
+                    this.markers.push({
+                        position: [lng, lat]
+                    })
 
                 })
             },
