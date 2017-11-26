@@ -52,8 +52,9 @@
                             </div>
                             <div class="order-row" v-if="hasCarrier">
                                 <div class="order-item goods-name">骑手位置</div>
-                                <el-amap vid="amapDemo" class="amap" :zoom="zoom" :center="mapCenter">
+                                <el-amap ref="map" vid="amapDemo" class="amap" :zoom="zoom" :center="mapCenter">
                                     <el-amap-marker v-for="(marker,index) in markers" :key="index" :position="marker.position" :icon="marker.icon"></el-amap-marker>
+                                    <div class="my-pos" @click="backMyPosition"><img src="../assets/images/get-position.png" alt=""></div>
                                 </el-amap>
                             </div>
                         </li>
@@ -87,9 +88,9 @@
 </template>
 <script>
 	import {getOrderById, getCarrierById, getPositionById} from '@/api/api'
-	import Me from '@/assets/images/me.png'
-	import ShopAddress from '@/assets/images/shop-address.png'
-	import Flagstaff from '@/assets/images/flagstaff.png'
+	import shop from '@/assets/images/shop.png'
+	import carrier from '@/assets/images/carrier.png'
+	import customer from '@/assets/images/customer.png'
 	export default {
 		name: 'order',
 		data: function(){
@@ -98,17 +99,18 @@
 				orderId: '',
 				orderDetail: null,
                 carrier: null,
-                hasCarrier: true,
+                hasCarrier: false,
                 store: null,
+                map: null,
                 orderContactPosition: [],
+                buyerPosition: [],
                 shopPosition: [],
+                carrierPosition: [],
                 zoom: 14,
-                mapCenter: [104.067861,30.550391],
+                mapCenter: [0,0],
                 markers: [],
-                plugin: [{
-                    pName: 'Scale',
-                    position: 'RT'
-                }]
+                orderStatus: '',
+                interval: null
 			}
 		},
 		created: function(){
@@ -118,6 +120,30 @@
 				this.getOrderInfo(orderId);
 			}
 		},
+        watch: {
+            orderStatus: function(newVal, oldVal){
+                if(newVal == 'WAIT_PICKUP' || newVal == 'PICKUPING' || newVal == 'SHIPPING'){
+                    try{
+                        this.interval = setInterval(() => {
+                            this.hasCarrier = true;
+                            this.getCarrierInfo(this.orderId, this.orderStatus)
+                        },30000)
+                    }catch(err){
+                        this.hasCarrier = false;
+                        clearInterval(this.interval);
+                        this.interval = null
+                    }
+                }else{
+                    this.hasCarrier = false;
+                    clearInterval(this.interval);
+                    this.interval = null
+                }
+            }
+        },
+        destroyed: function(){
+            clearInterval(this.interval);
+            this.interval = null
+        },
 		methods: {
             loadTop: function () {
                 this.init = true;
@@ -125,9 +151,7 @@
                 this.getOrderInfo(this.orderId);
             },
 		    judgeHasCarrier: function (orderStatus) {
-                console.log(orderStatus);
-                if(orderStatus == 'MERCHANT_CONFIRM_RECEIPT' || orderStatus == 'WAIT_PICKUP' ||
-                    orderStatus == 'PICKUPING' || orderStatus == 'SHIPPING'){
+                if(orderStatus == 'WAIT_PICKUP' || orderStatus == 'PICKUPING' || orderStatus == 'SHIPPING'){
                     return true;
                 }
                 return false;
@@ -139,46 +163,44 @@
                     console.log(res)
                     this.orderDetail = res;
                     var orderStatus = res.orderStatus;
-
-                    getPositionById(orderId).then(res => {
-                        console.log(res);
-                        this.buyerPosition = [res.buyer.longitude, res.buyer.latitude];
-                        this.shopPosition = [res.shop.longitude, res.shop.latitude];
-                        this.carrierPosition = [res.carrier.longitude, res.carrier.latitude];
-                        this.markers[0] = {
-                            position: this.shopPosition,
-                            icon: ShopAddress,
-                        };
-                        this.markers[1] = {
-                            position: this.buyerPosition,
-                            icon: Me,
-                        };
-                        this.markers[2] = {
-                            position: this.carrierPosition,
-                            icon: Flagstaff
-                        };
-
-                        this.$indicator.close();
-                        if(this.judgeHasCarrier(orderStatus)){
-                            this.hasCarrier = true;
-                            this.getCarrierInfo(orderId, orderStatus);
-                        }else{
+                    this.orderStatus = orderStatus;
+                    this.$indicator.close();
+                    if(this.judgeHasCarrier(orderStatus)){
+                        this.hasCarrier = true;
+                        getPositionById(orderId).then(data => {
+                            this.map = this.$refs.map.$$getInstance();
+                            this.buyerPosition = [data.buyer.longitude, data.buyer.latitude];
+                            this.shopPosition = [data.shop.longitude, data.shop.latitude];
+                            this.carrierPosition = [data.carrier.longitude, data.carrier.latitude];
+                            this.mapCenter = this.shopPosition;
+                            var shopMarkerObj = {
+                                position: [data.shop.longitude, data.shop.latitude],
+                                icon: shop
+                            };
+                            var customerMarkerObj = {
+                                position: [data.buyer.longitude, data.buyer.latitude],
+                                icon: customer
+                            };
+                            var carrierMarkerObj = {
+                                position: [data.carrier.longitude, data.carrier.latitude],
+                                icon: carrier
+                            }
+                            this.markers = [].concat(shopMarkerObj,customerMarkerObj,carrierMarkerObj);
+                            this.$indicator.close();
+                        }).catch((err) => {
                             this.hasCarrier = false;
-                        }
-                    }).catch(() => {
-                        this.hasCarrier = false;
-                    })
-
+                            console.error(err)
+                        })
+                    }
                 });
             },
 		    getCarrierInfo: function (orderId, orderStatus) {
                 getCarrierById(orderId).then(res => {
                     console.log(res);
-                    var lng = res.longitude,
-                        lat = res.latitude,
-                        center = {};
-                    if(orderStatus == 'MERCHANT_CONFIRM_RECEIPT' || orderStatus == 'WAIT_PICKUP' ||
-                        orderStatus == 'PICKUPING'){
+                    var lng = res.longitude;
+                    var lat = res.latitude;
+                    var center = {};
+                    if(orderStatus == 'WAIT_PICKUP' || orderStatus == 'PICKUPING'){
                         center = {
                             lng: (this.shopPosition[0] + lng)/2,
                             lat: (this.shopPosition[1] + lat)/2
@@ -195,11 +217,8 @@
                     this.mapCenter = [center.lng, center.lat];
                     this.markers[2] = {
                         position: [lng, lat],
-                        icon: Flagstaff,
+                        icon: carrier,
                     };
-
-                    console.log(this.mapCenter);
-                    console.log(this.markers);
 
                 }).catch(() => {
                     this.hasCarrier = false;
@@ -263,6 +282,9 @@
                     default:
                         return '-'
                 }
+            },
+            backMyPosition: function(){
+                this.map.setZoomAndCenter(14, this.shopPosition);
             }
 		}
 	}
@@ -421,8 +443,21 @@
         width: 100%;
         height: 80vw;
         padding-top: 2.66vw;
+        position: relative;
     }
-
+    .my-pos{
+        width: 10vw;
+        height: 10vw;
+        /*background-color: red;*/
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        z-index: 999;
+    }
+    .my-pos img{
+        width: 100%;
+        height: 100%;
+    }
     .order-number-row{
         overflow: hidden;
         zoom: 1;
