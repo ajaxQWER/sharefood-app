@@ -46,6 +46,7 @@ if (/Android/gi.test(navigator.userAgent)) {
 // Object.defineProperty(Vue.prototype, 'UPLOADURL', {value: 'http://uploads.gongxiangdiancan.com'});
 // Object.defineProperty(Vue.prototype, 'BASEURL', {value: 'http://api.gongxiangdiancan.com'});
 
+console.log(process.env)
 //测试
 Object.defineProperty(Vue.prototype, 'UPLOADURL', {value: process.env.UPLOAD_URL});
 Object.defineProperty(Vue.prototype, 'BASEURL', {value: process.env.BASE_URL});
