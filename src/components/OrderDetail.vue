@@ -125,6 +125,7 @@
                 this.getOrderInfo(this.orderId);
             },
 		    judgeHasCarrier: function (orderStatus) {
+                console.log(orderStatus);
                 if(orderStatus == 'MERCHANT_CONFIRM_RECEIPT' || orderStatus == 'WAIT_PICKUP' ||
                     orderStatus == 'PICKUPING' || orderStatus == 'SHIPPING'){
                     return true;
@@ -141,7 +142,6 @@
 
                     getPositionById(orderId).then(res => {
                         console.log(res);
-//                        this.hasCarrier = true;
                         this.buyerPosition = [res.buyer.longitude, res.buyer.latitude];
                         this.shopPosition = [res.shop.longitude, res.shop.latitude];
                         this.carrierPosition = [res.carrier.longitude, res.carrier.latitude];
@@ -153,12 +153,15 @@
                             position: this.buyerPosition,
                             icon: Me,
                         };
-                        this.markers[2] = this.carrierPosition;
+                        this.markers[2] = {
+                            position: this.carrierPosition,
+                            icon: Flagstaff
+                        };
+
                         this.$indicator.close();
                         if(this.judgeHasCarrier(orderStatus)){
                             this.hasCarrier = true;
                             this.getCarrierInfo(orderId, orderStatus);
-                            console.log(this.markers);
                         }else{
                             this.hasCarrier = false;
                         }
