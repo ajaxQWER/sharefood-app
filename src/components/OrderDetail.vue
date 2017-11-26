@@ -180,8 +180,8 @@
                     if(orderStatus == 'MERCHANT_CONFIRM_RECEIPT' || orderStatus == 'WAIT_PICKUP' ||
                         orderStatus == 'PICKUPING'){
                         center = {
-                            lng: this.shopPosition[0] + lng,
-                            lat: this.shopPosition[1] + lat
+                            lng: (this.shopPosition[0] + lng)/2,
+                            lat: (this.shopPosition[1] + lat)/2
                         };
                     }
 
