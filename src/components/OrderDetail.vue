@@ -86,7 +86,10 @@
 	</div>
 </template>
 <script>
-	import {getOrderById, getCarrierById} from '@/api/api'
+	import {getOrderById, getCarrierById, getPositionById} from '@/api/api'
+	import Me from '@/assets/images/me.png'
+	import ShopAddress from '@/assets/images/shop-address.png'
+	import Flagstaff from '@/assets/images/flagstaff.png'
 	export default {
 		name: 'order',
 		data: function(){
@@ -134,24 +137,34 @@
                     this.$refs.loadmore.onTopLoaded();
                     console.log(res)
                     this.orderDetail = res;
-                    this.orderContactPosition = [res.orderContact.longitude, res.orderContact.latitude];
-                    this.shopPosition = [res.longitude, res.latitude];
-                    this.$indicator.close();
-                    if(this.judgeHasCarrier(res.orderStatus)){
-                        this.hasCarrier = true;
-//                        this.getCarrierInfo(orderId, res.orderStatus);
-                        this.markers = [{
-                            position: this.shopPosition,
-                            icon: 'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=3068272394,3148521573&fm=58'
-                        },{
-                            position: this.orderContactPosition,
-//                        icon: ''
-                        }];
-                        console.log(this.markers);
-                    }else{
-                        this.hasCarrier = false;
-                    }
+                    var orderStatus = res.orderStatus;
 
+                    getPositionById(orderId).then(res => {
+                        console.log(res);
+//                        this.hasCarrier = true;
+                        this.buyerPosition = [res.buyer.longitude, res.buyer.latitude];
+                        this.shopPosition = [res.shop.longitude, res.shop.latitude];
+                        this.carrierPosition = [res.carrier.longitude, res.carrier.latitude];
+                        this.markers[0] = {
+                            position: this.shopPosition,
+                            icon: ShopAddress,
+                        };
+                        this.markers[1] = {
+                            position: this.buyerPosition,
+                            icon: Me,
+                        };
+                        this.markers[2] = this.carrierPosition;
+                        this.$indicator.close();
+                        if(this.judgeHasCarrier(orderStatus)){
+                            this.hasCarrier = true;
+                            this.getCarrierInfo(orderId, orderStatus);
+                            console.log(this.markers);
+                        }else{
+                            this.hasCarrier = false;
+                        }
+                    }).catch(() => {
+                        this.hasCarrier = false;
+                    })
 
                 });
             },
@@ -167,19 +180,26 @@
                             lng: this.shopPosition[0] + lng,
                             lat: this.shopPosition[1] + lat
                         };
-                    }else{
+                    }
+
+                    if(orderStatus == 'SHIPPING'){
                         center = {
-                            lng: (this.orderContactPosition[0] + lng)/2,
-                            lat: (this.orderContactPosition[1] + lat)/2
+                            lng: (this.buyerPosition[0] + lng)/2,
+                            lat: (this.buyerPosition[1] + lat)/2
                         };
                     }
 
                     this.mapCenter = [center.lng, center.lat];
-//                    this.markers.push({
-//                        position: [lng, lat],
-////                        icon: ''
-//                    });
+                    this.markers[2] = {
+                        position: [lng, lat],
+                        icon: Flagstaff,
+                    };
 
+                    console.log(this.mapCenter);
+                    console.log(this.markers);
+
+                }).catch(() => {
+                    this.hasCarrier = false;
                 })
             },
 			formatOrderStatus: function(status){
