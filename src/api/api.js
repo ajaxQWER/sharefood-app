@@ -298,6 +298,17 @@ export const updateBonusById = (id,params) => {
     return ajax.post('seller/coupon/' + id, params);
 };
 
+//发票设置
+//设置允许开票
+export const setCanDrawInvoice = () => {
+    return ajax.put('seller/shopDetail/drawInvoice');
+};
+//设置不允许开票
+export const setNoCanDrawInvoice = () => {
+    return ajax.delete('seller/shopDetail/drawInvoice');
+};
+
+
 //短信验证码
 export const getPhoneCode = phoneNumber => {
     return ajax.post('commons/phoneCode/' + phoneNumber);
