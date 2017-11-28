@@ -75,7 +75,7 @@
                 </div>
                 <div class="bindBtns">
                     <button class="bond" @click="bind">绑定设备</button>
-                    <button class="bond red" @click="closePopup">关闭</button>
+                    <button class="close" @click="closePopup">关闭</button>
                 </div>
             </div>
         </mt-popup>
@@ -277,7 +277,16 @@ export default {
     margin-top: 0.8vw;
 }
 
-.bond.red {
+.close {
+    display: block;
+    width: 93.33vw;
+    height: 10.66vw;
+    color: #fff;
+    margin: 2vw auto;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    font-size: 4.26vw;
     background-color: #ef4f4f;
 }
 
