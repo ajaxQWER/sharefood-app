@@ -58,6 +58,12 @@
                         <div class="row-value row-value-after">{{shopDetail.minDeliveryPrice?shopDetail.minDeliveryPrice:''}}</div>
                     </div>
                 </router-link>
+                <router-link :to="'/drawInvoice?canDrawInvoice='+shopDetail.canDrawInvoice" class="jump">
+                    <div class="shopDetail-col shop-after">
+                        <div class="row-key row-title">是否允许开票</div>
+                        <div class="row-value row-value-after">{{shopDetail.canDrawInvoice?'是':'否'}}</div>
+                    </div>
+                </router-link>
             </div>
 			<div class="shopDetail-row">
 				<div class="shopDetail-col shop-after">

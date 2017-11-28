@@ -39,6 +39,7 @@ import GoodsManager from '@/components/GoodsManager.vue'  //特价商品-商品�
 import BonusList from '@/components/BonusList.vue'  //红包管理
 import AddBonus from '@/components/AddBonus.vue'  //添加红包
 import GetBonus from '@/components/GetBonus.vue'  //领取红包
+import DrawInvoice from '@/components/DrawInvoice.vue'  //开票设置
 let routes = [{
     path: '/login',
     component: Login,
@@ -199,6 +200,10 @@ let routes = [{
     path: '/getBonus',
     component: GetBonus,
     name: 'getBonus'
+},{
+    path: '/drawInvoice',
+    component: DrawInvoice,
+    name: 'drawInvoice'
 }];
 
 export default routes;
