@@ -32,7 +32,7 @@
                 <div class="goods-item">
                     <div class="row-title">商品价格</div>
                     <div class="row-value">
-                        <input type="number" placeholder="请输入商品价格" v-model="goodsInfo.goods.goodsPrice">
+                        <input type="number" placeholder="请输入商品价格" v-model.number="goodsInfo.goods.goodsPrice" min="0">
                     </div>
                 </div>
                 <div class="goods-item">
@@ -82,7 +82,7 @@
                 <div class="goods-item">
                     <div class="row-title">餐盒费</div>
                     <div class="row-value">
-                        <input type="number" placeholder="请输入餐盒费" v-model.number="newGoods.goods.feeMeals">
+                        <input type="number" placeholder="请输入餐盒费" v-model.number="newGoods.goods.feeMeals" min="0">
                     </div>
                 </div>
                 <div class="goods-item">
@@ -337,14 +337,26 @@ export default {
                     this.$toast({ message: '请选择商品分类', duration: 1000 })
                     return;
                 }
-                if (!this.newGoods.goods.goodsPrice) {
+                if (this.newGoods.goods.goodsPrice === '') {
                     this.$toast({ message: '请输入商品价格', duration: 1000 })
                     return;
                 }
-                if (this.newGoods.goods.feeMeals == '') {
+                if (this.newGoods.goods.goodsPrice < 0 ) {
+                    this.newGoods.goods.goodsPrice = ''
+                    this.$toast({ message: '请输入正确的商品价格', duration: 1000 })
+                    return;
+                }
+                if (this.newGoods.goods.feeMeals === '') {
                     this.$toast({ message: '请输入餐盒费', duration: 1000 })
                     return;
                 }
+                if (this.newGoods.goods.feeMeals < 0) {
+                    this.newGoods.goods.feeMeals = ''
+                    this.$toast({ message: '请输入正确的餐盒费', duration: 1000 })
+                    return;
+                }
+                console.log(this.newGoods.goods)
+                return
                 this.$indicator.open();
                 addGoods(this.newGoods).then(() => {
                     this.$toast({ message: '操作成功', duration: 1000 })
