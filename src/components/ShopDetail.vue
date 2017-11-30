@@ -119,6 +119,7 @@
 	}
 	.shopDetail-header{
 		width: 100%;
+		position: fixed;
 	}
 	.shopDetail-row{
 		margin-top: 2.66vw;
@@ -135,6 +136,10 @@
 	}
 	.jump:not(:last-child){
 		border-bottom: 0.13vw solid #f2f2f2;
+	}
+	.shopDetail-content{
+		padding-top: 11.73vw;
+		padding-bottom: 2.66vw;
 	}
 	.row-key{
 		font-size: 4.26vw;
@@ -155,9 +160,6 @@
 		float: right;
 		margin-right: 2.66vw;
 		margin-top: 0.4vw;
-	}
-	.shop-after{
-		position: relative;
 	}
 	.row-value-after:after{
 		content: '';

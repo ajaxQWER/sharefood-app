@@ -76,7 +76,7 @@
                 <div class="goods-item">
                     <div class="row-title">商品价格</div>
                     <div class="row-value">
-                        <input type="number" placeholder="请输入商品价格" v-model.number="newGoods.goods.goodsPrice">
+                        <input type="number" placeholder="请输入商品价格" v-model.number="newGoods.goods.goodsPrice" min="0">
                     </div>
                 </div>
                 <div class="goods-item">
@@ -355,8 +355,6 @@ export default {
                     this.$toast({ message: '请输入正确的餐盒费', duration: 1000 })
                     return;
                 }
-                console.log(this.newGoods.goods)
-                return
                 this.$indicator.open();
                 addGoods(this.newGoods).then(() => {
                     this.$toast({ message: '操作成功', duration: 1000 })
