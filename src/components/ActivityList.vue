@@ -167,7 +167,7 @@
 		zoom: 1;
 	}
 	.activity-lists li:not(:last-child){
-		border-bottom: 0.13vw solid #f2f2f2;
+		border-bottom: 1px solid #f2f2f2;
 	}
 	.activity-content{
 		float: left;
