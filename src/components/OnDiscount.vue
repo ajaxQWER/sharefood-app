@@ -36,7 +36,7 @@
 		      				<tr v-for="(item,index) in goodsLists" :key="index">
 		      					<td>{{item.goodsName}}</td>
 		      					<td>￥{{item.goodsPrice}}</td>
-		      					<td>{{item.discount}}</td>
+		      					<td>{{item.discount}}折</td>
 		      				</tr>
 		      			</tbody>
 		      		</table>

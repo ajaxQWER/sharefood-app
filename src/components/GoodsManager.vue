@@ -59,7 +59,8 @@ export default {
         return {
             isEmpty: false,
             goodsLists: [],
-            type: 'sales'
+            type: 'sales',
+            hasError: false
         }
     },
     created: function() {
@@ -114,19 +115,67 @@ export default {
     },
     methods: {
         saveActivity: function() {
-        	var id = this.$route.query.id;
+        	var id = +this.$route.query.id;
+            this.hasError = false;
         	var params = {}
         	this.goodsLists.forEach((item) => {
         		if(item.isActivity && !item.hasActivity){
-					params[item.goodsId] = {
-						goodsId: item.goodsId,
-						activityId: id,
-						specialsPrice: item.promotionPrice,
-						discount: item.discount,
-						limitedQuantity: item.limitation
-					}
-        		}
+                    if(this.type == 'sales'){
+                        if(item.promotionPrice < 0){
+                            this.$toast({
+                                message: item.goodsName + '促销价不能小于0元',
+                                duration: 2000
+                            })
+                            this.hasError = true;
+                        }
+                        params[item.goodsId] = {
+                            goodsId: +item.goodsId,
+                            activityId: +id,
+                            specialsPrice: +item.promotionPrice,
+                            limitedQuantity: +item.limitation
+                        }
+                    }else{
+                        if(item.discount < 0){
+                            this.$toast({
+                                message: item.goodsName + '折扣不能小于0折',
+                                duration: 2000
+                            })
+                            this.hasError = true;
+                        }
+                        if(item.discount == 0){
+                            this.$toast({
+                                message: item.goodsName + '折扣不能等于0折',
+                                duration: 2000
+                            })
+                            this.hasError = true;
+                        }
+                        if(item.discount > 10){
+                            this.$toast({
+                                message: item.goodsName + '折扣不能大于10折',
+                                duration: 2000
+                            })
+                            this.hasError = true;
+                        }
+                        if(item.discount == 10){
+                            this.$toast({
+                                message: item.goodsName + '折扣不能等于10折',
+                                duration: 2000
+                            })
+                            this.hasError = true;
+                        }
+                        params[item.goodsId] = {
+                            goodsId: +item.goodsId,
+                            activityId: +id,
+                            discount: +item.discount,
+                            limitedQuantity: +item.limitation
+                        }
+                    }
+                }
         	})
+            if (this.hasError) {
+                return;
+            }
+            console.log(params)
         	if(this.type == 'sales'){
             	this.$indicator.open();
         		setSalesActivityGoods(id,params).then(res => {
