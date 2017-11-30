@@ -93,7 +93,7 @@ export const getGoodsLists = params => {
 };
 //删除商品
 export const deleteGoodsById = id => {
-    return ajax.get('seller/goods/' + id);
+    return ajax.delete('seller/goods/' + id);
 };
 //下架商品
 export const soldOutGoods = paramas => {

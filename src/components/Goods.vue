@@ -84,6 +84,8 @@
 					this.goodsList = res.list;
 					if(res.count == 0){
 						this.isEmpty = true;
+					}else{
+						this.isEmpty = false;
 					}
 				})
 			},
