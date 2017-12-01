@@ -48,7 +48,7 @@
                 <div class="shopDetail-col">
                     <div class="row-title">设备备注</div>
                     <div class="update-name">
-                        <input type="text" placeholder="单行输入" v-model="printer.deviceRemark">
+                        <input type="text" placeholder="单行输入" v-model="printer.deviceRemark" maxlength="20">
                     </div>
                 </div>
             </div>
