@@ -4,350 +4,236 @@
             <div class="nav-bar help-navbar">
                 <div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
                 <div class="nav-title">打印设置</div>
+                <router-link to="/addPrinter" class="print-add-btn"><img src="../assets/images/add.png" alt=""></router-link>
             </div>
         </div>
-        <div class="setting-content">
-            <div v-if="printer">
-                <div class="shopDetail-row" v-if="unbond">
-                    <div class="shopDetail-col" @click="openPopup">
-                        <div class="row-title">设备ID</div>
-                        <div class="bonded">
-                            <div class="row-value">绑定设备</div>
+        <div class="print-content">
+            <div v-if="!isEmpty">
+                <ul class="print-lists">
+                    <li class="print-item" v-for="(item,index) in printerList" :key="index" @click="toUpdatePrinter(item.printerId)">
+                        <div class="print-info">
+                            <p class="item">
+                                <span class="title">设备名称</span>
+                                <span class="name">{{item.deviceName}}</span>
+                                <span class="type">{{formatType(item.printerType)}}</span>
+                            </p>
+                            <p class="item" v-if="item.deviceRemark">
+                                <span class="title">设备备注</span>
+                                <span class="name remark">{{item.deviceRemark}}</span>
+                            </p>
+                            <p class="item">
+                                <span class="title">设备状态</span>
+                                <span class="name">
+                                    <span>{{formatPageType(item.printerPageType)}}/</span>
+                                    <span>{{item.copies}}份/</span>
+                                    <span>{{formatStatus(item.printerStatus)}}</span>
+                                </span>
+                                <span class="delete-btn" @click.stop="deletePrinter(item.printerId,index)">删除设备</span>
+                            </p>
                         </div>
-                    </div>
-                    <div class="shopDetail-col">
-                        <div class="row-title">设备状态</div>
-                        <div class="deviceStatus">
-                            <div class="row-value">{{formatPrinterStatus(printer.printerStatus)}}</div>
-                        </div>
-                    </div>
-                </div>
-                <div v-else>
-                    <div class="shopDetail-row">
-                        <div class="shopDetail-col">
-                            <div class="row-title">设备ID</div>
-                            <div class="deviceId1">
-                                <div class="row-value">{{printer.deviceId}}</div>
-                            </div>
-                        </div>
-                        <div class="shopDetail-col">
-                            <div class="row-title">设备状态</div>
-                            <div class="deviceStatus">
-                                <div class="row-value">{{formatPrinterStatus(printer.printerStatus)}}</div>
-                            </div>
-                        </div>
-                        <div class="shopDetail-col">
-                            <div class="row-title">打印份数</div>
-                            <div class="deviceStatus">
-                                <div class="row-value">
-                                    <select name="" id="" v-model="printer.copies" class="copies" @change="changeCopies">
-                                        <option v-for="n in 9" :value="n" :key="n">{{n}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="unbond" @click="unbind">解绑设备</button>
-                </div>
+                    </li>
+                </ul>
+                <div v-show="canLoad" class="loadmore" @click="loadBottom">点击加载</div>
+            </div>
+            <div v-else class="empty">
+                <img src="../assets/images/empty-img.png" alt="">
             </div>
         </div>
-        <mt-popup v-model="popupVisible3" position="right" class="mint-popup-3" :modal="false">
-            <div class="setting-header">
-                <div class="nav-bar help-navbar">
-                    <div class="back"></div>
-                    <div class="nav-title">绑定设备</div>
-                </div>
-            </div>
-            <div class="bindPrinter">
-                <div class="shopDetail-row">
-                    <div class="shopDetail-col">
-                        <div class="row-title">设备ID</div>
-                        <div class="deviceId">
-                            <input type="text" placeholder="请输入设备ID" v-model="deviceId">
-                        </div>
-                    </div>
-                    <div class="shopDetail-col">
-                        <div class="row-title">设备密码</div>
-                        <div class="password">
-                            <input type="text" placeholder="请输入设备密码" v-model="secretKey">
-                        </div>
-                    </div>
-                </div>
-                <div class="bindBtns">
-                    <button class="bond" @click="bind">绑定设备</button>
-                    <button class="close" @click="closePopup">关闭</button>
-                </div>
-            </div>
-        </mt-popup>
     </div>
 </template>
 <script>
-import { getPrinterInfo, bindPrinter, unbindPrinter,setCopies } from '@/api/api'
-export default {
-    name: 'printSetting',
-    data: function() {
-        return {
-            printer: null,
-            unbond: true,
-            popupVisible3: false,
-            deviceId: '',
-            secretKey: ''
-        }
-    },
-    created: function() {
-        this.getPrinter();
-    },
-    methods: {
-        getPrinter: function() {
-            this.$indicator.open();
-            getPrinterInfo().then(res => {
-                console.log(res);
-                var printerStatus = res.printerStatus;
-
-                if (printerStatus == 'UNBIND') {
-                    this.unbond = true;
-                } else {
-                    this.unbond = false;
-                }
-                this.printer = res;
-                this.$indicator.close();
-            })
-        },
-        formatPrinterStatus: function(status) {
-            switch (status) {
-                case 'UNBIND':
-                    return '未绑定';
-                case 'ONLINE':
-                    return '在线';
-                case 'OFFLINE':
-                    return '离线';
-                case 'ABNORMALITY':
-                    return '异常';
-                case 'PAPER_DEFICIENCY':
-                    return '缺纸';
+    import { getPrinterLists, deletePrinterById } from '@/api/api';
+    export default {
+        name: 'printer',
+        data: function() {
+            return {
+                init: true,
+                allLoaded: false,
+                current: 1,
+                pageId: 1,
+                counts: 0,
+                canLoad: false,
+                printerList: null,
+                isEmpty: false
             }
         },
-        openPopup: function() {
-            this.popupVisible3 = true;
+        created: function() {
+            this.getPrinterList({ pageId: this.pageId });
         },
-        bind: function() {
-            if (!this.deviceId) {
-                this.$toast({
-                    message: '请输入设备ID',
-                    duration: 1000,
-                    className: 'goodscategory-toast'
-                });
-                return;
-            }
-            if (!this.secretKey) {
-                this.$toast({
-                    message: '请输入设备密码',
-                    duration: 1000,
-                    className: 'goodscategory-toast'
-                });
-                return;
-            }
-            var params = {
-                deviceId: this.deviceId,
-                secretKey: this.secretKey
-            };
-            console.log(params);
-            this.$indicator.open();
-            bindPrinter(params).then(res => {
-                console.log(res);
-                this.$indicator.close();
-                this.$toast({ message: '绑定成功', duration: 1000 });
-                this.popupVisible3 = false;
-                this.deviceId = '';
-                this.secretKey = '';
-                this.getPrinter();
-            })
-        },
-        unbind: function() {
-            this.$messagebox.confirm('确定解绑打印机?').then(action => {
+        methods: {
+            getPrinterList: function(printer) {
                 this.$indicator.open();
-                unbindPrinter().then(res => {
-                    this.$indicator.close();
+                getPrinterLists({ params: { pageSize: 10, pageId: printer.pageId } }).then(res => {
                     console.log(res);
-                    this.$toast({ message: '解绑成功', duration: 1000 });
-                    this.getPrinter();
+                    if (this.init) {
+                        this.printerList = res.list;
+                    } else {
+                        this.printerList = [].concat.apply(this.printerList, res.list);
+                    }
+                    this.counts = res.count;
+                    this.$indicator.close();
+                    if (res.count == 0) {
+                        this.allLoaded = true;
+                        this.isEmpty = true
+                    } else {
+                        this.canLoad = true;
+                        this.isEmpty = false
+                    }
+
+                    if (Math.ceil(this.counts / 10) == this.pageId) {
+                        this.allLoaded = true;
+                        this.canLoad = false;
+                        return;
+                    }
                 })
-            }).catch(() => {
-                this.$toast({ message: '已取消', duration: 1000 })
-            });
-        },
-        closePopup: function() {
-            this.popupVisible3 = false;
-            this.deviceId = '';
-            this.secretKey = '';
-        },
-        changeCopies: function(){
-            console.log(this.printer.copies)
-            this.$indicator.open();
-            setCopies(this.printer.copies).then(res => {
-                this.$indicator.close();
-                this.$toast({ message: '修改成功', duration: 1000 });
-            })
+            },
+            loadBottom: function() {
+                this.allLoaded = false;
+                this.pageId += 1;
+                this.init = false;
+                this.getPrinterList({ pageId: this.pageId })
+            },
+            toUpdatePrinter: function (printerId) {
+                this.$router.push('/updatePrinter?printerId=' + printerId);
+            },
+            deletePrinter: function(id, index) {
+                this.$messagebox.confirm('确定删除该通知?').then(action => {
+                    console.log(id, index);
+                    deletePrinterById(id, index).then(() => {
+                        this.$toast({ message: '删除成功', duration: 1000 });
+                        this.pageId = 1;
+                        this.getPrinterList({ pageId: this.pageId });
+
+                    })
+                }).catch(() => {
+                    this.$toast({ message: '已取消', duration: 1000 })
+                });
+            },
+            formatStatus: function (status) {
+                switch (status){
+                    case 'UNBIND':
+                        return '未绑定';
+                    case 'ONLINE':
+                        return '在线';
+                    case 'OFFLINE':
+                        return '离线';
+                    case 'ABNORMALITY':
+                        return '异常';
+                    case 'PAPER_DEFICIENCY':
+                        return '缺纸';
+                    default:
+                        return '';
+                }
+            },
+            formatType: function (type) {
+                switch (type){
+                    case 'CLOUD_YILIANYUN_K4':
+                        return '易联云K4';
+                    case 'USB':
+                        return 'USB';
+                    default:
+                        return '';
+                }
+            },
+            formatPageType: function (type) {
+                switch (type){
+                    case 'MM58':
+                        return '58mm';
+                    case 'MM80':
+                        return '80mm';
+                    default:
+                        return '';
+                }
+            }
         }
     }
-}
 
 </script>
 <style scoped>
-#printSetting {
-    min-height: 100%;
-    background-color: #f2f2f2;
-}
+    #printSetting {
+        min-height: 100%;
+        background-color: #f2f2f2;
+    }
 
-.setting-header {
-    width: 100%;
-}
+    .setting-header {
+        width: 100%;
+        position: fixed;
+        z-index: 999;
+    }
+    .print-add-btn{
+        display: inline-block;
+        float: left;
+        width: 4vw;
+        height: 4vw;
+        padding: 3.865vw 2.345vw;
+    }
+    .print-add-btn img{
+        width: 4vw;
+        height: 4vw;
+    }
 
-.setting-content {
-    box-sizing: border-box;
-    height: 100vh;
-    overflow: hidden;
-    zoom: 1;
-}
+    .print-content {
+        padding: 12vw 0 0;
+    }
 
-.mint-popup-3 {
-    width: 100%;
-    height: 100%;
-    background-color: #fff;
-}
+    .print-lists {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
 
-.bindPrinter {
-    width: 100%;
-    height: 100%;
-}
+    .print-item {
+        overflow: hidden;
+        zoom: 1;
+        font-size: 4.26vw;
+        margin-top: 2.66vw;
+        background-color: #fff;
+    }
 
-.shopDetail-row {
-    margin-top: 2.66vw;
-    background-color: #fff;
-}
+    .print-item:not(:last-child) {
+        border-bottom: 1px solid #eee;
+    }
 
-.shopDetail-col {
-    padding: 2vw 2.66vw;
-    overflow: hidden;
-    zoom: 1;
-    color: #4d4d4d;
-}
+    .item{
+        margin: 0;
+        border-bottom: 1px solid #eee;
+        overflow: hidden;
+        font-size: 3.73vw;
+        color: #4b4b4b;
+        padding: 0 2.66vw;
+    }
+    .title, .name, .type{
+        display: inline-block;
+        float: left;
+        line-height: 12vw;
+    }
+    .name {
+        margin-left: 3.73vw;
+    }
+    .remark{
+        font-size: 3.73vw;
+        color: #999;
+    }
+    .type{
+        float: right;
+        font-size: 3.73vw;
+        color: #999;
+    }
+    .delete-btn {
+        width: 20vw;
+        display: inline-block;
+        float: right;
+        text-align: center;
+        background-color: #ef4f4f;
+        border-radius: 5px;
+        line-height: 8vw;
+        color: #fff;
+        margin-top: 2vw;
+    }
 
-.shopDetail-col:not(:last-child),
-.bindPrinter .shopDetail-col {
-    border-bottom: 0.13vw solid #f2f2f2;
-}
+    .loadmore {
+        text-align: center;
+        padding: 2.66vw;
+    }
 
-.row-title {
-    width: 18vw;
-    font-size: 4.26vw;
-    display: inline-block;
-    float: left;
-    line-height: 6.66vw;
-    text-align:justify;
-    text-justify:distribute-all-lines;/*ie6-8*/
-    text-align-last:justify;/* ie9*/
-    -moz-text-align-last:justify;/*ff*/
-    -webkit-text-align-last:justify;/*chrome 20+*/
-}
-
-.row-value {
-    width: 21vw;
-    text-align: right;
-    display: inline-block;
-    vertical-align: middle;
-    margin-top: 0.8vw;
-}
-
-.bonded,
-.deviceStatus,
-.deviceId1 {
-    display: inline-block;
-    float: right;
-}
-
-.bonded:after {
-    content: '';
-    display: inline-block;
-    width: 2vw;
-    height: 3.73vw;
-    background: url(../assets/images/list-more.png) no-repeat;
-    background-size: contain;
-    vertical-align: middle;
-    margin-top: 0.8vw;
-}
-
-.close {
-    display: block;
-    width: 93.33vw;
-    height: 10.66vw;
-    color: #fff;
-    margin: 2vw auto;
-    border: none;
-    outline: none;
-    border-radius: 6px;
-    font-size: 4.26vw;
-    background-color: #ef4f4f;
-}
-
-.unbond {
-    display: block;
-    width: 93.33vw;
-    height: 10.66vw;
-    color: #fff;
-    margin: 9.33vw auto;
-    background-color: #ef4f4f;
-    border: none;
-    outline: none;
-    border-radius: 6px;
-    font-size: 4.26vw;
-}
-
-.deviceId,
-.password {
-    width: 70vw;
-    float: left;
-    margin-left: 3.33vw;
-}
-
-.deviceId input,
-.password input {
-    display: inline-block;
-    width: 100%;
-    line-height: 6.66vw;
-    border: none;
-    outline: none;
-    font-size: 4vw;
-}
-
-input::placeholder,
-input:-ms-input-placeholder,
-input:-moz-placeholder,
-input::-webkit-input-placeholder {
-    color: #959595;
-    font-size: 4vw;
-}
-
-.bindBtns {
-    margin-top: 7.33vw;
-}
-
-.bond {
-    display: block;
-    width: 93.33vw;
-    height: 10.66vw;
-    color: #fff;
-    margin: 2vw auto;
-    background: url(../assets/images/help-navbar.jpg) no-repeat center center;
-    background-size: cover;
-    border: none;
-    outline: none;
-    border-radius: 6px;
-    font-size: 4.26vw;
-}
-.copies{
-    width: 100%;
-    color: #4d4d4d;
-    direction: rtl;
-}
 </style>

@@ -219,21 +219,25 @@ export const getSalesRank = params => {
     return ajax.get('seller/analysis/salesRank', params);
 };
 
+//获取打印机列表
+export const getPrinterLists = params => {
+    return ajax.get('seller/printer', params);
+};
 //获取打印机信息
-export const getPrinterInfo = () => {
-  return ajax.get('seller/printer');
+export const getPrinterById = printerId => {
+  return ajax.get('seller/printer/' + printerId);
 };
-//绑定打印机
-export const bindPrinter = params => {
-  return ajax.post('seller/printer/bind', params);
+//添加打印机
+export const addPrinter = params => {
+  return ajax.put('seller/printer', params);
 };
-//解绑打印机
-export const unbindPrinter = () => {
-  return ajax.post('seller/printer/unBind');
+//删除打印机
+export const deletePrinterById = printerId => {
+  return ajax.delete('seller/printer/' + printerId);
 };
-//设置打印份数
-export const setCopies = copies => {
-  return ajax.post('seller/printer/copies/' + copies);
+//编辑打印机
+export const updatePrinter = (printerId,params) => {
+  return ajax.post('seller/printer/' + printerId, params);
 };
 
 

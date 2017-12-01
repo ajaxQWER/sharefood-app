@@ -14,6 +14,8 @@ import GoodsCategory from '@/components/GoodsCategory.vue' //商品分类
 import Setting from '@/components/Setting.vue' //设置
 import UpdatePassword from '@/components/UpdatePassword.vue' //修改密码
 import PrintSetting from '@/components/PrintSetting.vue' //打印设置
+import UpdatePrinter from '@/components/UpdatePrinter.vue' //编辑打印机
+import AddPrinter from '@/components/AddPrinter.vue' //添加打印机
 import BusinessStatus from '@/components/BusinessStatus.vue' //营业时间
 import SetMinDeliveryPrice from '@/components/SetMinDeliveryPrice.vue' //营业时间
 import BusinessTime from '@/components/BusinessTime.vue' //营业时间
@@ -100,6 +102,14 @@ let routes = [{
   path: '/printSetting',
   component: PrintSetting,
   name: 'printSetting'
+},{
+  path: '/updatePrinter',
+  component: UpdatePrinter,
+  name: 'updatePrinter'
+},{
+  path: '/addPrinter',
+  component: AddPrinter,
+  name: 'addPrinter'
 },{
     path: '/businessStatus',
     component: BusinessStatus,
