@@ -12,32 +12,48 @@
 					<div class="comment-grade"><span class="grades">{{appraiseTotal.comprehensiveApprise}}</span><br>综合评价<br>高于商圈{{appraiseTotal.businessCircleRatio*100}}%的商家</div>
 					<div class="comment-status">近7天评价回复率：{{appraiseTotal.reversionRate*100}}%<br>近7天差评回复率：{{appraiseTotal.reviewRate*100}}%</div>
 				</div>
-				<div class="comment-filter">
-					<button v-for="(val,key) in replyObj" :class="['comment-filter-btn', 'large-btn', (replyIndex==val.index)?'active-filter':'']" @click="showReply('reply',val.index, val.reply)">{{val.name}}</button>
-					<button v-for="(item,index) in filterObj" :class="['comment-filter-btn', (starIndex == item.index)?'active-filter': '']" @click="showReply('star',item.index,item.shopAppraise)">{{item.name}}</button>
+				<div class="comment-filter flex">
+					<button v-for="(val,key) in replyObj" :class="['comment-filter-btn', 'flex-1', (replyIndex==val.index)?'active-filter':'']" @click="showReply('reply',val.index, val.reply)">{{val.name}}</button>
+					<!-- <button v-for="(item,index) in filterObj" :class="['comment-filter-btn', (starIndex == item.index)?'active-filter': '']" @click="showReply('star',item.index,item.shopAppraise)">{{item.name}}</button> -->
 				</div>
 				<div class="comment-lists-wrap">
-					<div class="check-box">
+					<!-- <div class="check-box">
 						<div :class="[commentsAppraise?'check-true':'check-false','check']" v-model="commentsAppraise" @click="checkbox">只看有内容的评价</div>
-					</div>
+					</div> -->
 					<div v-if="!isEmpty">
 						<ul class="comment-lists">
 							<li v-for="(item,index) in commentList" :key="index">
 								<div class="comment-wrap">
 									<div class="commit-header">
 										<div class="commit-scores">
-											<img v-for="n in item.shopAppraise" src="../assets/images/scores.png" alt="" class="scores-img">
+											<div class="commiter-logo">
+												<img v-lazy="UPLOADURL + item.avatorUrl + '/avator.png'" alt="" class="default-avatar">
+											</div>
+											<div class="commiter-name">
+												<h4 class="commiter-username">{{item.userName}}</h4>
+												<div>
+													<img v-for="n in item.shopAppraise" src="../assets/images/scores.png" alt="" class="scores-img">
+												</div>
+											</div>
 										</div>
-										<div class="commit-time">{{moment(item.appraiseTime).format('YYYY-MM-DD')}}</div>
+										<div class="commit-time">
+											<div>{{moment(item.appraiseTime).format('YYYY-MM-DD')}}</div>
+											<div class="reply-btn">
+												<button class="comment-filter-btn active-filter" @click="replyAppraise(item.shopAppraiseId)">回复</button>
+											</div>
+										</div>
 									</div>
 									<div>{{item.contentShopAppraise}}</div>
 									<div class="order-goods">{{item.orderName}}</div>
+									<div class="order-goods-img">
+										<div class="appraise-image" v-for="(orderImg,imgIndex) in item.shopAppraiseImageUrlList" :index="imgIndex" :style="'background-image:url(' + UPLOADURL + orderImg + '/avator.png)'" @click="showBigImage(orderImg)"></div>
+									</div>
 									<div class="yours-replys" v-for="(val,key) in item.commentList" :key="key"><span class="yours-reply">您的回复：</span>{{val.commentContent}}</div>
 								</div>
-								<div class="spread" v-if="!item.goodsAppraiseList">
+								<!-- <div class="spread" v-if="item.goodsAppraiseList">
 									<img src="../assets/images/spread.png" alt="" @click="showGoodsList(item.shopAppraiseId,index)">
-								</div>
-								<div class="commit-reply-lists" v-else="item.goodsAppraiseList" v-for="(goods,goodsKey) in item.goodsAppraiseList" :key="goodsKey">
+								</div> -->
+								<div class="commit-reply-lists" v-if="item.goodsAppraiseList.length>0" v-for="(goods,goodsKey) in item.goodsAppraiseList" :key="goodsKey">
 									<div class="commit-reply-list">
 										<div class="commit-header">
 											<div class="commit-scores goods-name">{{goods.goodsName}}</div>
@@ -45,9 +61,6 @@
 										</div>
 										<div class="custom-commit">{{goods.appraiseContent}}</div>
 									</div>
-								</div>
-								<div class="reply-btn">
-									<button class="comment-filter-btn active-filter" @click="replyAppraise(item.shopAppraiseId)">回复</button>
 								</div>
 							</li>
 						</ul>
@@ -73,6 +86,14 @@
 				        </div>
 				    </div>
 				</mt-popup>
+				<mt-popup v-model="imgPopup" popup-transition="popup-fade" class="img-popup">
+					<div class="poput-content" v-if="imgPopup">
+						<div class="close-btn" @click="closePopup">
+							<img src="../assets/images/close.png" alt="">						
+						</div>
+					  	<img v-lazy="bigImgUrl" alt="" class="evaluation">
+					</div>
+				</mt-popup>
 			</div>
 		</div>
 		<!-- <div class="add-goods" @click="addGoods">添加商品</div> -->
@@ -86,6 +107,7 @@
 			return {
 				commentsAppraise: false,
 				pageId: 1,
+				pageSize: 5,
 				counts: 0,
 				shopAppraise: '',
 				reply: true,
@@ -97,13 +119,17 @@
 				isEmpty: false,
 				replyIndex: 1,
 				replyObj: [{
+					name: '全部评价',
+					reply: '',
+					index: 1
+				},{
 					name: '已回复',
 					reply: true,
-					index: 1
+					index: 2
 				},{
 					name: '未回复',
 					reply: false,
-					index: 2
+					index: 3
 				}],
 				starIndex: 1,
 				filterObj: [{
@@ -133,7 +159,9 @@
 				}],
 				popupVisible3: false,
 				shopAppraiseId: 0,
-				commentContent: ''
+				commentContent: '',
+				imgPopup: false,
+				bigImgUrl: ''
 			}
 		},
 		created: function(){
@@ -155,7 +183,7 @@
 		methods: {
 			showShopAppraise: function(){
 				this.$indicator.open();
-				getShopAppraise({params:{shopAppraise:this.shopAppraise, reply: this.reply,commentsAppraise: this.commentsAppraise, pageSize: 10, pageId: this.pageId}}).then(res => {
+				getShopAppraise({params:{shopAppraise:this.shopAppraise, reply: this.reply,commentsAppraise: this.commentsAppraise, pageSize: this.pageSize, pageId: this.pageId}}).then(res => {
 					console.log(res)
 					this.counts = res.count;
 					if(this.init){
@@ -172,7 +200,7 @@
 						this.isEmpty = false;
 						this.canLoad = true;						
 					}
-					if(Math.ceil(this.counts / 10) == this.pageId){
+					if(Math.ceil(this.counts / this.pageSize) == this.pageId){
 						this.allLoaded = true;
 						this.canLoad = false;
 						return;
@@ -207,6 +235,7 @@
 					this.shopAppraise = options;
 				}
 				this.init = true;
+				this.pageId = 1;
 				this.showShopAppraise()
 			},
 			replyAppraise: function(id){
@@ -236,6 +265,13 @@
 			closePopup: function(){
 				this.popupVisible3 = false;
 				this.commentContent = '';
+			},
+			showBigImage: function(url){
+				this.bigImgUrl = this.UPLOADURL + url + '/evaluation_medium.png';
+				this.imgPopup = true;
+			},
+			closePopup: function(){
+				this.imgPopup = false;
 			}
 		}
 	}
@@ -294,13 +330,14 @@
 		margin-top: 2.66vw;
 		background-color: #fff;
 		padding: 2vw 0;
+		border-bottom: 1px solid #e6e6e6;
 	}
 	.comment-filter-btn{
 		width: 28.8vw;
 		height: 8vw;
 		line-height: 8vw;
 		text-align: center;
-		color: #0bb745;
+		color: #000;
 		background-color: #fff;
 		border: 0.13vw solid #0bb745;
 		border-radius: 0.66vw;
@@ -389,11 +426,12 @@
 	}
 	.goods-comment{
 		float: right;
+		text-align: right;
 		width: 25.25vw;
 	}
 	.scores-img{
-		width: 3.73vw;
-		height: 3.33vw;
+		width: 2.66vw;
+		height: 3.2vw;
 		margin: 0 0.66vw;
 	}
 	.commit-time{
@@ -402,19 +440,19 @@
 		width: 18vw;
 	}
 	.commit-reply-list{
-		background-color: #eee;
+		background-color: #f7f7f7;
 		padding: 2.66vw;
 	}
 	.commit-reply-list:not(:first-child){
 		border-top: 0.13vw solid #808080;
 	}
-	.reply-btn{
+	/*.reply-btn{
 		background-color: #fff;
 		text-align: right;
 		padding: 2.66vw;
-	}
+	}*/
 	.reply-btn button{
-		width: 20.8vw;
+		width: 16vw;
 		height: 6.66vw;
 		line-height: 6.66vw;
 	}
@@ -467,5 +505,73 @@
 		border-radius: 5px;
 		font-size: 4.26vw;
 		color: #fff;
+	}
+	.commiter-logo{
+		float: left;
+		width: 10.4vw;
+		height: 10.4vw;
+		border-radius: 50%;
+		font-size: 0;
+	}
+	.commiter-logo img{
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+	}
+	.commiter-name{
+		float: left;
+		margin-left: 2.4vw;
+	}
+	.commiter-username{
+		margin: 0;
+	}
+	.appraise-image{
+		width: 24.4vw;
+		height: 24.4vw;
+		margin: 0.66vw;
+		display: inline-block;
+		background-color: #fff;
+		background-position: center center;
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
+	.img-popup{
+		width: 80vw;
+		font-size: 0;
+		background-color: transparent;
+	}
+	.popup-content{
+		width: 100%;
+		height: 100%;
+		position: relative;
+	}
+	.evaluation{
+		width: 100%;
+		height: 100%;
+		vertical-align: middle;
+	}
+	.close-btn{
+		width: 6.4vw;
+		height: 6.4vw;
+		position: absolute;
+		right: -4.8vw;
+		top: -4.8vw;
+		padding: 0.5vw;
+		border-radius: 50%;
+		vertical-align: middle;
+		background-color: #fff;
+		text-align: center;
+		line-height: 6.4vw;
+		font-size: 0;
+		overflow: hidden;
+	}
+	.close-btn img{
+		width: 100%;
+		height: 100%;
+	}
+	.default-avatar[lazy=error]{
+		background: url(../assets/images/default-avatar.png) no-repeat center center #eaeaea;
+		background-size: cover;
+		
 	}
 </style>
