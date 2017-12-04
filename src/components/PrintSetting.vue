@@ -97,7 +97,7 @@
                 this.$router.push('/updatePrinter?printerId=' + printerId);
             },
             deletePrinter: function(id, index) {
-                this.$messagebox.confirm('确定删除该通知?').then(action => {
+                this.$messagebox.confirm('确定删除该打印机?').then(action => {
                     console.log(id, index);
                     deletePrinterById(id, index).then(() => {
                         this.$toast({ message: '删除成功', duration: 1000 });
