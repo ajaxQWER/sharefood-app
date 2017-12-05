@@ -88,23 +88,23 @@
             <div v-else class="empty">
                 <img src="../assets/images/empty-img.png" alt="">
             </div>
-            <mt-popup v-model="popupVisible3" position="right" class="mint-popup-3" :modal="false">
-                <div class="setting-header">
-                    <div class="nav-bar help-navbar">
-                        <div class="back" @click="closePopup"><img src="../assets/images/white-back.png" alt=""></div>
-                        <div class="nav-title">取消订单</div>
-                    </div>
-                </div>
-                <div class="reply-content">
-                    <div class="shopDetail-row">
-                        <textarea class="reply-textarea" name="" id="" v-model="cancelContent" placeholder="请输入取消理由" maxlength="140"></textarea>
-                    </div>
-                    <div class="popup-reply">
-                        <button class="popup-reply-btn" @click="cancelOrderFn">取消订单</button>
-                    </div>
-                </div>
-            </mt-popup>
         </div>
+        <mt-popup v-model="popupVisible3" position="right" class="mint-popup-3" :modal="false">
+            <div class="setting-header">
+                <div class="nav-bar help-navbar">
+                    <div class="back" @click="closePopup"><img src="../assets/images/white-back.png" alt=""></div>
+                    <div class="nav-title">取消订单</div>
+                </div>
+            </div>
+            <div class="reply-content">
+                <div class="shopDetail-row">
+                    <textarea class="reply-textarea" name="" id="" v-model="cancelContent" placeholder="请输入取消理由" maxlength="140"></textarea>
+                </div>
+                <div class="popup-reply">
+                    <button class="popup-reply-btn" @click="cancelOrderFn">取消订单</button>
+                </div>
+            </div>
+        </mt-popup>
     </div>
     <!-- <div class="add-goods" @click="addGoods">添加商品</div> -->
     </div>

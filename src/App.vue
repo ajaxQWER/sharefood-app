@@ -211,4 +211,7 @@ img[lazy=loading] {
 .mint-msgbox-btn{
     font-size: 3.73vw;
 }
+#comment .mt-progress-progress{
+    background-color: #f19149;
+}
 </style>
