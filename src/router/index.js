@@ -1,6 +1,7 @@
 
 import Login from '@/components/Login.vue' //登录
 import Regist from '@/components/Regist.vue' //注册
+import Agreement from '@/components/Agreement.vue' //商家入驻告知书
 import Help from '@/components/Help.vue' //帮助列表
 import HelpDetail from '@/components/HelpDetail.vue' //帮助详情
 import Home from '@/components/Home.vue' //主页
@@ -46,6 +47,10 @@ let routes = [{
     path: '/login',
     component: Login,
     name: 'login'
+},{
+    path: '/agreement',
+    component: Agreement,
+    name: 'agreement'
 },{
     path: '/regist',
     component: Regist,

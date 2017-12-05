@@ -59,6 +59,10 @@ export const logOut = () => {
     return ajax.post('seller/seller/logout');
 };
 
+//商家入驻告知书
+export const getAgreementArticleById = () => {
+    return ajax.get('commons/article/11');
+};
 //登录遇到问题文章
 export const getArticleListByCategoryId = id => {
     return ajax.get('commons/article', id);

@@ -22,6 +22,9 @@
 		<div class="login-input">
 			<input type="text" class="input-item" placeholder="请输入验证码" v-model="code" maxlength="4">
 		</div>
+        <div class="protocol-tips">
+            <label for="protocol"><input type="checkbox" id="protocol" class="protocol-checkbox" v-model="checked">我已阅读并已同意<router-link to="/agreement" class="link">《共享点餐商家入驻告知书》</router-link></label>
+        </div>
 	</div>
 	<!-- <div class="login-input-contain" v-if="!isMessageCodeLogin">
 		<div class="login-input">
@@ -52,6 +55,7 @@ export default {
 		code: '',
 		secretkey: '',
 		sellerName: '',
+        checked: true,
 		isClickGetCode: false,
 		isMessageCodeLogin: true
 	}
@@ -94,6 +98,13 @@ export default {
   			this.$toast({message:'请输入验证码',duration: 1000})
 			return
 		}
+		if(!this.checked){
+            this.$toast({
+                type: 'info',
+                message: '请阅读并同意《共享点餐商家入驻告知书》'
+            })
+            return;
+        }
 
 	    var params = {
 	    	code: this.code,
@@ -157,15 +168,15 @@ export default {
 	    		alert(err)
 	    	}
 	    }
-	    // loginByCode(params).then(res=>{
-	    // 	this.$indicator.close();
-	    // 	console.log(res)
-	    // 	localStorage.setItem('jwt',res.jwt)
-	    // 	localStorage.setItem('seller',JSON.stringify(res.seller))
-	    // 	this.$router.push('/home')
-	    // }).catch(err=>{
-	    // 	this.$indicator.close();
-	    // })
+//	     loginByCode(params).then(res=>{
+//	     	this.$indicator.close();
+//	     	console.log(res)
+//	     	localStorage.setItem('jwt',res.jwt)
+//	     	localStorage.setItem('seller',JSON.stringify(res.seller))
+//	     	this.$router.push('/home')
+//	     }).catch(err=>{
+//	     	this.$indicator.close();
+//	     })
 
 
 		// if(this.isMessageCodeLogin){
@@ -323,5 +334,12 @@ export default {
 	text-decoration: none;
 	font-size: 3.73vw;
 	color: #999;
+}
+.protocol-tips{
+    text-align: center;
+}
+.link{
+    text-decoration: none;
+    color: #0bb745;
 }
 </style>
