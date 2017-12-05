@@ -9,31 +9,31 @@
 		<div class="analysis-content">
 			<div class="column-wrap">
 				<div class="column flex">
-					<router-link to="/customerTendency" class="link">
-						<div class="column-item flex-1">
-							<img src="../assets/images/new-customer.png" alt="">
+					<router-link to="/customerTendency" class="column-item">
+						<div class="flex-1">
+							<img src="../assets/images/new-customer.jpg" alt="">
 						</div>
 					</router-link>
-					<router-link to="/orderQuantity" class="link">
-						<div class="column-item flex-1">
-							<img src="../assets/images/order.png" alt="">
+					<router-link to="/orderQuantity" class="column-item">
+						<div class="flex-1">
+							<img src="../assets/images/order.jpg" alt="">
 						</div>
 					</router-link>
-					<router-link to="/turnover" class="link">
-						<div class="column-item flex-1">
-							<img src="../assets/images/business-volume.png" alt="">
+					<router-link to="/turnover" class="column-item">
+						<div class="flex-1">
+							<img src="../assets/images/business-volume.jpg" alt="">
 						</div>
 					</router-link>
 				</div>
 				<div class="column flex">
-					<router-link to="/salesVolume">
-						<div class="column-item flex-1">
-							<img src="../assets/images/sales.png" alt="">
+					<router-link to="/salesVolume" class="column-item">
+						<div class="flex-1">
+							<img src="../assets/images/sales.jpg" alt="">
 						</div>
 					</router-link>
-					<router-link to="/salesRank">
-						<div class="column-item flex-1">
-							<img src="../assets/images/sales-rank.png" alt="">
+					<router-link to="/salesRank" class="column-item">
+						<div class="flex-1">
+							<img src="../assets/images/sales-rank.jpg" alt="">
 						</div>
 					</router-link>
 					<div class="column-item flex-1 column-null"></div>
@@ -74,15 +74,13 @@
 	height: 30.13vw;
 	background-color: #fff;
 	border-radius: 2px;
-}
-
-.column-item {
-	margin: 0 2.67vw 0 0;
+	margin-right: 2.66vw;
 }
 
 .column-item img {
 	width: 29.73vw;
 	height: 30.13vw;
+	border-radius: 5px;
 }
 
 .column-null {
