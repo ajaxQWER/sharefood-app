@@ -9,8 +9,19 @@
 		<div class="comment-content" v-if="appraiseTotal">
 			<div class="comment-scroll-wrap">
 				<div class="comment-header-detail">
-					<div class="comment-grade"><span class="grades">{{appraiseTotal.comprehensiveApprise}}</span><br>综合评价<br>高于商圈{{appraiseTotal.businessCircleRatio*100}}%的商家</div>
-					<div class="comment-status">近7天评价回复率：{{appraiseTotal.reversionRate*100}}%<br>近7天差评回复率：{{appraiseTotal.reviewRate*100}}%</div>
+					<div class="comment-grade">
+						<div class="grades-title">综合评价</div>
+						<div class="grades">
+							{{appraiseTotal.comprehensiveApprise}}
+						</div>
+						<div>高于商圈{{appraiseTotal.businessCircleRatio*100}}%的商家</div>
+					</div>
+					<div class="comment-status">
+						<div>近7天评价回复率：{{appraiseTotal.reversionRate*100}}%</div>
+						<mt-progress :value="appraiseTotal.reversionRate*100" :bar-height="5"></mt-progress>
+						<div>近7天差评回复率：{{appraiseTotal.reviewRate*100}}%</div>
+						<mt-progress :value="appraiseTotal.reviewRate*100" :bar-height="5"></mt-progress>
+					</div>
 				</div>
 				<div class="comment-filter flex">
 					<button v-for="(val,key) in replyObj" :class="['comment-filter-btn', 'flex-1', (replyIndex==val.index)?'active-filter':'']" @click="showReply('reply',val.index, val.reply)">{{val.name}}</button>
@@ -88,7 +99,7 @@
 				</mt-popup>
 				<mt-popup v-model="imgPopup" popup-transition="popup-fade" class="img-popup">
 					<div class="poput-content" v-if="imgPopup">
-						<div class="close-btn" @click="closePopup">
+						<div class="close-btn" @click="closeImgPopup">
 							<img src="../assets/images/close.png" alt="">						
 						</div>
 					  	<img v-lazy="bigImgUrl" alt="" class="evaluation">
@@ -270,7 +281,7 @@
 				this.bigImgUrl = this.UPLOADURL + url + '/evaluation_medium.png';
 				this.imgPopup = true;
 			},
-			closePopup: function(){
+			closeImgPopup: function(){
 				this.imgPopup = false;
 			}
 		}
@@ -310,13 +321,13 @@
 		padding: 1.33vw 0;
 		text-align: center;
 		margin: 4vw 0;
-		border-right: 0.13vw solid #999;
+		border-right: 0.13vw solid #eee;
 		font-size: 3.73vw;
 		vertical-align: middle;
 	}
 	.grades{
-		color: #fe0000;
-		font-size: 4.8vw;
+		color: #ed4544;
+		font-size: 6.4vw;
 	}
 	.comment-status{
 		float: left;
@@ -572,6 +583,14 @@
 	.default-avatar[lazy=error]{
 		background: url(../assets/images/default-avatar.png) no-repeat center center #eaeaea;
 		background-size: cover;
-		
 	}
+	.mt-progress{
+		height: auto;
+	}
+	.grades-title{
+		color: #333;
+		text-align: left;
+		padding-left: 2.66vw;
+	}
+	
 </style>
