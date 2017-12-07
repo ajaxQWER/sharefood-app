@@ -121,7 +121,7 @@
 				pageSize: 5,
 				counts: 0,
 				shopAppraise: '',
-				reply: true,
+				reply: '',
 				commentList: [],
 				init: true,
 				allLoaded: false,
