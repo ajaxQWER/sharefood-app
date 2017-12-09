@@ -128,6 +128,27 @@ export default {
                             })
                             this.hasError = true;
                         }
+                        if(item.promotionPrice == 0){
+                            this.$toast({
+                                message: item.goodsName + '促销价不能等于0元',
+                                duration: 2000
+                            })
+                            this.hasError = true;
+                        }
+                        if(item.promotionPrice > item.goodsPrice){
+                            this.$toast({
+                                message: item.goodsName + '促销价不能大于原价',
+                                duration: 2000
+                            })
+                            this.hasError = true;
+                        }
+                        if(item.promotionPrice == item.goodsPrice){
+                            this.$toast({
+                                message: item.goodsName + '促销价不能等于原价',
+                                duration: 2000
+                            })
+                            this.hasError = true;
+                        }
                         params[item.goodsId] = {
                             goodsId: +item.goodsId,
                             activityId: +id,
