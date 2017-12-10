@@ -195,6 +195,7 @@
     }
     .update-name select{
         width: 30vw;
+        -webkit-appearance: menulist;
     }
     input::placeholder,
     input:-ms-input-placeholder,
