@@ -64,15 +64,15 @@
             var that = this;
             return {
                 printer: {
-                    copies: 0,
+                    copies: 1,
                     deviceId: "",
                     deviceName: "",
                     deviceRemark: "",
                     deviceSecretKey: "",
                     printerId: 0,
-                    printerPageType: "",
+                    printerPageType: "MM58",
                     printerStatus: "",
-                    printerType: "",
+                    printerType: "CLOUD_YILIANYUN_K4",
                     shopId: 0
                 },
                 copies: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
