@@ -65,13 +65,13 @@
             return {
                 printer: {
                     copies: 1,
-                    deviceId: "",
-                    deviceName: "",
-                    deviceRemark: "",
-                    deviceSecretKey: "",
+                    deviceId: null,
+                    deviceName: null,
+                    deviceRemark: null,
+                    deviceSecretKey: null,
                     printerId: 0,
                     printerPageType: "MM58",
-                    printerStatus: "",
+                    printerStatus: null,
                     printerType: "CLOUD_YILIANYUN_K4",
                     shopId: 0
                 },
