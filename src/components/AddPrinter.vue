@@ -41,7 +41,7 @@
                     <div class="update-name">
                         <select v-model="printer.copies">
                             <option disabled value="">请选择</option>
-                            <option v-for="(item,index) in copies">{{item}}</option>
+                            <option v-for="n in 9">{{n}}</option>
                         </select>
                     </div>
                 </div>
@@ -74,7 +74,6 @@
                     printerType: "CLOUD_YILIANYUN_K4",
                     shopId: 0
                 },
-                copies: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
                 printerTypes: [{
                     name: '易联云K4',
                     value: 'CLOUD_YILIANYUN_K4',
