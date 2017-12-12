@@ -34,7 +34,11 @@
     </div>
 </template>
 <script>
-import { getActivityLists,addActivity,updateActivity } from '@/api/api'
+import { 
+	getActivity,
+	addActivity,
+	updateActivity
+} from '@/api/api'
 export default {
     name: 'firstReduceActivity',
     data: function() {
@@ -50,16 +54,16 @@ export default {
         //最大日期和最小日期限制在当年
         var thisYear = new Date().getFullYear();
         var thisStartDate = thisYear + '-01-01';
-        var thisEndDate = thisYear + '-12-31';
+        var thisEndDate = (thisYear + 4) + '-12-31';
         this.startDate = new Date(thisStartDate);
         this.endDate = new Date(thisEndDate);
 
         var id = this.$route.query.id;
         if(id){
             this.$indicator.open();
-            getActivityLists({params: {activityId: id}}).then(res => {
+            getActivity(id).then(res => {
                 console.log(res)
-                var data = res.list[0];
+                var data = res;
                 this.beginTime = data.beginTime;
                 this.endTime = data.endTime;
                 this.money = data.activityContent.money;
@@ -98,6 +102,7 @@ export default {
             
             var activityParams = {
                 activityContent: {
+                	typeName: "sharefood.models.activity.activity.entity.FirstActivityData",
                     money: this.money
                 },
                 activityType: "FIRST",

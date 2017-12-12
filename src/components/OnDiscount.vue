@@ -20,7 +20,13 @@
 			        	<div class="row-value">{{endTime?this.moment(endTime).format('YYYY-MM-DD'):''}}</div>
 			      	</div>
 			    </div>
-			    <div class="shopDetail-col">
+                <div class="shopDetail-col">
+                    <div class="row-title">活动名称</div>
+                    <div class="otherActivity-name">
+                        <input type="text" placeholder="活动名称,最多10个字符" v-model="activityName" maxlength="10">
+                    </div>
+                </div>
+			    <div class="shopDetail-col" v-if="!isAdd">
 			      	<div class="add-sales-goods">
 			      		<button @click="addOnSalesGoods">商品管理</button>
 			      	</div>
@@ -45,21 +51,29 @@
 					</div>
 			    </div>
 		  	</div>
+            <button class="save" @click="saveActivity">保存</button>
 		</div>
 		<mt-datetime-picker ref="start" type="date" @confirm="setBeginTime" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
 		<mt-datetime-picker ref="end" type="date" @confirm="setEndTime" :startDate="startDate" :endDate="endDate"></mt-datetime-picker>
 	</div>
 </template>
 <script>
-	import {getActivityLists,addActivity,updateActivity,getActivityGoods} from '@/api/api'
+	import {
+		getActivity,
+		addActivity,
+		updateActivity,
+		getActivityGoods
+	} from '@/api/api'
 	export default {
 		name: 'OnSales',
 		data: function(){
 			return {
+				isAdd: true,
 				beginTime: Date.now(),
 				endTime: '',
 				startDate: '',
 				endDate: '',
+            	activityName: '',
 				goodsLists: []
 			}
 		},
@@ -67,18 +81,20 @@
 			//最大日期和最小日期限制在当年
 			var thisYear = new Date().getFullYear();
 			var thisStartDate = thisYear + '-01-01';
-			var thisEndDate = thisYear + '-12-31';
+        	var thisEndDate = (thisYear + 4) + '-12-31';
 			this.startDate = new Date(thisStartDate);
 			this.endDate = new Date(thisEndDate);
 
 			var id = this.$route.query.id || localStorage.getItem('activityId');
 			if(id){
 			    this.$indicator.open();
-			    getActivityLists({params: {activityId: id}}).then(res => {
+			    getActivity(id).then(res => {
 			        console.log(res)
-			        var data = res.list[0];
+			        var data = res;
 			        this.beginTime = data.beginTime;
 			        this.endTime = data.endTime;
+                	this.activityName = data.activityName;
+			        this.isAdd = false;
 			        this.$indicator.close();
 			    })
 			    getActivityGoods(id).then(res => {
@@ -104,6 +120,12 @@
 			  	this.$refs.end.open()
 			},
 			addOnSalesGoods: function(){
+				var id = this.$route.query.id || localStorage.getItem('activityId');
+				if(id){
+					this.$router.push('/goodsManager?type=discount&id='+ id);
+				}
+			},
+	        saveActivity: function(){
 				if(this.endTime && this.beginTime > this.endTime){
 				    this.$toast({
 				        message: '结束时间不能小于开始时间',
@@ -111,26 +133,55 @@
 				    })
 				    return;
 				}
-				var activityParams = {
-				    activityContent: {},
-            		activityName: '折扣商品',
-				    activityType: "SALE",
-				    beginTime: this.beginTime,
-				    endTime: this.endTime,
-				    isValid: true,
-				}
-				var id = this.$route.query.id || localStorage.getItem('activityId');
-				if(id){
-					this.$router.push('/goodsManager?type=discount&id='+ id);
-				}else{
-	            	this.$indicator.open();
-					addActivity(activityParams).then(res => {
-						console.log(res)
-		            	this.$indicator.close();
-						this.$router.push('/goodsManager?type=discount&id='+ res.activityId);
-					})
-				}
-			}
+	            if (!this.activityName) {
+	                this.$toast({
+	                    message: '请输入活动名称',
+	                    duration: 1500
+	                })
+	                return;
+	            }
+				
+	            var activityParams = {
+	                activityContent: {
+                		typeName: "sharefood.models.activity.activity.entity.SaleActivityData"
+	                },
+	                activityType: 'SALE',
+	                beginTime: this.beginTime,
+	                endTime: this.endTime,
+	                activityName: this.activityName,
+	                isValid: true
+	            }
+	            
+	            console.log(activityParams)
+	            var id = this.$route.query.id;
+	            if(id){
+	                this.$indicator.open();
+	                updateActivity(id, activityParams).then(() => {
+	                    this.$indicator.close();
+	                    this.$toast({
+	                        message: '修改成功',
+	                        duration: 1000
+	                    })
+	                    setTimeout(() => {
+	                        this.$router.isBack = true;
+	                        this.$router.back()
+	                    }, 1500)
+	                })
+	            }else{
+	                this.$indicator.open();
+	                addActivity(activityParams).then(() => {
+	                    this.$indicator.close();
+	                    this.$toast({
+	                        message: '添加成功',
+	                        duration: 1000
+	                    })
+	                    setTimeout(() => {
+	                        this.$router.isBack = true;
+	                        this.$router.back()
+	                    }, 1500)
+	                })
+	            }
+	        }
 		}
 	}
 </script>
@@ -229,5 +280,35 @@
 		text-align: center;
 		border: 1px solid #808080;
 		line-height: 8vw;
+	}
+	.save {
+	    width: 100%;
+	    height: 10.66vw;
+	    line-height: 10.66vw;
+	    font-size: 4.26vw;
+	    color: #fff;
+	    background-color: #0eb745;
+	    position: fixed;
+	    bottom: 0;
+	    border: none;
+	    outline: none;
+	}
+		
+	.otherActivity-name {
+	    display: inline-block;
+	    height: 6.66vw;
+	    float: right;
+	}
+	
+	.otherActivity-name input {
+	    display: block;
+	    width: 64.66vw;
+	    height: 6vw;
+	    font-size: 3.72vw;
+	    text-align: right;
+	    padding-right: 2.66vw;
+	    border: 1px solid #f2f2f2;
+	    border-radius: 3px;
+	    outline: none;
 	}
 </style>

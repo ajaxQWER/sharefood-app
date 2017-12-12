@@ -3,7 +3,8 @@ import axios from 'axios';
 
 var ajax = axios.create({
     baseURL: process.env.BASE_URL, //测试
-    // baseURL: 'http://api.gongxiangdiancan.com', //正式服
+	// baseURL : 'http://127.0.0.1:8080',
+	// baseURL: 'http://api.gongxiangdiancan.com', //正式服
     headers: {},
     timeout: 10000,
     withCredentials: true, //cookie
@@ -255,6 +256,10 @@ export const deleteNoticeById = id => {
     return ajax.delete('seller/notice/' + id);
 };
 
+//获取活动详情
+export const getActivity = id => {
+  return ajax.get('seller/activity/' + id);
+};
 //获取活动列表
 export const getActivityLists = params => {
     return ajax.get('seller/activity', params);

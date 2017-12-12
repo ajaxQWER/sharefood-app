@@ -27,11 +27,11 @@
                     <div class="left">
                         <div class="row-title">购满</div>
                         <div class="activity-name">
-                            <input type="number" placeholder="0.00" v-model="item.money">
+                            <input type="number" placeholder="0.00" v-model="item.full">
                         </div>
                         <div class="row-title">减</div>
                         <div class="activity-name">
-                            <input type="number" placeholder="0.00" v-model="item.reduceMoney">
+                            <input type="number" placeholder="0.00" v-model="item.subtract">
                         </div>
                     </div>
                     <div class="operate">
@@ -47,7 +47,11 @@
     </div>
 </template>
 <script>
-import { getActivityLists,addActivity,updateActivity } from '@/api/api'
+import { 
+	getActivity,
+	addActivity,
+	updateActivity
+} from '@/api/api'
 export default {
     name: 'fullReduceActivity',
     data: function() {
@@ -57,8 +61,8 @@ export default {
             startDate: '',
             endDate: '',
             activityObj: [{
-                money: null,
-                reduceMoney: null
+                full: null,
+                subtract: null
             }]
         }
     },
@@ -66,30 +70,20 @@ export default {
         //最大日期和最小日期限制在当年
         var thisYear = new Date().getFullYear();
         var thisStartDate = thisYear + '-01-01';
-        var thisEndDate = thisYear + '-12-31';
+        var thisEndDate = (thisYear + 4) + '-12-31';
         this.startDate = new Date(thisStartDate);
         this.endDate = new Date(thisEndDate);
 
         var id = this.$route.query.id;
         if(id){
             this.$indicator.open();
-            getActivityLists({params: {activityId: id}}).then(res => {
+            getActivity(id).then(res => {
                 console.log(res)
-                var data = res.list[0];
+                var data = res;
                 this.beginTime = data.beginTime;
                 this.endTime = data.endTime;
 
-                this.activityObj = [];
-
-                for (var i = 1; i <= 5; i++){
-                    if(data.activityContent["full" + i] && data.activityContent["subtract" + i]) {
-                        var obj = {
-                            money: data.activityContent["full" + i],
-                            reduceMoney: data.activityContent["subtract" + i]
-                        }
-                        this.activityObj.push(obj);
-                    }
-                }
+                this.activityObj = data.activityContent.delgolds;
 
                 this.$indicator.close();
             })
@@ -117,8 +111,8 @@ export default {
                 return;
             }
             this.activityObj.push({
-                money: null,
-                reduceMoney: null
+                full: null,
+                subtract: null
             })
         },
         removeActivityItem: function(index) {
@@ -132,13 +126,10 @@ export default {
                 })
                 return;
             }
-            var activityContent = {};
-            this.activityObj.forEach((item, index) => {
-                if(this.activityObj[index]['money'] && this.activityObj[index]['reduceMoney']){
-                    activityContent['full' + (index + 1)] = item.money
-                    activityContent['subtract' + (index + 1)] = item.reduceMoney
-                }
-            })
+            var activityContent = {
+            	typeName : "sharefood.models.activity.activity.entity.DelgoldActivityData",
+            	delgolds : this.activityObj
+            };
             var activityParams = {
                 activityContent: activityContent,
                 activityType: "DELGOLD",
@@ -146,6 +137,7 @@ export default {
                 endTime: this.endTime,
                 isValid: true,
             }
+            console.log(activityParams);
             var id = this.$route.query.id;
             if(id){
                 this.$indicator.open();

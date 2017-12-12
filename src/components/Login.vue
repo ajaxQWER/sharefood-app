@@ -113,70 +113,15 @@ export default {
 	    	sellerName: this.sellerName
 	    }
 	    var ua = navigator.userAgent.toLocaleLowerCase();
-
-	    if(ua.indexOf('iphone') == -1){
-	    	//安卓
-		    try {
-
-		    	params.ios = false;
-		    	params.cid = android.getCid()
-
-	            // alert(android.getCid())
-	            // alert(params.ios)
-		    	this.$indicator.open();
-		    	loginByCode(params).then(res=>{
-		    		this.$indicator.close();
-		    		console.log(res)
-		    		localStorage.setItem('jwt',res.jwt)
-		    		localStorage.setItem('seller',JSON.stringify(res.seller))
-		    		localStorage.setItem('shopName',res.shopName)
-		    		this.$router.push('/home')
-		    	}).catch(err=>{
-		    		this.$indicator.close();
-		    	})
-
-			} catch (e) {
-				console.log(e)
-		    	alert(e.name + ": " + e.message);
-		    }
-	    }else{
-	    	//ios
-	    	var _this = this;
-	    	try {
-		    	_this.setupWebViewJavascriptBridge(function(bridge) {
-		    		bridge.callHandler('getCid', null, function(response) {
-		    			// alert(response)
-		                params.cid = response;
-		                params.ios = true;
-		                _this.$indicator.open();
-		                // alert(loginByCode)
-	        	    	loginByCode(params).then(res=>{
-	        	    		_this.$indicator.close();
-	        	    		// alert(params.cid)
-		              //   	alert(params.ios)
-	        	    		console.log(res)
-	        	    		localStorage.setItem('jwt',res.jwt)
-	        	    		localStorage.setItem('seller',JSON.stringify(res.seller))
-	        	    		localStorage.setItem('shopName',res.shopName)
-	        	    		_this.$router.push('/home')
-	        	    	}).catch(err=>{
-	        	    		_this.$indicator.close();
-	        	    	})
-		            })
-		    	})
-	    	} catch (err) {
-	    		alert(err)
-	    	}
-	    }
-//	     loginByCode(params).then(res=>{
-//	     	this.$indicator.close();
-//	     	console.log(res)
-//	     	localStorage.setItem('jwt',res.jwt)
-//	     	localStorage.setItem('seller',JSON.stringify(res.seller))
-//	     	this.$router.push('/home')
-//	     }).catch(err=>{
-//	     	this.$indicator.close();
-//	     })
+	     loginByCode(params).then(res=>{
+	     	this.$indicator.close();
+	     	console.log(res)
+	     	localStorage.setItem('jwt',res.jwt)
+	     	localStorage.setItem('seller',JSON.stringify(res.seller))
+	     	this.$router.push('/home')
+	     }).catch(err=>{
+	     	this.$indicator.close();
+	     })
 
 
 		// if(this.isMessageCodeLogin){
