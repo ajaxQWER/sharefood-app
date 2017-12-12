@@ -71,7 +71,6 @@
                     deviceSecretKey: null,
                     printerId: 0,
                     printerPageType: "MM58",
-                    printerStatus: null,
                     printerType: "CLOUD_YILIANYUN_K4",
                     shopId: 0
                 },
