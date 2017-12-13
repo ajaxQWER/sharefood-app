@@ -14,7 +14,9 @@
                         <img class="goods-imgage" :src="headerImage?headerImage:UPLOADURL + goodsInfo.goods.goodsImgUrl" alt="商品图片">
                     </div>
                     <div class="row-value upload-img upload">
-                        <img class="goods-imgage" src="../assets/images/upload-btn.jpg" alt="点击上传" @click="popupVisible=true">
+                        <div class="upload-bg"></div>
+                        <input class="upload-btn" type="file" id="change" @change="change" ref="uploads" accept="image/*">
+                        <label for="change"></label>
                     </div>
                 </div>
                 <div class="goods-item">
@@ -58,7 +60,9 @@
                         <img class="goods-imgage" :src="headerImage?headerImage:''" alt="商品图片">
                     </div>
                     <div class="row-value upload-img upload">
-                        <img class="goods-imgage" src="../assets/images/upload-btn.jpg" alt="点击上传" @click="popupVisible=true">
+                        <div class="upload-bg"></div>
+                        <input class="upload-btn" type="file" id="change" @change="change" ref="uploads" accept="image/*">
+                        <label for="change"></label>
                     </div>
                 </div>
                 <div class="goods-item">
@@ -103,11 +107,11 @@
                 <button type="button" id="buttonCancel" @click="cancel">取消</button>
                 <button type="button" id="button" @click="crop">确定</button>
             </div>
-            <div class="upload-wrap">
-                <div class="close-popup" @click="closePopup">x</div>
+            <div class="upload-wrap" v-if="panel">
+                <!-- <div class="close-popup" @click="closePopup">x</div>
                 <div class="upload-bg"></div>
                 <input class="upload-btn" type="file" id="change" @change="change" ref="uploads" accept="image/*">
-                <label for="change"></label>
+                <label for="change"></label> -->
             </div>
         </mt-popup>
         <mt-popup v-model="goodsCategoryPopup" position="right" class="mint-popup-3" :modal="false">
@@ -208,6 +212,7 @@ export default {
             return url;
         },
         change(e) {
+            this.popupVisible = true;
             let files = e.target.files || e.dataTransfer.files;
             if (!files.length) return;
             this.panel = true;
@@ -218,22 +223,21 @@ export default {
             if (this.cropper) {
                 this.cropper.replace(this.url);
             }
-            this.panel = true;
 
         },
         crop() {
-            this.panel = false;
-            var croppedCanvas;
-            var roundedCanvas;
             if (!this.croppable) {
                 return;
             }
             // Crop  
-            croppedCanvas = this.cropper.getCroppedCanvas();
+            var croppedCanvas = this.cropper.getCroppedCanvas();
             // console.log(this.cropper)
             // Round  
-            roundedCanvas = this.getRoundedCanvas(croppedCanvas);
-            this.headerImage = roundedCanvas.toDataURL();
+            var roundedCanvas = this.getRoundedCanvas(croppedCanvas);
+            this.popupVisible = false;
+            this.panel = false;
+            this.$indicator.open();
+            this.headerImage = roundedCanvas.toDataURL('image/jpeg', 0.6);
             this.postImg()
 
         },
@@ -241,14 +245,29 @@ export default {
 
             var canvas = document.createElement('canvas');
             var context = canvas.getContext('2d');
-            var width = sourceCanvas.width;
-            var height = sourceCanvas.height;
-
-            canvas.width = width;
-            canvas.height = height;
+            var originWidth = sourceCanvas.width;
+            var originHeight = sourceCanvas.height;
+            var maxWidth = 600;
+            var maxHeight = 600;
+            // 目标尺寸
+            var targetWidth = originWidth;
+            var targetHeight = originHeight;
+            // 图片尺寸超过400x400的限制
+            if (originWidth > maxWidth || originHeight > maxHeight) {
+                if (originWidth / originHeight > maxWidth / maxHeight) {
+                    // 更宽，按照宽度限定尺寸
+                    targetWidth = maxWidth;
+                    targetHeight = Math.round(maxWidth * (originHeight / originWidth));
+                } else {
+                    targetHeight = maxHeight;
+                    targetWidth = Math.round(maxHeight * (originWidth / originHeight));
+                }
+            }
+            canvas.width = targetWidth;
+            canvas.height = targetHeight;
 
             context.imageSmoothingEnabled = true;
-            context.drawImage(sourceCanvas, 0, 0, width, height);
+            context.drawImage(sourceCanvas, 0, 0, targetWidth, targetHeight);
             context.globalCompositeOperation = 'destination-in';
             context.beginPath();
             // context.arc(width / 2, height / 2, Math.min(width, height) / 2, 0, 2 * Math.PI, true);  
@@ -281,7 +300,7 @@ export default {
 
             fd.path = '/goods'
             uploadFiles(fd).then(data => {
-                this.cancel()
+            this.$indicator.close();
                 console.log(data)
                 this.$toast({
                     message: '上传成功',
@@ -292,6 +311,7 @@ export default {
                 } else {
                     this.newGoods.goods.goodsImgUrl = data.originalUrl;
                 }
+                this.cancel()
             }).catch(err => {
                 console.log(err)
                 this.$toast({
@@ -325,11 +345,11 @@ export default {
                 })
             } else {
                 //新增
-                if (!this.newGoods.goods.goodsImgUrl) {
+                if (this.newGoods.goods.goodsImgUrl == '') {
                     this.$toast({ message: '请上传商品图片', duration: 1000 })
                     return;
                 }
-                if (!this.newGoods.goods.goodsName) {
+                if (this.newGoods.goods.goodsName == '') {
                     this.$toast({ message: '请输入商品名称', duration: 1000 })
                     return;
                 }
@@ -502,6 +522,7 @@ export default {
 
 .upload {
     margin-left: 2vw;
+    position: relative;
 }
 
 .save-goods {
@@ -559,37 +580,30 @@ export default {
 }
 
 .upload-wrap {
-    position: relative;
+    /*position: relative;*/
     width: 100vw;
     height: 100vh;
 }
 
 .upload-btn {
-    width: 50vw;
-    height: 50vw;
+    width: 32vw;
+    height: 32vw;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-left: -25vw;
-    margin-top: -25vw;
+    left: 0;
     opacity: 0;
     z-index: 2;
 }
 
 .upload-bg {
-    width: 50vw;
-    height: 50vw;
+    width: 32vw;
+    height: 32vw;
     background: url(../assets/images/upload-btn.jpg) no-repeat center center;
     background-size: contain;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-left: -25vw;
-    margin-top: -25vw;
     z-index: 1;
     color: #fff;
     text-align: center;
-    line-height: 50vw;
+    line-height: 32vw;
 }
 
 .close-popup {
@@ -639,5 +653,4 @@ export default {
     position: fixed;
     bottom: 0;
 }
-
 </style>
