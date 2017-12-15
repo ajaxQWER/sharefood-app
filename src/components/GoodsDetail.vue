@@ -117,7 +117,7 @@
         <mt-popup v-model="goodsCategoryPopup" position="right" class="mint-popup-3" :modal="false">
             <div class="goodsDetail-header">
                 <div class="nav-bar help-navbar">
-                    <div class="back"></div>
+                    <div class="back" @click="closeGoodsCategoryPopup"><img src="../assets/images/white-back.png" alt=""></div>
                     <div class="nav-title">商品分类</div>
                 </div>
             </div>
@@ -415,6 +415,9 @@ export default {
             }
 
             this.newGoods.goods.goodsClassNames = names.join(",");
+            this.goodsCategoryPopup = false;
+        },
+        closeGoodsCategoryPopup: function(){
             this.goodsCategoryPopup = false;
         }
     }
