@@ -17,7 +17,7 @@
 						<div class="bonus-info">
 							<div class="bonus-value">
 								<div class="bonus-face" v-if="item.couponMoneyType == 'FIXED'">￥<span>{{item.money}}</span></div>
-								<div class="bonus-face" v-else>￥<span>{{item.minMoney}}</span>-￥<span>{{item.maxMoney}}</span></div>
+								<div class="bonus-face" v-else>￥<span>{{item.minMoney}}</span>~￥<span>{{item.maxMoney}}</span></div>
 								<div class="bonus-condition">{{item.minimum?'满'+item.minimum+'元可用':'任意金额可用'}}</div>
 							</div>
 							<div class="bonus-detail">
