@@ -22,9 +22,22 @@
                     </div>
                 </div>
                 <div class="shopDetail-col">
+                    <div class="row-title">金额类型</div>
+                    <div class="setBonus-name">
+                        <label for="fixed"><input type="radio" name="moneyType" id="fixed" value="FIXED" v-model="bonusObj.couponMoneyType">固定</label>
+                        <label for="random"><input type="radio" name="moneyType" id="random" value="RANDOM" v-model="bonusObj.couponMoneyType">随机</label>
+                    </div>
+                </div>
+                <div class="shopDetail-col" v-if="bonusObj.couponMoneyType == 'FIXED'">
                     <div class="row-title">红包金额</div>
                     <div class="setBonus-name">
                         <input type="number" placeholder="红包金额" v-model.number="bonusObj.money">
+                    </div>
+                </div>
+                <div class="shopDetail-col" v-else>
+                    <div class="row-title">随机金额范围</div>
+                    <div class="setBonus-name">
+                        <input class="random-input" type="number" placeholder="最小随机金额" v-model.number="bonusObj.minMoney">-<input class="random-input" type="number" placeholder="最大随机金额" v-model.number="bonusObj.maxMoney">
                     </div>
                 </div>
                 <div class="shopDetail-col">
@@ -48,7 +61,7 @@
                 <div class="shopDetail-col">
                     <div class="row-title">最低消费额度</div>
                     <div class="setBonus-name">
-                        <input type="number" placeholder="留空为不限制" v-model.number="bonusObj.minimum">
+                        <input type="number" placeholder="最低消费额度" v-model.number="bonusObj.minimum">
                     </div>
                 </div>
             </div>
@@ -73,7 +86,10 @@
                     money: null,
                     maxPickUpNumber: null,
                     minimum: null,
-                    pickUpType: 'HAND'
+                    pickUpType: 'HAND',
+                    couponMoneyType: 'FIXED',
+                    minMoney: null,
+                    maxMoney: null
                 }
             }
         },
@@ -81,7 +97,7 @@
             //最大日期和最小日期限制在当年
             var thisYear = new Date().getFullYear();
             var thisStartDate = thisYear + '-01-01';
-            var thisEndDate = thisYear + '-12-31';
+            var thisEndDate = thisYear + 4 + '-12-31';
             this.startDate = new Date(thisStartDate);
             this.endDate = new Date(thisEndDate);
 
@@ -122,7 +138,7 @@
                     })
                     return;
                 }
-                if (!this.bonusObj.money) {
+                if (this.bonusObj.couponMoneyType == 'FIXED' && !this.bonusObj.money) {
                     this.$toast({
                         message: '请输入红包金额',
                         duration: 1500
@@ -137,6 +153,7 @@
                     return;
                 }
                 var id = this.$route.query.id;
+                console.log(this.bonusObj)
                 if(id){
                     this.$indicator.open();
                     updateBonusById(id, this.bonusObj).then(res => {
@@ -274,5 +291,7 @@
         border: none;
         outline: none;
     }
-
+    #setBonus .random-input{
+        width: 25vw;
+    }
 </style>
