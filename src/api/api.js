@@ -326,6 +326,10 @@ export const setNoCanDrawInvoice = () => {
 export const getPhoneCode = phoneNumber => {
     return ajax.post('commons/phoneCode/' + phoneNumber);
 };
+//订单补打
+export const printOrder = orderId => {
+    return ajax.post('seller/order/print/' + orderId);
+};
 
 //文件上传 前台文件需要设置一个path属性
 export const uploadFiles = params => {

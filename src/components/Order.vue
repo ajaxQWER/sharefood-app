@@ -52,6 +52,7 @@
                                     </div>
                                     <div v-if="item.orderType=='TAKEOUT'" class="operate-btn">
                                         <div class="order-row">
+                                            <button @click.prevent="printOrderBtn(item.orderId)" class="btn print-btn">订单补打</button>
                                             <div v-if="item.orderStatus=='PAYED'">
                                                 <button @click.prevent="cancelOrder(item.orderId)" class="btn danger">拒绝接单</button>
                                                 <button @click.prevent="acceptOrder(item.orderId,item.orderType)" class="btn deal-btn">&emsp;接单&emsp;</button>
@@ -110,7 +111,7 @@
     </div>
 </template>
 <script>
-import { getOrderList, cancelOrderById, finishOrderById, acceptOrderById } from '@/api/api'
+import { getOrderList, cancelOrderById, finishOrderById, acceptOrderById, printOrder } from '@/api/api'
 export default {
     name: 'order',
     data: function() {
@@ -267,7 +268,7 @@ export default {
             this.$indicator.open();
             this.closePopup()
             cancelOrderById(params).then(() => {
-                this.$toast({ message: '操作成功', duration: 1000 })
+                this.$toast({ message: '操作成功', duration: 1500 })
                 this.$indicator.close();
                 this.getOrders({ pageId: this.pageId, orderStatus: this.orderStatus })
             })
@@ -276,7 +277,7 @@ export default {
             this.$messagebox.confirm('确定接单?').then(action => {
                 this.$indicator.open();
                 acceptOrderById(orderId).then(() => {
-                    this.$toast({ message: '操作成功', duration: 1000 })
+                    this.$toast({ message: '操作成功', duration: 1500 })
                     this.$indicator.close();
                     this.getOrders({ pageId: this.pageId, orderStatus: this.orderStatus })
                 })
@@ -286,7 +287,7 @@ export default {
             this.$messagebox.confirm('确定完成预定订单?').then(action => {
                 this.$indicator.open();
                 finishOrderById(orderId).then(() => {
-                    this.$toast({ message: '操作成功', duration: 1000 })
+                    this.$toast({ message: '操作成功', duration: 1500 })
                     this.$indicator.close();
                     this.getOrders({ pageId: this.pageId, orderStatus: this.orderStatus })
                 })
@@ -311,6 +312,17 @@ export default {
                 default:
                     return '-'
             }
+        },
+        printOrderBtn: function(orderId){
+            this.$messagebox.confirm('确定补打该订单?').then(() => {
+                this.$indicator.open();
+                printOrder(orderId).then(() => {
+                    this.$toast({ message: '操作成功', duration: 1500 })
+                    this.$indicator.close();
+                    this.getOrders({ pageId: this.pageId, orderStatus: this.orderStatus })
+                })
+            }).catch(() => {});
+            
         }
     }
 }
@@ -581,6 +593,12 @@ a.telephone img {
 .deal-btn {
     background-color: #0bb745;
     border: 1px solid #0bb745;
+    color: #fff;
+}
+
+.print-btn{
+    background-color: #4caf50;
+    border: 1px solid #4caf50;
     color: #fff;
 }
 
