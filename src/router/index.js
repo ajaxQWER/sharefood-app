@@ -43,6 +43,7 @@ import BonusList from '@/components/BonusList.vue'  //红包管理
 import AddBonus from '@/components/AddBonus.vue'  //添加红包
 import GetBonus from '@/components/GetBonus.vue'  //领取红包
 import DrawInvoice from '@/components/DrawInvoice.vue'  //开票设置
+import AddProperties from '@/components/AddProperties.vue' //添加属性
 
 // const Login = r => require.ensure([],() => r(require('@/components/Login.vue')), 'Login'); //登录
 // const Regist = r => require.ensure([],() => r(require('@/components/Regist.vue')), 'Regist'); //登录
@@ -269,6 +270,10 @@ let routes = [{
     path: '/drawInvoice',
     component: DrawInvoice,
     name: 'drawInvoice'
+},{
+    path: '/addProperties',
+    component: AddProperties,
+    name: 'addProperties'
 }];
 
 export default routes;
