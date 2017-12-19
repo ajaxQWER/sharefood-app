@@ -77,7 +77,16 @@
                     <div class="row-value value-after">{{newGoods.goods.goodsClassNames}}</div>
                     <!-- </router-link> -->
                 </div>
-                <div class="goods-item">
+                <div class="goods-standard">
+                    <div class="standard-row">
+                        <div class="row-title">商品规格</div>
+                        <div class="add-standard">添加规格</div>
+                    </div>
+                    <div class="standard-content">
+                        <div class="standard-item"></div>
+                    </div>
+                </div>
+                <!-- <div class="goods-item">
                     <div class="row-title">商品价格</div>
                     <div class="row-value">
                         <input type="number" placeholder="请输入商品价格" v-model.number="newGoods.goods.goodsPrice" min="0">
@@ -88,7 +97,7 @@
                     <div class="row-value">
                         <input type="number" placeholder="请输入餐盒费" v-model.number="newGoods.goods.feeMeals" min="0">
                     </div>
-                </div>
+                </div> -->
                 <div class="goods-item">
                     <div class="row-title">商品简介</div>
                     <div class="row-value">
@@ -482,7 +491,39 @@ export default {
     font-size: 3.73vw;
     vertical-align: middle;
 }
-
+.goods-standard{
+    margin: 1.33vw 0;
+}
+.standard-row{
+    padding: 2.66vw;
+    overflow: hidden;
+    zoom: 1;
+    color: #4d4d4d;
+    background-color: #fff;
+}
+.add-standard{
+    width: 20vw;
+    float: right;
+    color: #09b745;
+    margin-top: 0.4vw;
+}
+.add-standard:before{
+    content: '';
+    display: inline-block;
+    width: 3.6vw;
+    height: 3.6vw;
+    background: url(../assets/images/edit-icon.png) no-repeat;
+    background-size: contain;
+    vertical-align: middle;
+    margin-top: -0.8vw;
+    margin-right: 1vw;
+}
+.standard-content{
+    background-color: #fff;
+}
+.standard-item{
+    padding: 2vw 2.66vw;
+}
 .value-after:after {
     content: '';
     display: inline-block;
