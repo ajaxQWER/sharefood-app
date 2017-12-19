@@ -83,21 +83,77 @@
                         <div class="add-standard">添加规格</div>
                     </div>
                     <div class="standard-content">
-                        <div class="standard-item"></div>
+                        <div class="standard-item">
+                            <div class="standard-index">规格1</div>
+                            <div class="standard-operation">
+                                <button class="standard-btn update-standard-btn">修改</button>
+                                <button class="standard-btn delete-standard-btn">删除</button>
+                            </div>
+                        </div>
+                        <div class="standard-item-row">
+                            <div class="standard-key">规格名称：热</div>
+                        </div>
+                        <div class="standard-item-row">
+                            <div class="standard-key">价格：15</div>
+                            <div class="standard-value">库存：无限</div>
+                        </div>
+                        <div class="standard-item-row">
+                            <div class="standard-key">餐盒数量：1</div>
+                            <div class="standard-value">餐盒价格：0</div>
+                        </div>
+                    </div>
+                    <div class="standard-content">
+                        <div class="standard-item">
+                            <div class="standard-index">规格2</div>
+                            <div class="standard-operation">
+                                <button class="standard-btn update-standard-btn">修改</button>
+                                <button class="standard-btn delete-standard-btn">删除</button>
+                            </div>
+                        </div>
+                        <div class="standard-item-row">
+                            <div class="standard-key">规格名称：热</div>
+                        </div>
+                        <div class="standard-item-row">
+                            <div class="standard-key">价格：15</div>
+                            <div class="standard-value">库存：无限</div>
+                        </div>
+                        <div class="standard-item-row">
+                            <div class="standard-key">餐盒数量：1</div>
+                            <div class="standard-value">餐盒价格：0</div>
+                        </div>
                     </div>
                 </div>
-                <!-- <div class="goods-item">
-                    <div class="row-title">商品价格</div>
-                    <div class="row-value">
-                        <input type="number" placeholder="请输入商品价格" v-model.number="newGoods.goods.goodsPrice" min="0">
+                <div class="goods-standard">
+                    <div class="standard-row">
+                        <div class="row-title">商品属性</div>
+                        <div class="add-standard">添加属性</div>
+                    </div>
+                    <div class="standard-content">
+                        <div class="standard-item">
+                            <div class="standard-index">属性1</div>
+                            <div class="standard-operation">
+                                <button class="standard-btn update-standard-btn">修改</button>
+                                <button class="standard-btn delete-standard-btn">删除</button>
+                            </div>
+                        </div>
+                        <div class="standard-item-row">
+                            <div class="standard-key">属性名称：甜度</div>
+                        </div>
+                        <div class="standard-item-row">
+                            <div class="goods-property">七分甜</div>
+                            <div class="goods-property">五分甜</div>
+                            <div class="goods-property">三分甜</div>
+                        </div>
                     </div>
                 </div>
                 <div class="goods-item">
-                    <div class="row-title">餐盒费</div>
+                    <div class="row-title">商品特色</div>
                     <div class="row-value">
-                        <input type="number" placeholder="请输入餐盒费" v-model.number="newGoods.goods.feeMeals" min="0">
+                        <div class="goods-property">无</div>
+                        <div class="goods-property">招牌</div>
+                        <div class="goods-property">新品</div>
                     </div>
-                </div> -->
+                </div>
                 <div class="goods-item">
                     <div class="row-title">商品简介</div>
                     <div class="row-value">
@@ -523,7 +579,63 @@ export default {
 }
 .standard-item{
     padding: 2vw 2.66vw;
+    background-color: #eef9f3;
+    font-size: 3.73vw;
+    overflow: hidden;
+    zoom: 1;
 }
+.standard-index{
+    display: inline-block;
+    float: left;
+}
+.standard-operation{
+    display: inline-block;
+    float: right;
+}
+.standard-btn{
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+.update-standard-btn{
+    color: #05b645;
+}
+.delete-standard-btn{
+    color: #e84747;
+}
+.standard-item-row{
+    overflow: hidden;
+    zoom: 1;
+    padding: 2vw 2.66vw;
+    font-size: 0;
+    color: #999;
+}
+.standard-item-row:not(:last-child){
+    border-bottom: 1px solid #f2f2f2;
+}
+.standard-key{
+    display: inline-block;
+    width: 50%;
+    font-size: 3.73vw;
+}
+.standard-value{
+    display: inline-block;
+    width: 50%;
+    font-size: 3.73vw;
+}
+.goods-property{
+    display: inline-block;
+    font-size: 3.73vw;
+    width: 18vw;
+    height: 8vw;
+    line-height: 8vw;
+    text-align: center;
+    color: #4c4c4c;
+    background-color: #f5f5f5;
+    margin-right: 2.4vw;
+    border-radius: 1px;
+}
+
 .value-after:after {
     content: '';
     display: inline-block;
