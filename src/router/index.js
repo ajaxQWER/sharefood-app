@@ -22,6 +22,7 @@ import BusinessTime from '@/components/BusinessTime.vue' //营业时间
 import ShopContact from '@/components/ShopContact.vue' //联系电话
 import SetDelivery from '@/components/SetDelivery.vue' //配送设置
 import GoodsCategoryList from '@/components/GoodsCategoryList.vue' //选择商品分类
+import GoodsSpecifications from '@/components/GoodsSpecifications.vue' //添加商品规格
 import BusinessAnalyze from '@/components/BusinessAnalysis.vue'  //营业分析
 import CustomerTendency from '@/components/CustomerTendencyChart.vue'  //新客户趋势图
 import OrderQuantity from '@/components/OrderQuantity.vue'  //订单量趋势图
@@ -184,6 +185,10 @@ let routes = [{
     path: '/setGoodsCategory',
     component: GoodsCategoryList,
     name: 'setGoodsCategory'
+},{
+    path: '/addGoodsSpecifications',
+    component: GoodsSpecifications,
+    name: 'addGoodsSpecifications'
 },{
     path: '/analyze',
     component: BusinessAnalyze,
