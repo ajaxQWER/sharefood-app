@@ -15,8 +15,8 @@
 		      :options="options">
 		    </mt-checklist>
 		</div>
-		<div class="saveBusiness" @click="saveBusiness">保存</div>
-		
+		<div class="saveBusiness" @click="saveBusiness">确认</div>
+
 	</div>
 </template>
 <script>

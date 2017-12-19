@@ -1,4 +1,3 @@
-
 import Login from '@/components/Login.vue' //登录
 import Regist from '@/components/Regist.vue' //注册
 import Agreement from '@/components/Agreement.vue' //商家入驻告知书
@@ -23,6 +22,7 @@ import BusinessTime from '@/components/BusinessTime.vue' //营业时间
 import ShopContact from '@/components/ShopContact.vue' //联系电话
 import SetDelivery from '@/components/SetDelivery.vue' //配送设置
 import GoodsCategoryList from '@/components/GoodsCategoryList.vue' //选择商品分类
+import GoodsSpecifications from '@/components/GoodsSpecifications.vue' //添加商品规格
 import BusinessAnalyze from '@/components/BusinessAnalysis.vue'  //营业分析
 import CustomerTendency from '@/components/CustomerTendencyChart.vue'  //新客户趋势图
 import OrderQuantity from '@/components/OrderQuantity.vue'  //订单量趋势图
@@ -44,6 +44,52 @@ import AddBonus from '@/components/AddBonus.vue'  //添加红包
 import GetBonus from '@/components/GetBonus.vue'  //领取红包
 import DrawInvoice from '@/components/DrawInvoice.vue'  //开票设置
 import AddProperties from '@/components/AddProperties.vue' //添加属性
+
+// const Login = r => require.ensure([],() => r(require('@/components/Login.vue')), 'Login'); //登录
+// const Regist = r => require.ensure([],() => r(require('@/components/Regist.vue')), 'Regist'); //登录
+// const Agreement = r => require.ensure([],() => r(require('@/components/Agreement.vue')), 'Agreement'); //登录
+// const Help = r => require.ensure([],() => r(require('@/components/Help.vue')), 'Help'); //登录
+// const HelpDetail = r => require.ensure([],() => r(require('@/components/HelpDetail.vue')), 'HelpDetail'); //登录
+// const Home = r => require.ensure([],() => r(require('@/components/Home.vue')), 'Home'); //登录
+// const Goods = r => require.ensure([],() => r(require('@/components/Goods.vue')), 'Goods'); //登录
+// const GoodsDetail = r => require.ensure([],() => r(require('@/components/GoodsDetail.vue')), 'GoodsDetail'); //登录
+// const Order = r => require.ensure([],() => r(require('@/components/Order.vue')), 'Order'); //登录
+// const OrderDetail = r => require.ensure([],() => r(require('@/components/OrderDetail.vue')), 'OrderDetail'); //登录
+// const Comment = r => require.ensure([],() => r(require('@/components/Comment.vue')), 'Comment'); //登录
+// const ShopDetail = r => require.ensure([],() => r(require('@/components/ShopDetail.vue')), 'ShopDetail'); //登录
+// const GoodsCategory = r => require.ensure([],() => r(require('@/components/GoodsCategory.vue')), 'GoodsCategory'); //登录
+// const Setting = r => require.ensure([],() => r(require('@/components/Setting.vue')), 'Setting'); //登录
+// const UpdatePassword = r => require.ensure([],() => r(require('@/components/UpdatePassword.vue')), 'UpdatePassword'); //登录
+// const PrintSetting = r => require.ensure([],() => r(require('@/components/PrintSetting.vue')), 'PrintSetting'); //登录
+// const UpdatePrinter = r => require.ensure([],() => r(require('@/components/UpdatePrinter.vue')), 'UpdatePrinter'); //登录
+// const AddPrinter = r => require.ensure([],() => r(require('@/components/AddPrinter.vue')), 'AddPrinter'); //登录
+// const BusinessStatus = r => require.ensure([],() => r(require('@/components/BusinessStatus.vue')), 'BusinessStatus'); //登录
+// const SetMinDeliveryPrice = r => require.ensure([],() => r(require('@/components/SetMinDeliveryPrice.vue')), 'SetMinDeliveryPrice'); //登录
+// const BusinessTime = r => require.ensure([],() => r(require('@/components/BusinessTime.vue')), 'BusinessTime'); //登录
+// const ShopContact = r => require.ensure([],() => r(require('@/components/ShopContact.vue')), 'ShopContact'); //登录
+// const SetDelivery = r => require.ensure([],() => r(require('@/components/SetDelivery.vue')), 'SetDelivery'); //登录
+// const GoodsCategoryList = r => require.ensure([],() => r(require('@/components/GoodsCategoryList.vue')), 'GoodsCategoryList'); //登录
+// const BusinessAnalyze = r => require.ensure([],() => r(require('@/components/BusinessAnalysis.vue')), 'BusinessAnalyze'); //登录
+// const CustomerTendency = r => require.ensure([],() => r(require('@/components/CustomerTendencyChart.vue')), 'CustomerTendency'); //登录
+// const OrderQuantity = r => require.ensure([],() => r(require('@/components/OrderQuantity.vue')), 'OrderQuantity'); //登录
+// const Turnover = r => require.ensure([],() => r(require('@/components/Turnover.vue')), 'Turnover'); //登录
+// const SalesVolume = r => require.ensure([],() => r(require('@/components/SalesVolume.vue')), 'SalesVolume'); //登录
+// const SalesRank = r => require.ensure([],() => r(require('@/components/SalesRank.vue')), 'SalesRank'); //登录
+// const Notice = r => require.ensure([],() => r(require('@/components/Notice.vue')), 'Notice'); //登录
+// const AddActivity = r => require.ensure([],() => r(require('@/components/AddActivity.vue')), 'AddActivity'); //登录
+// const ElseActivity = r => require.ensure([],() => r(require('@/components/ElseActivity.vue')), 'ElseActivity'); //登录
+// const FirstReduceActivity = r => require.ensure([],() => r(require('@/components/FirstReduceActivity.vue')), 'FirstReduceActivity'); //登录
+// const FullReduceActivity = r => require.ensure([],() => r(require('@/components/FullReduceActivity.vue')), 'FullReduceActivity'); //登录
+// const FullSendActivity = r => require.ensure([],() => r(require('@/components/FullSendActivity.vue')), 'FullSendActivity'); //登录
+// const ActivityList = r => require.ensure([],() => r(require('@/components/ActivityList.vue')), 'ActivityList'); //登录
+// const OnSales = r => require.ensure([],() => r(require('@/components/OnSales.vue')), 'OnSales'); //登录
+// const OnDiscount = r => require.ensure([],() => r(require('@/components/OnDiscount.vue')), 'OnDiscount'); //登录
+// const GoodsManager = r => require.ensure([],() => r(require('@/components/GoodsManager.vue')), 'GoodsManager'); //登录
+// const BonusList = r => require.ensure([],() => r(require('@/components/BonusList.vue')), 'BonusList'); //登录
+// const AddBonus = r => require.ensure([],() => r(require('@/components/AddBonus.vue')), 'AddBonus'); //登录
+// const GetBonus = r => require.ensure([],() => r(require('@/components/GetBonus.vue')), 'GetBonus'); //登录
+// const DrawInvoice = r => require.ensure([],() => r(require('@/components/DrawInvoice.vue')), 'DrawInvoice'); //登录
+
 let routes = [{
     path: '/login',
     component: Login,
@@ -140,6 +186,10 @@ let routes = [{
     path: '/setGoodsCategory',
     component: GoodsCategoryList,
     name: 'setGoodsCategory'
+},{
+    path: '/addGoodsSpecifications',
+    component: GoodsSpecifications,
+    name: 'addGoodsSpecifications'
 },{
     path: '/analyze',
     component: BusinessAnalyze,
