@@ -88,8 +88,10 @@
 	position: fixed;
 }
 .goodsCategory-content{
-  box-sizing: border-box;
+  	box-sizing: border-box;
 	padding-top: 11.73vw;
+	height: 100vh;
+	overflow: scroll;
 	padding-bottom: 10.66vw;
 }
 .goodsCategory-add-wrap{
@@ -101,7 +103,6 @@
 	zoom: 1;
 }
 .goodsCategory-lists{
-	margin: 5.33vw 0 5.33vw;
 	padding: 0;
 	list-style: none;
 	background-color: #fff;
@@ -109,7 +110,6 @@
 .category-item{
 	overflow: hidden;
 	zoom: 1;
-	/* height: 10.66vw; */
 	line-height: 10.66vw;
 	font-size: 4.26vw;
 }
