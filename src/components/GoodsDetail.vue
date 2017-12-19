@@ -31,56 +31,12 @@
                         <div class="row-value value-after">{{formatGoodsClass(goodsInfo.goods.goodsClassNames)}}</div>
                     </div>
                 </router-link>
-                <div class="goods-item">
-                    <div class="row-title">商品价格</div>
-                    <div class="row-value">
-                        <input type="number" placeholder="请输入商品价格" v-model.number="goodsInfo.goods.goodsPrice" min="0">
-                    </div>
-                </div>
-                <div class="goods-item">
-                    <div class="row-title">餐盒费</div>
-                    <div class="row-value">
-                        <input type="number" placeholder="请输入餐盒费" v-model.number="goodsInfo.goods.feeMeals">
-                    </div>
-                </div>
-                <div class="goods-item">
-                    <div class="row-title">商品简介</div>
-                    <div class="row-value">
-                        <textarea class="goods-intro" placeholder="最多255字" name="" id="" maxlength="255" v-model="goodsInfo.goods.goodsContent"></textarea>
-                    </div>
-                </div>
-                <div class="save-goods" @click="updateGoods">保存</div>
-            </div>
-        </div>
-        <div class="goodsDetail-content" v-else>
-            <div class="content">
-                <div class="goods-item">
-                    <div class="row-title">商品图片</div>
-                    <div class="row-value upload-img">
-                        <img class="goods-imgage" :src="headerImage?headerImage:''" alt="商品图片">
-                    </div>
-                    <div class="row-value upload-img upload">
-                        <div class="upload-bg"></div>
-                        <input class="upload-btn" type="file" id="change" @change="change" ref="uploads" accept="image/*">
-                        <label for="change"></label>
-                    </div>
-                </div>
-                <div class="goods-item">
-                    <div class="row-title">商品名称</div>
-                    <div class="row-value">
-                        <input type="text" placeholder="请输入商品名称" v-model="newGoods.goods.goodsName" maxlength="12">
-                    </div>
-                </div>
-                <div class="goods-item" @click="showGoodsCategoryPopup">
-                    <!-- <router-link to="/setGoodsCategory" class="jump"> -->
-                    <div class="row-title">商品分类</div>
-                    <div class="row-value value-after">{{newGoods.goods.goodsClassNames}}</div>
-                    <!-- </router-link> -->
-                </div>
-                <div class="goods-standard">
+               <div class="goods-standard">
                     <div class="standard-row">
                         <div class="row-title">商品规格</div>
-                        <div class="add-standard">添加规格</div>
+                        <div class="add-standard">
+                            <router-link to="/addGoodsSpecifications" class="standard-jump">添加规格</router-link>
+                        </div>
                     </div>
                     <div class="standard-content">
                         <div class="standard-item">
@@ -126,7 +82,124 @@
                 <div class="goods-standard">
                     <div class="standard-row">
                         <div class="row-title">商品属性</div>
-                        <div class="add-standard">添加属性</div>
+                        <div class="add-standard">
+                            <router-link to="/addProperties" class="standard-jump">添加属性</router-link>
+                        </div>
+                    </div>
+                    <div class="standard-content">
+                        <div class="standard-item">
+                            <div class="standard-index">属性1</div>
+                            <div class="standard-operation">
+                                <button class="standard-btn update-standard-btn">修改</button>
+                                <button class="standard-btn delete-standard-btn">删除</button>
+                            </div>
+                        </div>
+                        <div class="standard-item-row">
+                            <div class="standard-key">属性名称：甜度</div>
+                        </div>
+                        <div class="standard-item-row">
+                            <div class="goods-property">七分甜</div>
+                            <div class="goods-property">五分甜</div>
+                            <div class="goods-property">三分甜</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="goods-item">
+                    <div class="row-title">商品特色</div>
+                    <div class="row-value">
+                        <div class="goods-property">无</div>
+                        <div class="goods-property">招牌</div>
+                        <div class="goods-property">新品</div>
+                    </div>
+                </div>
+                <div class="goods-item">
+                    <div class="row-title">商品简介</div>
+                    <div class="row-value">
+                        <textarea class="goods-intro" placeholder="最多255字" name="" id="" maxlength="255" v-model="goodsInfo.goods.goodsContent"></textarea>
+                    </div>
+                </div>
+                <div class="save-goods" @click="updateGoods">保存</div>
+            </div>
+        </div>
+        <div class="goodsDetail-content" v-else>
+            <div class="content">
+                <div class="goods-item">
+                    <div class="row-title">商品图片</div>
+                    <div class="row-value upload-img">
+                        <img class="goods-imgage" :src="headerImage?headerImage:''" alt="商品图片">
+                    </div>
+                    <div class="row-value upload-img upload">
+                        <div class="upload-bg"></div>
+                        <input class="upload-btn" type="file" id="change" @change="change" ref="uploads" accept="image/*">
+                        <label for="change"></label>
+                    </div>
+                </div>
+                <div class="goods-item">
+                    <div class="row-title">商品名称</div>
+                    <div class="row-value">
+                        <input type="text" placeholder="请输入商品名称" v-model="newGoods.goods.goodsName" maxlength="12">
+                    </div>
+                </div>
+                <div class="goods-item" @click="showGoodsCategoryPopup">
+                    <!-- <router-link to="/setGoodsCategory" class="jump"> -->
+                    <div class="row-title">商品分类</div>
+                    <div class="row-value value-after">{{newGoods.goods.goodsClassNames}}</div>
+                    <!-- </router-link> -->
+                </div>
+                <div class="goods-standard">
+                    <div class="standard-row">
+                        <div class="row-title">商品规格</div>
+                        <div class="add-standard">
+                            <router-link to="/addGoodsSpecifications" class="standard-jump">添加规格</router-link>
+                        </div>
+                    </div>
+                    <div class="standard-content">
+                        <div class="standard-item">
+                            <div class="standard-index">规格1</div>
+                            <div class="standard-operation">
+                                <button class="standard-btn update-standard-btn">修改</button>
+                                <button class="standard-btn delete-standard-btn">删除</button>
+                            </div>
+                        </div>
+                        <div class="standard-item-row">
+                            <div class="standard-key">规格名称：热</div>
+                        </div>
+                        <div class="standard-item-row">
+                            <div class="standard-key">价格：15</div>
+                            <div class="standard-value">库存：无限</div>
+                        </div>
+                        <div class="standard-item-row">
+                            <div class="standard-key">餐盒数量：1</div>
+                            <div class="standard-value">餐盒价格：0</div>
+                        </div>
+                    </div>
+                    <div class="standard-content">
+                        <div class="standard-item">
+                            <div class="standard-index">规格2</div>
+                            <div class="standard-operation">
+                                <button class="standard-btn update-standard-btn">修改</button>
+                                <button class="standard-btn delete-standard-btn">删除</button>
+                            </div>
+                        </div>
+                        <div class="standard-item-row">
+                            <div class="standard-key">规格名称：热</div>
+                        </div>
+                        <div class="standard-item-row">
+                            <div class="standard-key">价格：15</div>
+                            <div class="standard-value">库存：无限</div>
+                        </div>
+                        <div class="standard-item-row">
+                            <div class="standard-key">餐盒数量：1</div>
+                            <div class="standard-value">餐盒价格：0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="goods-standard">
+                    <div class="standard-row">
+                        <div class="row-title">商品属性</div>
+                        <div class="add-standard">
+                            <router-link to="/addProperties" class="standard-jump">添加属性</router-link>
+                        </div>
                     </div>
                     <div class="standard-content">
                         <div class="standard-item">
@@ -560,10 +633,16 @@ export default {
 .add-standard{
     width: 20vw;
     float: right;
-    color: #09b745;
     margin-top: 0.4vw;
 }
-.add-standard:before{
+
+.standard-jump{
+    display: block;
+    color: #09b745;
+    text-decoration: none;
+}
+
+.standard-jump:before{
     content: '';
     display: inline-block;
     width: 3.6vw;

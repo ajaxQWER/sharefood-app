@@ -214,4 +214,8 @@ img[lazy=loading] {
 #comment .mt-progress-progress{
     background-color: #f19149;
 }
+#specification .mint-switch-input:checked + .mint-switch-core{
+    background-color: #52d565;
+    border-color: #52d565;
+}
 </style>
