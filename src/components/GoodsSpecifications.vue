@@ -26,6 +26,12 @@
                         <mt-switch v-model="value"></mt-switch>
                     </div>
                 </div>
+                <div class="shopDetail-col" v-if="!value">
+                    <div class="row-title">库存数量</div>
+                    <div class="specification">
+                        <input type="number" placeholder="请输入库存数量">
+                    </div>
+                </div>
                 <div class="shopDetail-col">
                     <div class="row-title"><span>*</span>餐盒数量</div>
                     <div class="specification">
