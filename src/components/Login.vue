@@ -42,7 +42,7 @@
 		<!-- <router-link to="/forgetPwd" class="jump-item forget-pwd">忘记密码?</router-link> -->
 	</div>
 	<p class="help-row">
-		<router-link to="/help?id=32" class="help-item">登录遇到问题?</router-link>
+		<router-link to="/help?id=32&title=登录遇到问题" class="help-item">登录遇到问题?</router-link>
 	</p>
   </div>
 </template>
