@@ -115,12 +115,17 @@
             </div>
             <div class="column flex">
                 <div class="column-item flex-1">
+                    <router-link to="/printSetting" class="link">
+                        <img src="../assets/images/shop-item14.png" alt="">
+                        <div class="column-name">打印机</div>
+                    </router-link>
+                </div>
+                <div class="column-item flex-1">
                     <router-link to="/bonusList" class="link">
                         <img src="../assets/images/shop-item13.png" alt="">
                         <div class="column-name">红包</div>
                     </router-link>
                 </div>
-                <div class="column-item flex-1 column-null"></div>
                 <div class="column-item flex-1 column-null"></div>
             </div>
         </div>
