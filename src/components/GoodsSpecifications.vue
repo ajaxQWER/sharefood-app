@@ -11,44 +11,44 @@
                 <div class="shopDetail-col">
                     <div class="row-title standard-title">规格名称</div>
                     <div class="specification">
-                        <input type="number" placeholder="请输入商品名称">
+                        <input type="text" placeholder="请输入规格名称" v-model="standardObj.goodsSpecificationName">
                     </div>
                 </div>
                 <div class="shopDetail-col">
                     <div class="row-title standard-title">价格</div>
                     <div class="specification">
-                        <input type="number" placeholder="请输入商品价格">
+                        <input type="number" placeholder="请输入规格价格" v-model.number="standardObj.goodsSpecificationPrice">
                     </div>
                 </div>
                 <div class="shopDetail-col">
                     <div class="row-title standard-title">库存</div>
                     <div class="specification">
-                        <mt-switch v-model="value">
-                            <label v-text="formatVal(value)"></label>
+                        <mt-switch v-model="standardObj.infiniteInventory">
+                            <label v-text="formatVal(standardObj.infiniteInventory)"></label>
                         </mt-switch>
                     </div>
                 </div>
-                <div class="shopDetail-col" v-if="!value">
+                <div class="shopDetail-col" v-if="!standardObj.infiniteInventory">
                     <div class="row-title standard-title">库存数量</div>
                     <div class="specification">
-                        <input type="number" placeholder="请输入库存数量">
+                        <input type="number" placeholder="请输入库存数量" v-model.number="standardObj.stock">
                     </div>
                 </div>
                 <div class="shopDetail-col">
                     <div class="row-title standard-title">餐盒数量</div>
                     <div class="specification">
-                        <input type="number" placeholder="请输入餐盒数量">
+                        <input type="number" placeholder="请输入餐盒数量" v-model.number="standardObj.boxesNumber">
                     </div>
                 </div>
                 <div class="shopDetail-col">
                     <div class="row-title standard-title">餐盒价格</div>
                     <div class="specification">
-                        <input type="number" placeholder="请输入餐盒价格">
+                        <input type="number" placeholder="请输入餐盒价格" v-model.number="standardObj.boxesMoney">
                     </div>
                 </div>
             </div>
-            <button class="save">确认</button>
         </div>
+        <button class="save" @click="saveStandard">确 定</button>
     </div>
 </template>
 <script>
@@ -61,15 +61,54 @@
         name: 'specification',
         data: function() {
             return {
-                value: true
+                standardObj: {
+                    infiniteInventory: true,
+                    boxesMoney: '',
+                    boxesNumber: '',
+                    goodsSpecificationName: '',
+                    goodsSpecificationPrice: '',
+                    stock: ''
+                }
             }
         },
         created: function() {
-
+            var index = this.$route.query.index;
+            // var standardObj = JSON.parse(this.$route.query.standardObj);
         },
         methods: {
             formatVal: function(val){
                 return val ? '无限' : '有限'
+            },
+            saveStandard: function(){
+                if(this.standardObj.goodsSpecificationName == ''){
+                    this.$toast({ message: '请输入规格名称', duration: 1000})
+                    return;
+                }
+                if(this.standardObj.goodsSpecificationPrice == ''){
+                    this.$toast({ message: '请输入规格价格', duration: 1000})
+                    return;
+                }
+                if(!this.standardObj.infiniteInventory && this.standardObj.stock == ''){
+                    this.$toast({ message: '请输入库存数量', duration: 1000})
+                    return;
+                }
+                if(this.standardObj.boxesNumber == ''){
+                    this.$toast({ message: '请输入餐盒数量', duration: 1000})
+                    return;
+                }
+                if(this.standardObj.boxesMoney == ''){
+                    this.$toast({ message: '请输入餐盒价格', duration: 1000})
+                    return;
+                }
+                console.log(this.standardObj)
+                // this.$indicator.open();
+                localStorage.setItem('standardObj',JSON.stringify(this.standardObj))
+                this.$toast({ message: '操作成功', duration: 1000})
+                setTimeout(() =>{
+                    // this.$indicator.close();
+                    this.$router.back();
+                },1500)
+
             }
         }
     }
@@ -89,7 +128,7 @@
     .specification-content {
         box-sizing: border-box;
         height: 100vh;
-        overflow: hidden;
+        overflow: auto;
         zoom: 1;
         padding: 13.06vw 0 14.39vw;
     }
@@ -118,10 +157,12 @@
     }
 
     .row-title {
+        height: 8vw;
         font-size: 4.26vw;
         display: inline-block;
         float: left;
-        line-height: 6.66vw;
+        vertical-align: middle;
+        line-height: 8vw;
     }
 
     .row-value {
@@ -136,22 +177,17 @@
         border: none;
     }
 
-    .row-title{
-        float: left;
-        vertical-align: middle;
-        line-height: 8vw;
-    }
-
     .specification {
         display: inline-block;
         float: right;
-        margin: 0 2.66vw;
+        /*margin: 0 2.66vw;*/
     }
 
     .specification input {
         display: block;
         width: 64.66vw;
-        height: 6vw;
+        height: 8vw;
+        line-height: 8px;
         font-size: 3.72vw;
         text-align: right;
         padding-right: 2.66vw;
@@ -211,11 +247,6 @@
         bottom: 0;
         border: none;
         outline: none;
-    }
-
-    .row-title span {
-        color: #ff0000;
-        margin-right: 1.33vw;
     }
     .standard-title:before{
         content: '*';

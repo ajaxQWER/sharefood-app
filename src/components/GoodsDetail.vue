@@ -34,9 +34,9 @@
                <div class="goods-standard">
                     <div class="standard-row">
                         <div class="row-title">商品规格</div>
-                        <div class="add-standard">
+                        <!-- <div class="add-standard"> -->
                             <router-link to="/addGoodsSpecifications" class="standard-jump">添加规格</router-link>
-                        </div>
+                        <!-- </div> -->
                     </div>
                     <div class="standard-content">
                         <div class="standard-item">
@@ -82,9 +82,9 @@
                 <div class="goods-standard">
                     <div class="standard-row">
                         <div class="row-title">商品属性</div>
-                        <div class="add-standard">
+                        <!-- <div class="add-standard"> -->
                             <router-link to="/addProperties" class="standard-jump">添加属性</router-link>
-                        </div>
+                        <!-- </div> -->
                     </div>
                     <div class="standard-content">
                         <div class="standard-item">
@@ -149,9 +149,7 @@
                 <div class="goods-standard">
                     <div class="standard-row">
                         <div class="row-title">商品规格</div>
-                        <div class="add-standard">
-                            <router-link to="/addGoodsSpecifications" class="standard-jump">添加规格</router-link>
-                        </div>
+                        <router-link to="/addGoodsSpecifications" class="standard-jump">添加规格</router-link>
                     </div>
                     <div class="standard-content">
                         <div class="standard-item">
@@ -197,9 +195,7 @@
                 <div class="goods-standard">
                     <div class="standard-row">
                         <div class="row-title">商品属性</div>
-                        <div class="add-standard">
-                            <router-link to="/addProperties" class="standard-jump">添加属性</router-link>
-                        </div>
+                        <router-link to="/addProperties" class="standard-jump">添加属性</router-link>
                     </div>
                     <div class="standard-content">
                         <div class="standard-item">
@@ -630,14 +626,12 @@ export default {
     color: #4d4d4d;
     background-color: #fff;
 }
-.add-standard{
-    width: 20vw;
-    float: right;
-    margin-top: 0.4vw;
-}
 
 .standard-jump{
     display: block;
+    font-size: 3.73vw;
+    float: right;
+    margin-top: 0.4vw;
     color: #09b745;
     text-decoration: none;
 }
