@@ -22,6 +22,7 @@ import BusinessTime from '@/components/BusinessTime.vue' //营业时间
 import ShopContact from '@/components/ShopContact.vue' //联系电话
 import SetDelivery from '@/components/SetDelivery.vue' //配送设置
 import GoodsCategoryList from '@/components/GoodsCategoryList.vue' //选择商品分类
+import GoodsSpecifications from '@/components/GoodsSpecifications.vue' //添加商品规格
 import BusinessAnalyze from '@/components/BusinessAnalysis.vue'  //营业分析
 import CustomerTendency from '@/components/CustomerTendencyChart.vue'  //新客户趋势图
 import OrderQuantity from '@/components/OrderQuantity.vue'  //订单量趋势图
@@ -42,6 +43,7 @@ import BonusList from '@/components/BonusList.vue'  //红包管理
 import AddBonus from '@/components/AddBonus.vue'  //添加红包
 import GetBonus from '@/components/GetBonus.vue'  //领取红包
 import DrawInvoice from '@/components/DrawInvoice.vue'  //开票设置
+import AddProperties from '@/components/AddProperties.vue' //添加属性
 
 // const Login = r => require.ensure([],() => r(require('@/components/Login.vue')), 'Login'); //登录
 // const Regist = r => require.ensure([],() => r(require('@/components/Regist.vue')), 'Regist'); //登录
@@ -185,6 +187,10 @@ let routes = [{
     component: GoodsCategoryList,
     name: 'setGoodsCategory'
 },{
+    path: '/addGoodsSpecifications',
+    component: GoodsSpecifications,
+    name: 'addGoodsSpecifications'
+},{
     path: '/analyze',
     component: BusinessAnalyze,
     name: 'analyze'
@@ -264,6 +270,10 @@ let routes = [{
     path: '/drawInvoice',
     component: DrawInvoice,
     name: 'drawInvoice'
+},{
+    path: '/addProperties',
+    component: AddProperties,
+    name: 'addProperties'
 }];
 
 export default routes;
