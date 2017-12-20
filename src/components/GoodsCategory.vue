@@ -1,10 +1,8 @@
 <template>
 	<div id="goodsCategory">
-		<div class="goodsCategory-header">
-			<div class="nav-bar help-navbar">
-		  		<div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
-		  		<div class="nav-title">商品分类</div>
-			</div>
+		<div class="nav-bar help-navbar">
+	  		<div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
+	  		<div class="nav-title">商品分类</div>
 		</div>
 		<div class="goodsCategory-content">
 			<ul class="goodsCategory-lists" v-if="!isEmpty">
@@ -83,16 +81,11 @@
 	background-color: #f2f2f2;
 	overflow: hidden;
 }
-.goodsCategory-header{
-	width: 100%;
-	position: fixed;
-}
 .goodsCategory-content{
   	box-sizing: border-box;
-	padding-top: 11.73vw;
 	height: 100vh;
 	overflow: scroll;
-	padding-bottom: 10.66vw;
+	padding-bottom: 22.39vw;
 }
 .goodsCategory-add-wrap{
 	width: 100%;

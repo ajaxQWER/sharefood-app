@@ -11,7 +11,7 @@
 		<div class="goods-content">
 			<div class="goods-type">
 				<ul>
-					<li :class="item.isActiveItem?'goods-type-item current-goods-type':'goods-type-item'" v-for="(item,index) in goodsCategoryLists" @click="getGoodsById(item.goodsCategoryId,index)" :key="index">{{item.goodsCategoryName}}</li>
+					<li :class="activeIndex==index?'goods-type-item current-goods-type':'goods-type-item'" v-for="(item,index) in goodsCategoryLists" @click="getGoodsById(item.goodsCategoryId,index)" :key="index">{{item.goodsCategoryName}}</li>
 				</ul>
 			</div>
 			<div class="goods-details-lists">
@@ -53,26 +53,27 @@
 			return {
 				goodsCategoryLists: null,
 				goodsList: null,
+				activeIndex: 0,
 				isEmpty: false
 			}
 		},
 		created: function(){
-			console.log(this.UPLOADURL)
 			this.$indicator.open();
 			getGoodsCategoryLists({params: {pageSize: 999999}}).then(res => {
 				console.log(res)
 				if(res.list.length){
 					this.getGoods(res.list[0].goodsCategoryId)
 					this.goodsCategoryLists = res.list;
-					this.goodsCategoryLists.forEach(function(item,index){
-						item['isActiveItem'] = false;
-						if(index == 0){
-							item['isActiveItem'] = true
-						}
-					})
+					// this.goodsCategoryLists.forEach(function(item,index){
+					// 	item['isActiveItem'] = false;
+					// 	if(index == 0){
+					// 		item['isActiveItem'] = true
+					// 	}
+					// })
 				}else{
 					this.isEmpty = true;
 				}
+				console.log(this.goodsCategoryLists)
 				this.$indicator.close();
 			})
 		},
@@ -99,12 +100,14 @@
 			},
 			getGoodsById: function(id,index){
 				this.$indicator.open();
-				this.goodsCategoryLists.forEach(function(item,current){
-					item['isActiveItem'] = false;
-					if(index == current){
-						item['isActiveItem'] = true;
-					}
-				})
+				this.activeIndex = index;
+				// this.goodsCategoryLists.forEach(function(item,current){
+				// 	item['isActiveItem'] = false;
+				// 	if(index == current){
+				// 		item['isActiveItem'] = true;
+				// 	}
+				// })
+				// console.log(this.goodsCategoryLists)
 				this.getGoods(id)
 			},
 			deleteGoods: function(id,index){
