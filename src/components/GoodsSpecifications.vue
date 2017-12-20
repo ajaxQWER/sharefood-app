@@ -9,19 +9,19 @@
         <div class="specification-content">
             <div class="shopDetail-row">
                 <div class="shopDetail-col">
-                    <div class="row-title"><span>*</span>规格名称</div>
+                    <div class="row-title standard-title">规格名称</div>
                     <div class="specification">
                         <input type="number" placeholder="请输入商品名称">
                     </div>
                 </div>
                 <div class="shopDetail-col">
-                    <div class="row-title"><span>*</span>价格</div>
+                    <div class="row-title standard-title">价格</div>
                     <div class="specification">
                         <input type="number" placeholder="请输入商品价格">
                     </div>
                 </div>
                 <div class="shopDetail-col">
-                    <div class="row-title"><span>*</span>库存</div>
+                    <div class="row-title standard-title">库存</div>
                     <div class="specification">
                         <mt-switch v-model="value">
                             <label v-text="formatVal(value)"></label>
@@ -29,19 +29,19 @@
                     </div>
                 </div>
                 <div class="shopDetail-col" v-if="!value">
-                    <div class="row-title"><span>*</span>库存数量</div>
+                    <div class="row-title standard-title">库存数量</div>
                     <div class="specification">
                         <input type="number" placeholder="请输入库存数量">
                     </div>
                 </div>
                 <div class="shopDetail-col">
-                    <div class="row-title"><span>*</span>餐盒数量</div>
+                    <div class="row-title standard-title">餐盒数量</div>
                     <div class="specification">
                         <input type="number" placeholder="请输入餐盒数量">
                     </div>
                 </div>
                 <div class="shopDetail-col">
-                    <div class="row-title"><span>*</span>餐盒价格</div>
+                    <div class="row-title standard-title">餐盒价格</div>
                     <div class="specification">
                         <input type="number" placeholder="请输入餐盒价格">
                     </div>
@@ -216,6 +216,14 @@
     .row-title span {
         color: #ff0000;
         margin-right: 1.33vw;
+    }
+    .standard-title:before{
+        content: '*';
+        display: inline-block;
+        color: #ff0000;
+        vertical-align: middle;
+        margin-right: 1vw;
+        margin-top: 1vw;
     }
 
 </style>
