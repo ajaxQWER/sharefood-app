@@ -1,10 +1,8 @@
 <template>
 	<div id="goodsCategory">
-		<div class="goodsCategory-header">
-			<div class="nav-bar help-navbar">
-		  		<div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
-		  		<div class="nav-title">商品分类</div>
-			</div>
+		<div class="nav-bar help-navbar goodsCategory-header">
+	  		<div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
+	  		<div class="nav-title">商品分类</div>
 		</div>
 		<div class="goodsCategory-content">
 			<ul class="goodsCategory-lists" v-if="!isEmpty">
