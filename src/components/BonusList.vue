@@ -83,6 +83,7 @@
 	.bonus-header{
 		width: 100%;
 		position: fixed;
+		z-index: 999;
 	}
 	.bonus-add-btn{
 		display: inline-block;
@@ -98,7 +99,6 @@
 	.bonus-content{
 	    box-sizing: border-box;
 		height: 100vh;
-		overflow: hidden;
 		zoom: 1;
 		padding-top: 13.06vw;
 	}
