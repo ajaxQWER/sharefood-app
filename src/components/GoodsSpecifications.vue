@@ -17,7 +17,7 @@
                 <div class="shopDetail-col">
                     <div class="row-title standard-title">价格</div>
                     <div class="specification">
-                        <input type="number" placeholder="请输入规格价格" v-model.number="standardObj.goodsSpecificationPrice">
+                        <input type="number" placeholder="请输入规格价格" v-model.number="standardObj.goodsSpecificationPrice" min="0">
                     </div>
                 </div>
                 <div class="shopDetail-col">
@@ -31,24 +31,24 @@
                 <div class="shopDetail-col" v-if="!standardObj.infiniteInventory">
                     <div class="row-title standard-title">库存数量</div>
                     <div class="specification">
-                        <input type="number" placeholder="请输入库存数量" v-model.number="standardObj.stock">
+                        <input type="number" placeholder="请输入库存数量" v-model.number="standardObj.stock" min="0">
                     </div>
                 </div>
                 <div class="shopDetail-col">
                     <div class="row-title standard-title">餐盒数量</div>
                     <div class="specification">
-                        <input type="number" placeholder="请输入餐盒数量" v-model.number="standardObj.boxesNumber">
+                        <input type="number" placeholder="请输入餐盒数量" v-model.number="standardObj.boxesNumber" min="0">
                     </div>
                 </div>
                 <div class="shopDetail-col">
                     <div class="row-title standard-title">餐盒价格</div>
                     <div class="specification">
-                        <input type="number" placeholder="请输入餐盒价格" v-model.number="standardObj.boxesMoney">
+                        <input type="number" placeholder="请输入餐盒价格" v-model.number="standardObj.boxesMoney" min="0">
                     </div>
                 </div>
             </div>
         </div>
-        <button class="save" @click="saveStandard">确 定</button>
+        <button class="save" @click="saveStandard">保存</button>
     </div>
 </template>
 <script>
@@ -72,43 +72,67 @@
             }
         },
         created: function() {
-            var index = this.$route.query.index;
-            // var standardObj = JSON.parse(this.$route.query.standardObj);
+            var routeStandardObj = this.$route.query.item ? JSON.parse(this.$route.query.item) : null;
+            if(routeStandardObj){
+                this.standardObj = routeStandardObj
+            }
         },
         methods: {
             formatVal: function(val){
                 return val ? '无限' : '有限'
             },
             saveStandard: function(){
-                if(this.standardObj.goodsSpecificationName == ''){
+                if(this.standardObj.goodsSpecificationName === ''){
                     this.$toast({ message: '请输入规格名称', duration: 1000})
                     return;
                 }
-                if(this.standardObj.goodsSpecificationPrice == ''){
+                if(this.standardObj.goodsSpecificationPrice === ''){
                     this.$toast({ message: '请输入规格价格', duration: 1000})
                     return;
                 }
-                if(!this.standardObj.infiniteInventory && this.standardObj.stock == ''){
+                if(this.standardObj.goodsSpecificationPrice === 0){
+                    this.$toast({ message: '规格价格不能为0', duration: 1000})
+                    return;
+                }
+                if(!this.standardObj.infiniteInventory && this.standardObj.stock === ''){
                     this.$toast({ message: '请输入库存数量', duration: 1000})
                     return;
                 }
-                if(this.standardObj.boxesNumber == ''){
+                if(!this.standardObj.infiniteInventory && this.standardObj.stock === 0){
+                    this.$toast({ message: '库存数量不能为0', duration: 1000})
+                    return;
+                }
+                if(this.standardObj.boxesNumber === ''){
                     this.$toast({ message: '请输入餐盒数量', duration: 1000})
                     return;
                 }
-                if(this.standardObj.boxesMoney == ''){
+                if(this.standardObj.boxesNumber === 0){
+                    this.$toast({ message: '餐盒数量不能为0', duration: 1000})
+                    return;
+                }
+                if(this.standardObj.boxesMoney === ''){
                     this.$toast({ message: '请输入餐盒价格', duration: 1000})
                     return;
                 }
-                console.log(this.standardObj)
-                // this.$indicator.open();
-                localStorage.setItem('standardObj',JSON.stringify(this.standardObj))
+                if(this.standardObj.boxesMoney === 0){
+                    this.$toast({ message: '餐盒价格不能为0', duration: 1000})
+                    return;
+                }
+
+                var index = this.$route.query.index || null;
+                var standardObj = JSON.parse(localStorage.getItem('standardObj')) || [];
+                if(index != null){
+                    standardObj[index] = this.standardObj;
+                }else{
+                    standardObj.push(this.standardObj);
+                }
+
+                localStorage.setItem('standardObj',JSON.stringify(standardObj))
                 this.$toast({ message: '操作成功', duration: 1000})
+                this.$router.isBack = true;
                 setTimeout(() =>{
-                    // this.$indicator.close();
                     this.$router.back();
                 },1500)
-
             }
         }
     }
@@ -128,7 +152,7 @@
     .specification-content {
         box-sizing: border-box;
         height: 100vh;
-        overflow: auto;
+        overflow: scroll;
         zoom: 1;
         padding: 13.06vw 0 14.39vw;
     }
@@ -146,6 +170,7 @@
     }
 
     .shopDetail-col {
+        height: 12vw;
         padding: 2vw 2.66vw;
         overflow: hidden;
         zoom: 1;

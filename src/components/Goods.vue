@@ -64,12 +64,6 @@
 				if(res.list.length){
 					this.getGoods(res.list[0].goodsCategoryId)
 					this.goodsCategoryLists = res.list;
-					// this.goodsCategoryLists.forEach(function(item,index){
-					// 	item['isActiveItem'] = false;
-					// 	if(index == 0){
-					// 		item['isActiveItem'] = true
-					// 	}
-					// })
 				}else{
 					this.isEmpty = true;
 				}
@@ -101,13 +95,6 @@
 			getGoodsById: function(id,index){
 				this.$indicator.open();
 				this.activeIndex = index;
-				// this.goodsCategoryLists.forEach(function(item,current){
-				// 	item['isActiveItem'] = false;
-				// 	if(index == current){
-				// 		item['isActiveItem'] = true;
-				// 	}
-				// })
-				// console.log(this.goodsCategoryLists)
 				this.getGoods(id)
 			},
 			deleteGoods: function(id,index){

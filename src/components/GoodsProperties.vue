@@ -8,22 +8,22 @@
             <div class="add-properties-row">
                 <div class="add-properties-col">
                     <span class="row-title">属性名称</span>
-                    <input class="property-name" type="text" placeholder="请输入属性名称" v-model="propName">
+                    <input class="property-name" type="text" placeholder="请输入属性名称" v-model="propObj.goodsPropertyName">
                 </div>
             </div>
             <div class="add-properties-row">
                 <div class="add-properties-col text-before">
-                    <input class="i-text" maxlength="3" type="text" placeholder="输入属性值" v-model="propValue">
+                    <input class="i-text" maxlength="6" type="text" placeholder="输入属性值，最多4项，每项最多六个字" v-model="propObj.propValue">
                     <button class="add-btn" @click="addPropItem">添加</button>
                 </div>
                 <div class="add-properties-col">
-                    <div class="property-item" v-for="(item,index) in props" :key="index">
-                        <span class="property-item-name">{{item}}</span><button class="delete-btn" @click="deletePropItem(index)"></button>
+                    <div class="property-item" v-for="(item,index) in propObj.goodsPropertyValueList" :key="index">
+                        <span class="property-item-name">{{item.value}}</span><button class="delete-btn" @click="deletePropItem(index)"></button>
                     </div>
                 </div>
             </div>
 		</div>
-		<div class="add-properties-btn" @click="">确认</div>
+		<div class="add-properties-btn" @click="savaProps">保存</div>
 	</div>
 </template>
 <script>
@@ -31,29 +31,59 @@
 		name: 'addProperties',
         data: function(){
             return {
-                propName: '',
-                propValue: '',
-                props: ['七分甜','五分甜','三分甜','正常甜','无糖']
+                propObj: {
+                    goodsPropertyName: '',
+                    propValue: '',
+                    goodsPropertyValueList: []
+                }
             }
         },
         created: function(){
-
+            var propObj = this.$route.query.item ? JSON.parse(this.$route.query.item) : null;
+            if(propObj){
+                this.propObj = propObj;
+            }
         },
 		methods:{
             addPropItem: function(){
-                if(this.propName == ''){
-                    this.$toast({ message: '请输入属性名称', duration: 1500 })
+                if(this.propObj.propValue === ''){
+                    this.$toast({ message: '请输入属性值', duration: 1000 });
                     return;
                 }
-                if(this.propValue == ''){
-                    this.$toast({ message: '请输入属性值', duration: 1500 })
+                if (this.propObj.goodsPropertyValueList.length == 4) {
+                    this.$toast({ message: '属性值最多4项', duration: 1000 });
+                    this.propObj.propValue = '';
                     return;
                 }
-                this.props.push(this.propValue);
-                this.propValue = '';
+                this.propObj.goodsPropertyValueList.push({value: this.propObj.propValue});
+                this.propObj.propValue = '';
             },
             deletePropItem: function(index){
-                this.props.splice(index,1);
+                this.propObj.goodsPropertyValueList.splice(index,1);
+            },
+            savaProps: function(){
+                if(this.propObj.goodsPropertyName === ''){
+                    this.$toast({ message: '请输入属性名称', duration: 1000 });
+                    return;
+                }
+                if(this.propObj.goodsPropertyValueList.length === 0){
+                    this.$toast({ message: '请添加属性值', duration: 1000 });
+                    return;
+                }
+                var index = this.$route.query.index || null;
+                var propObj = JSON.parse(localStorage.getItem('propObj')) || [];
+                if(index != null){
+                    propObj[index] = this.propObj;
+                }else{
+                    propObj.push(this.propObj);
+                }
+                
+                localStorage.setItem('propObj',JSON.stringify(propObj));
+                this.$toast({ message: '操作成功', duration: 1000});
+                this.$router.isBack = true;
+                setTimeout(() =>{
+                    this.$router.back();
+                },1500)
             }
 		}
 	}
@@ -82,13 +112,14 @@
 	.add-properties-content{
 		box-sizing: border-box;
         height: 100vh;
-        overflow: hidden;
+        overflow: scroll;
         zoom: 1;
         padding: 15.72vw 0 14.39vw;
 	}
     .row-title {
         font-size: 4.26vw;
         display: inline-block;
+        float: left;
     }
     .row-title:before {
         content: '*';
@@ -115,6 +146,7 @@
         vertical-align: middle;
         border: none;
         outline: none;
+        float: right;
     }
     .i-text{
     	width: 70vw;
