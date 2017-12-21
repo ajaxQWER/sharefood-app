@@ -36,10 +36,12 @@
                 </router-link>
             </div>
             <div class="shopDetail-row">
-                <div class="shopDetail-col">
-                    <div class="row-title">关于我们</div>
-                    <div class="row-value"></div>
-                </div>
+                <router-link class="jump" to="/aboutUS?id=17">
+                    <div class="shopDetail-col aboutus">
+                        <div class="row-title">关于我们</div>
+                        <div class="row-value"></div>
+                    </div>
+                </router-link>
                 <div class="shopDetail-col">
                     <div class="row-title">当前版本</div>
                     <div class="row-key">1.0.0</div>
@@ -127,7 +129,7 @@ export default {
     color: #4d4d4d;
 }
 
-.shopDetail-col:not(:last-child) {
+.shopDetail-col:not(:last-child), .aboutus {
     border-bottom: 0.13vw solid #f2f2f2;
 }
 

@@ -12,6 +12,7 @@ import Comment from '@/components/Comment.vue' //评论
 import ShopDetail from '@/components/ShopDetail.vue' //店铺信息
 import GoodsCategory from '@/components/GoodsCategory.vue' //商品分类
 import Setting from '@/components/Setting.vue' //设置
+import AboutUS from '@/components/AboutUS.vue' //设置
 import UpdatePassword from '@/components/UpdatePassword.vue' //修改密码
 import PrintSetting from '@/components/PrintSetting.vue' //打印设置
 import UpdatePrinter from '@/components/UpdatePrinter.vue' //编辑打印机
@@ -146,6 +147,10 @@ let routes = [{
     path: '/setting',
     component: Setting,
     name: 'setting'
+},{
+    path: '/aboutUS',
+    component: AboutUS,
+    name: 'aboutUS'
 },{
     path: '/updatePassword',
     component: UpdatePassword,
