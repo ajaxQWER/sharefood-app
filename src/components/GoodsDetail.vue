@@ -138,7 +138,7 @@
                             <div class="standard-item">
                                 <div class="standard-index">规格{{index+1}}</div>
                                 <div class="standard-operation">
-                                    <router-link :to="'/addGoodsSpecifications?index='+index+'&item=' + JSON.stringify(item)"><button class="standard-btn update-standard-btn">修改</button></router-link>
+                                    <router-link :to="'/addGoodsSpecifications?id='+item.goodsSpecificationId+'&index='+index+'&item=' + JSON.stringify(item)"><button class="standard-btn update-standard-btn">修改</button></router-link>
                                     <button class="standard-btn delete-standard-btn" @click="deleteStandardByIndex(index)">删除</button>
                                 </div>
                             </div>
@@ -195,7 +195,7 @@
                 <div class="goods-item">
                     <div class="row-title">商品简介</div>
                     <div class="row-value">
-                        <textarea class="goods-intro" placeholder="最多255字" name="" id="" maxlength="255" v-model="newGoods.info.goodsContent"></textarea>
+                        <textarea class="goods-intro" placeholder="最多255字" name="" id="" maxlength="255" v-model="newGoods.info.goodsContent" @blur="savaGoodsIntro"></textarea>
                     </div>
                 </div>
             </div>
@@ -262,6 +262,8 @@ export default {
             goodsCategoryList: [],
             standardObj: null,
             propObj: null,
+            updateStandardObj: [],
+            deleteStandardObj: [],
             goodsFeatures: [{
                 label: '无',
                 value: ''
@@ -281,6 +283,8 @@ export default {
         var goodsCategory;
         var goodsImgUrl;
         var goodsName;
+        var goodsStatus;
+        var goodsContent;
 
         if (goodsId) {
             this.$indicator.open();
@@ -288,63 +292,104 @@ export default {
                 console.log(res)
                 this.goodsId = res.goodsId;
                 this.goodsClassNames = res.goods.goodsClassNames;
-                this.headerImage = this.UPLOADURL + res.goods.goodsImgUrl;
 
+                //规格
                 standardObj = JSON.parse(localStorage.getItem('standardObj')) || [];
                 if(standardObj.length){
                     this.standardObj = standardObj;
                 }else{
-                    this.standardObj = [].concat(standardObj, res.goods.goodsSpecifications);                    
+                    this.standardObj = [].concat(standardObj, res.goods.goodsSpecifications);
                 }
                 localStorage.setItem('standardObj', JSON.stringify(this.standardObj))
 
+                //属性
                 propObj = JSON.parse(localStorage.getItem('propObj')) || [];
                 if(propObj.length){
                     this.propObj = propObj;
                 }else{
-                    this.propObj = [].concat(propObj, res.goods.goodsPropertys);                    
+                    this.propObj = [].concat(propObj, res.goods.goodsPropertys);
                 }
                 localStorage.setItem('propObj', JSON.stringify(this.propObj))
 
+                //分类
                 goodsCategory = JSON.parse(localStorage.getItem('goodsCategory')) || [];
                 if(goodsCategory.length){
-                    this.newGoods.goodsCategoryIdList = goodsCategory;
+                    this.goodsCategoryList = goodsCategory;
                 }else{
-                    this.newGoods.goodsCategoryIdList = [].concat(goodsCategory, res.goods.goodsPropertys);                    
+                    this.goodsCategoryList = [].concat(goodsCategory, res.goodsCategoryIdList);
                 }
-                localStorage.setItem('goodsCategory', JSON.stringify(this.goodsCategory))
+                localStorage.setItem('goodsCategory', JSON.stringify(this.goodsCategoryList))
+
+                //图片
+                goodsImgUrl = localStorage.getItem('goodsImgUrl') || res.goods.goodsImgUrl;
+                if(goodsImgUrl){
+                    this.headerImage = this.UPLOADURL + goodsImgUrl;
+                }else{
+                    this.headerImage = '';
+                }
+                this.newGoods.info.goodsImgUrl = goodsImgUrl;
+                localStorage.setItem('goodsImgUrl', goodsImgUrl)
+
+                //名称
+                goodsName = localStorage.getItem('goodsName') || res.goods.goodsName;
+                this.newGoods.info.goodsName = goodsName;
+                localStorage.setItem('goodsName', goodsName)
+
+                //备注
+                goodsContent = localStorage.getItem('goodsContent') || res.goods.goodsContent;
+                this.newGoods.info.goodsContent = goodsContent;
+                localStorage.setItem('goodsContent', goodsContent)
+
+                //状态
+                goodsStatus = localStorage.getItem('goodsStatus') || res.goods.goodsStatus;
+                this.newGoods.info.goodsStatus = goodsStatus;
+                localStorage.setItem('goodsStatus', goodsStatus)
                 
 
                 this.newGoods = {
                     info: {
-                        goodsContent: res.goods.goodsContent,
-                        goodsImgUrl: res.goods.goodsImgUrl,
-                        goodsName: res.goods.goodsName,
-                        goodsStatus: res.goods.goodsStatus,
+                        goodsContent: goodsContent,
+                        goodsImgUrl: goodsImgUrl,
+                        goodsStatus: goodsStatus,
+                        goodsName: goodsName
                     },
                     goodsPropertys: this.propObj,
-                    addSpecs: this.standardObj
+                    addSpecs: this.standardObj,
+                    goodsCategoryIdList: this.goodsCategoryList
                 }
                 this.$indicator.close();
+            console.log(this.newGoods)
 
             })
         }else{
             standardObj = JSON.parse(localStorage.getItem('standardObj')) || [];
             propObj = JSON.parse(localStorage.getItem('propObj')) || [];
             goodsCategory = JSON.parse(localStorage.getItem('goodsCategory')) || [];
-            goodsImgUrl = localStorage.getItem('goodsImgUrl') ? this.UPLOADURL + localStorage.getItem('goodsImgUrl') : '';
+            goodsImgUrl = localStorage.getItem('goodsImgUrl') || '';
             goodsName = localStorage.getItem('goodsName') || '';
+            goodsStatus = localStorage.getItem('goodsStatus') || 'SOLD_OUT';
+            goodsContent = localStorage.getItem('goodsContent') || '';
 
+            this.newGoods.info.goodsContent = goodsContent;
+            this.newGoods.info.goodsImgUrl = goodsImgUrl;
+            this.newGoods.info.goodsStatus = goodsStatus;
+            this.newGoods.info.goodsName = goodsName;
             this.newGoods.addSpecs = standardObj;
             this.newGoods.goodsPropertys = propObj;
             this.newGoods.goodsCategoryIdList = goodsCategory;
-            this.newGoods.info.goodsImgUrl = goodsImgUrl;
-            this.headerImage = goodsImgUrl;
-            this.newGoods.info.goodsName = goodsName;
+            if(goodsImgUrl){
+                this.headerImage = this.UPLOADURL + goodsImgUrl;
+            }
+        console.log(this.newGoods)
         }
-        this.goodsCategoryList = JSON.parse(localStorage.getItem('goodsCategoryList')) || [];
-        console.log(this.goodsCategoryList)
+
         this.formatGoodsClassName()
+    },
+    watch: {
+        'newGoods.info.goodsStatus': function(newVal, oldVal){
+            this.newGoods.info.goodsStatus = newVal;
+            localStorage.setItem('goodsStatus', newVal)
+        }
     },
     mounted: function() {
         var self = this;
@@ -364,10 +409,7 @@ export default {
         goodsGoBack: function(){
             var action = confirm('返回将导致该商品数据清空,请谨慎操作');
             if(action){
-                localStorage.removeItem('standardObj');
-                localStorage.removeItem('propObj');
-                localStorage.removeItem('goodsCategory');
-                localStorage.removeItem('goodsCategoryList');
+                this.removeGoodsInfo();
                 this.$router.isBack = true;
                 this.$router.back()
             }
@@ -503,8 +545,9 @@ export default {
         },
         formatGoodsClassName: function(){
             var currentGoodsCategory = JSON.parse(localStorage.getItem('goodsCategory')) || [];
+            var storeGoodsCategoryList = JSON.parse(localStorage.getItem('goodsCategoryList')) || [];
             var tempGoodsCategoryIdList = {};
-            this.goodsCategoryList.forEach((item, index) => {
+            storeGoodsCategoryList.forEach((item, index) => {
                 tempGoodsCategoryIdList[item.goodsCategoryId] = item.goodsCategoryName
             })
 
@@ -518,12 +561,21 @@ export default {
             this.goodsClassNames = names.join("、");
         },
         updateGoods: function() {
+            console.log(this.newGoods)
+            // return
             //编辑
             if (this.goodsId) {
                 this.$indicator.open();
+                delete this.newGoods.addSpecs;
+                var updateSpecs = JSON.parse(localStorage.getItem('updateStandardObj')) || [];
+                this.newGoods.deleteSpecIds = this.deleteStandardObj;
+                this.newGoods.updateSpecs = updateSpecs;
+                console.log(this.newGoods)
                 updateGoodsById(this.goodsId, this.newGoods).then(() => {
                     this.$toast({ message: '操作成功', duration: 1000 })
+                    this.removeGoodsInfo();
                     this.$indicator.close();
+                    this.$router.isBack = true;
                     setTimeout(() => {
                         this.$router.back()
                     }, 1500)
@@ -546,7 +598,8 @@ export default {
                 addGoods(this.newGoods).then(() => {
                     this.$toast({ message: '操作成功', duration: 1000 })
                     this.$indicator.close();
-                    localStorage.removeItem('goodsCategoryList')
+                    this.removeGoodsInfo();
+                    this.$router.isBack = true;
                     setTimeout(() => {
                         this.$router.back()
                     }, 1500)
@@ -559,20 +612,15 @@ export default {
         closeGoodscategoryPopup: function() {
             this.goodsCategoryPopup = false;
         },
-        saveBusiness: function() {
-            if (this.goodsCategoryList.length == 0) {
-                this.$toast({ message: '请选择分类', duration: 1000})
-                return;
-            }
-
-            this.goodsCategoryPopup = false;
-        },
         closeGoodsCategoryPopup: function(){
             this.goodsCategoryPopup = false;
         },
         deleteStandardByIndex: function(index){
             var deleteProps = confirm('确定删除该规格?');
             if(deleteProps){
+                if(this.standardObj[index]['goodsSpecificationId']){
+                    this.deleteStandardObj.push(this.standardObj[index]['goodsSpecificationId'])
+                }
                 this.standardObj.splice(index,1);
                 localStorage.setItem('standardObj',JSON.stringify(this.standardObj));
                 this.$toast({ message: '删除成功', duration: 1000 })
@@ -588,6 +636,21 @@ export default {
         },
         savaGoodsName: function(){
             localStorage.setItem('goodsName', this.newGoods.info.goodsName)
+        },
+        savaGoodsIntro: function(){
+            localStorage.setItem('goodsContent', this.newGoods.info.goodsContent)
+        },
+        removeGoodsInfo: function(){
+            localStorage.removeItem('standardObj');
+            localStorage.removeItem('propObj');
+            localStorage.removeItem('goodsCategory');
+            localStorage.removeItem('goodsCategoryList');
+            localStorage.removeItem('goodsImgUrl');
+            localStorage.removeItem('goodsName');
+            localStorage.removeItem('goodsIntro');
+            localStorage.removeItem('goodsStatus');
+            localStorage.removeItem('goodsContent');
+            localStorage.removeItem('updateStandardObj');
         }
     }
 }

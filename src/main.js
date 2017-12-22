@@ -61,6 +61,12 @@ window.goodsGoBack = function(){
         localStorage.removeItem('propObj');
         localStorage.removeItem('goodsCategory');
         localStorage.removeItem('goodsCategoryList');
+        localStorage.removeItem('goodsImgUrl');
+        localStorage.removeItem('goodsName');
+        localStorage.removeItem('goodsIntro');
+        localStorage.removeItem('goodsStatus');
+        localStorage.removeItem('goodsContent');
+        localStorage.removeItem('updateStandardObj');
         router.isBack = true;
         router.back()
     }
