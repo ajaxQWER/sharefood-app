@@ -380,7 +380,6 @@ export default {
             if(goodsImgUrl){
                 this.headerImage = this.UPLOADURL + goodsImgUrl;
             }
-        console.log(this.newGoods)
         }
 
         this.formatGoodsClassName()

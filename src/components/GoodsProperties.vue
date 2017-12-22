@@ -35,7 +35,8 @@
                     goodsPropertyName: '',
                     propValue: '',
                     goodsPropertyValueList: []
-                }
+                },
+                tempArr: []
             }
         },
         created: function(){
@@ -55,6 +56,13 @@
                     this.propObj.propValue = '';
                     return;
                 }
+                if(this.tempArr.indexOf(this.propObj.propValue) != -1){
+                    this.$toast({ message: '属性值已存在', duration: 1000 });
+                    this.propObj.propValue = '';
+                    return;
+                }
+                this.tempArr.push(this.propObj.propValue);
+
                 this.propObj.goodsPropertyValueList.push({value: this.propObj.propValue});
                 this.propObj.propValue = '';
             },

@@ -120,8 +120,7 @@
                 }
 
                 var index = this.$route.query.index || null;
-                var id = this.$route.query.id || null;
-                console.log(id != 'undefined')
+                var id = this.$route.query.id;
                 var standardObj = JSON.parse(localStorage.getItem('standardObj')) || [];
                 var updateStandardObj = JSON.parse(localStorage.getItem('updateStandardObj')) || [];
                 if(id != 'undefined'){
