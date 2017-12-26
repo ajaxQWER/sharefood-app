@@ -560,16 +560,19 @@ export default {
             this.goodsClassNames = names.join("、");
         },
         updateGoods: function() {
-            console.log(this.newGoods)
+            // console.log(this.newGoods)
             // return
             //编辑
             if (this.goodsId) {
                 this.$indicator.open();
-                delete this.newGoods.addSpecs;
+                // delete this.newGoods.addSpecs;
                 var updateSpecs = JSON.parse(localStorage.getItem('updateStandardObj')) || [];
+                var newStandardObj = JSON.parse(localStorage.getItem('newStandardObj')) || null;
                 this.newGoods.deleteSpecIds = this.deleteStandardObj;
                 this.newGoods.updateSpecs = updateSpecs;
+                this.newGoods.addSpecs = newStandardObj;
                 console.log(this.newGoods)
+                // return
                 updateGoodsById(this.goodsId, this.newGoods).then(() => {
                     this.$toast({ message: '操作成功', duration: 1000 })
                     this.removeGoodsInfo();
@@ -650,6 +653,7 @@ export default {
             localStorage.removeItem('goodsStatus');
             localStorage.removeItem('goodsContent');
             localStorage.removeItem('updateStandardObj');
+            localStorage.removeItem('newStandardObj');
         }
     }
 }

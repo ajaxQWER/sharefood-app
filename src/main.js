@@ -67,6 +67,7 @@ window.goodsGoBack = function(){
         localStorage.removeItem('goodsStatus');
         localStorage.removeItem('goodsContent');
         localStorage.removeItem('updateStandardObj');
+        localStorage.removeItem('newStandardObj');
         router.isBack = true;
         router.back()
     }

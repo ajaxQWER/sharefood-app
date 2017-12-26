@@ -109,7 +109,8 @@
 			},
 			soldOut: function(id,index,status){
 				var soldStatus = this.formatStatus(status);
-				this.$messagebox.confirm('确定'+soldStatus+'该商品?').then(action => {
+				var isTrue = confirm('确定'+soldStatus+'该商品?');
+				if(isTrue){
 					if(status==='PUTAWAY'){
 						soldOutGoods([id]).then(() => {
 							this.$toast({message:'操作成功',duration: 1000})
@@ -121,9 +122,22 @@
 							this.goodsList[index].goodsStatus = 'PUTAWAY'
 						})
 					}
-				}).catch(() => {
-					this.$toast({message:'已取消',duration: 1000})
-				});
+				}
+				// this.$messagebox.confirm('确定'+soldStatus+'该商品?').then(action => {
+				// 	if(status==='PUTAWAY'){
+				// 		soldOutGoods([id]).then(() => {
+				// 			this.$toast({message:'操作成功',duration: 1000})
+				// 			this.goodsList[index].goodsStatus = 'SOLD_OUT'
+				// 		})
+				// 	}else if(status==='SOLD_OUT'){
+				// 		putAwayGoods([id]).then(() => {
+				// 			this.$toast({message:'操作成功',duration: 1000})
+				// 			this.goodsList[index].goodsStatus = 'PUTAWAY'
+				// 		})
+				// 	}
+				// }).catch(() => {
+				// 	this.$toast({message:'已取消',duration: 1000})
+				// });
 			}
 		}
 	}

@@ -1,10 +1,8 @@
 <template>
     <div id="specification">
-        <div class="specification-header">
-            <div class="nav-bar help-navbar">
-                <div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
+        <div class="nav-bar help-navbar specification-header">
+            <div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
                 <div class="nav-title">添加规格</div>
-            </div>
         </div>
         <div class="specification-content">
             <div class="shopDetail-row">
@@ -76,6 +74,7 @@
             if(routeStandardObj){
                 this.standardObj = routeStandardObj
             }
+            console.log(this.standardObj)
         },
         methods: {
             formatVal: function(val){
@@ -120,12 +119,17 @@
                 }
 
                 var index = this.$route.query.index || null;
-                var id = this.$route.query.id;
+                var id = this.$route.query.id || null;
                 var standardObj = JSON.parse(localStorage.getItem('standardObj')) || [];
                 var updateStandardObj = JSON.parse(localStorage.getItem('updateStandardObj')) || [];
-                if(id != 'undefined'){
+                var newStandardObj = []
+                console.log(id)
+                if(id != null){
                     updateStandardObj.push(this.standardObj)
                     localStorage.setItem('updateStandardObj',JSON.stringify(updateStandardObj))
+                }else{
+                    newStandardObj.push(this.standardObj)
+                    localStorage.setItem('newStandardObj',JSON.stringify(newStandardObj))
                 }
                 if(index != null){
                     standardObj[index] = this.standardObj;
@@ -149,7 +153,6 @@
         min-height: 100%;
         background-color: #f2f2f2;
     }
-
     .specification-header {
         width: 100%;
         position: fixed;
@@ -176,7 +179,7 @@
     }
 
     .shopDetail-col {
-        height: 12vw;
+        /*height: 12vw;*/
         padding: 2vw 2.66vw;
         overflow: hidden;
         zoom: 1;
@@ -188,12 +191,12 @@
     }
 
     .row-title {
-        height: 8vw;
+        /*height: 8vw;*/
         font-size: 4.26vw;
         display: inline-block;
         float: left;
         vertical-align: middle;
-        line-height: 8vw;
+        /*line-height: 8vw;*/
     }
 
     .row-value {
@@ -217,14 +220,15 @@
     .specification input {
         display: block;
         width: 64.66vw;
-        height: 8vw;
-        line-height: 8px;
+        /*height: 8vw;*/
+        /*line-height: 8px;*/
         font-size: 3.72vw;
         text-align: right;
-        padding-right: 2.66vw;
+        /*padding-right: 2.66vw;*/
         border-radius: 3px;
         outline: none;
         border: none;
+        /*vertical-align: middle;*/
     }
 
     input::placeholder,
