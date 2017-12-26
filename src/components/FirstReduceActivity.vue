@@ -186,7 +186,7 @@ export default {
 }
 
 .row-value {
-    width: 21vw;
+    width: 26vw;
     text-align: center;
     display: inline-block;
     vertical-align: middle;
