@@ -1,6 +1,6 @@
 <template>
     <div id="specification">
-        <div class="nav-bar help-navbar specification-header">
+        <div class="nav-bar help-navbar">
             <div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
                 <div class="nav-title">添加规格</div>
         </div>
@@ -152,10 +152,10 @@
         min-height: 100%;
         background-color: #f2f2f2;
     }
-    .specification-header {
+    /*.specification-header {
         width: 100%;
         position: fixed;
-    }
+    }*/
 
     .specification-content {
         box-sizing: border-box;

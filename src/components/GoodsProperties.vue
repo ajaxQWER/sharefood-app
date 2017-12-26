@@ -1,6 +1,6 @@
 <template>
 	<div id="addProperties">
-		<div class="nav-bar help-navbar add-properties-header">
+		<div class="nav-bar help-navbar">
 	  		<div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
 	  		<div class="nav-title">添加属性</div>
 		</div>
@@ -100,10 +100,6 @@
 	#addProperties{
 		min-height: 100%;
 		background-color: #f2f2f2;
-	}
-	.add-properties-header{
-		width: 100%;
-		position: fixed;
 	}
 	.add-properties-btn{
 	    width: 100%;
