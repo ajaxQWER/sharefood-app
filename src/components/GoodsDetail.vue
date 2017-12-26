@@ -560,19 +560,37 @@ export default {
             this.goodsClassNames = names.join("、");
         },
         updateGoods: function() {
-            // console.log(this.newGoods)
-            // return
+
+            if (this.newGoods.info.goodsImgUrl == '') {
+                this.$toast({ message: '请上传商品图片', duration: 1000 })
+                return;
+            }
+            if (this.newGoods.info.goodsName == '') {
+                this.$toast({ message: '请输入商品名称', duration: 1000 })
+                return;
+            }
+            if (this.newGoods.goodsCategoryIdList.length == 0) {
+                this.$toast({ message: '请选择商品分类', duration: 1000 })
+                return;
+            }
+
             //编辑
             if (this.goodsId) {
-                this.$indicator.open();
                 // delete this.newGoods.addSpecs;
                 var updateSpecs = JSON.parse(localStorage.getItem('updateStandardObj')) || [];
-                var newStandardObj = JSON.parse(localStorage.getItem('newStandardObj')) || null;
+                var newStandardObj = JSON.parse(localStorage.getItem('newStandardObj')) || [];
                 this.newGoods.deleteSpecIds = this.deleteStandardObj;
                 this.newGoods.updateSpecs = updateSpecs;
                 this.newGoods.addSpecs = newStandardObj;
+                
+                if (this.newGoods.addSpecs.length == 0 && this.newGoods.deleteSpecIds.length != 0) {
+                    this.$toast({ message: '请添加商品规格', duration: 1000 })
+                    return;
+                }
+
                 console.log(this.newGoods)
                 // return
+                this.$indicator.open();
                 updateGoodsById(this.goodsId, this.newGoods).then(() => {
                     this.$toast({ message: '操作成功', duration: 1000 })
                     this.removeGoodsInfo();
@@ -584,16 +602,8 @@ export default {
                 })
             } else {
                 //新增
-                if (this.newGoods.info.goodsImgUrl == '') {
-                    this.$toast({ message: '请上传商品图片', duration: 1000 })
-                    return;
-                }
-                if (this.newGoods.info.goodsName == '') {
-                    this.$toast({ message: '请输入商品名称', duration: 1000 })
-                    return;
-                }
-                if (this.newGoods.goodsCategoryIdList.length == 0) {
-                    this.$toast({ message: '请选择商品分类', duration: 1000 })
+                if (this.newGoods.addSpecs.length == 0) {
+                    this.$toast({ message: '请添加商品规格', duration: 1000 })
                     return;
                 }
                 this.$indicator.open();

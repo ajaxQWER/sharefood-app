@@ -122,8 +122,7 @@
                 var id = this.$route.query.id || null;
                 var standardObj = JSON.parse(localStorage.getItem('standardObj')) || [];
                 var updateStandardObj = JSON.parse(localStorage.getItem('updateStandardObj')) || [];
-                var newStandardObj = []
-                console.log(id)
+                var newStandardObj = [];
                 if(id != null){
                     updateStandardObj.push(this.standardObj)
                     localStorage.setItem('updateStandardObj',JSON.stringify(updateStandardObj))
