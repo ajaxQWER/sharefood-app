@@ -5,20 +5,22 @@
 	  		<div class="nav-title">添加属性</div>
 		</div>
 		<div class="add-properties-content">
-            <div class="add-properties-row">
-                <div class="add-properties-col">
-                    <span class="row-title">属性名称</span>
-                    <input class="property-name" type="text" placeholder="请输入属性名称" v-model="propObj.goodsPropertyName">
+            <div class="property-wrap">
+                <div class="add-properties-row">
+                    <div class="add-properties-col">
+                        <span class="row-title">属性名称</span>
+                        <input class="property-name" type="text" placeholder="请输入属性名称" v-model="propObj.goodsPropertyName">
+                    </div>
                 </div>
-            </div>
-            <div class="add-properties-row">
-                <div class="add-properties-col text-before">
-                    <input class="i-text" maxlength="6" type="text" placeholder="输入属性值，最多4项，每项最多六个字" v-model="propObj.propValue">
-                    <button class="add-btn" @click="addPropItem">添加</button>
-                </div>
-                <div class="add-properties-col">
-                    <div class="property-item" v-for="(item,index) in propObj.goodsPropertyValueList" :key="index">
-                        <span class="property-item-name">{{item.value}}</span><button class="delete-btn" @click="deletePropItem(index)"></button>
+                <div class="add-properties-row">
+                    <div class="add-properties-col text-before">
+                        <input class="i-text" maxlength="6" type="text" placeholder="输入属性值，最多4项，每项最多六个字" v-model="propObj.propValue">
+                        <button class="add-btn" @click="addPropItem">添加</button>
+                    </div>
+                    <div class="add-properties-col" v-if="propObj.goodsPropertyValueList.length">
+                        <div class="property-item" v-for="(item,index) in propObj.goodsPropertyValueList" :key="index">
+                            <span class="property-item-name">{{item.value}}</span><button class="delete-btn" @click="deletePropItem(index)"></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -100,6 +102,7 @@
 	#addProperties{
 		min-height: 100%;
 		background-color: #f2f2f2;
+        overflow: hidden;
 	}
 	.add-properties-btn{
 	    width: 100%;
@@ -113,12 +116,14 @@
 	    color: #fff;
 	    font-size: 4.8vw;
 	}
+    .property-wrap{
+        margin: 2.66vw 0;
+    }
 	.add-properties-content{
 		box-sizing: border-box;
         height: 100vh;
         overflow: scroll;
         zoom: 1;
-        padding: 15.72vw 0 14.39vw;
 	}
     .row-title {
         font-size: 4.26vw;
@@ -160,6 +165,7 @@
         border: 1px solid #ececec;
         padding: 2.66vw 2vw;
         vertical-align: middle;
+        -webkit-appearance: none;
     }
     .text-before:before{
         content: '*';
@@ -177,6 +183,7 @@
 		color: #fff;
 		padding: 0 2.66vw;
 		margin-left: 2vw;
+        font-size: 3.73vw;
         vertical-align: middle;
     }
     .property-item{

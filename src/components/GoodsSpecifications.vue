@@ -46,7 +46,8 @@
                 </div>
             </div>
         </div>
-        <button class="save" @click="saveStandard">保存</button>
+        <div class="save" @click="saveStandard">保存</div>
+        <!-- <button class="save" @click="saveStandard">保存</button> -->
     </div>
 </template>
 <script>
@@ -151,18 +152,13 @@
     #specification {
         min-height: 100%;
         background-color: #f2f2f2;
+        overflow: hidden;
     }
-    /*.specification-header {
-        width: 100%;
-        position: fixed;
-    }*/
-
     .specification-content {
         box-sizing: border-box;
         height: 100vh;
         overflow: scroll;
         zoom: 1;
-        padding: 13.06vw 0 14.39vw;
     }
 
     .shopDetail-row {
@@ -273,6 +269,7 @@
     .save {
         width: 100%;
         height: 10.66vw;
+        text-align: center;
         line-height: 10.66vw;
         font-size: 4.26vw;
         color: #fff;

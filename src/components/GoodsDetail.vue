@@ -6,99 +6,6 @@
                 <div class="nav-title">编辑商品</div>
             </div>
         </div>
-        <!-- <div class="goodsDetail-content" v-if="goodsInfo">
-            <div class="content">
-                <div class="goods-item">
-                    <div class="row-title">商品图片</div>
-                    <div class="row-value upload-img">
-                        <img class="goods-imgage" :src="headerImage?headerImage:UPLOADURL + goodsInfo.goods.goodsImgUrl" alt="商品图片">
-                    </div>
-                    <div class="row-value upload-img upload">
-                        <div class="upload-bg"></div>
-                        <input class="upload-btn" type="file" id="change" @change="change" ref="uploads" accept="image/*">
-                        <label for="change"></label>
-                    </div>
-                </div>
-                <div class="goods-item">
-                    <div class="row-title">商品名称</div>
-                    <div class="row-value">
-                        <input type="text" placeholder="请输入商品名称" v-model="goodsInfo.goods.goodsName" maxlength="12">
-                    </div>
-                </div>
-                <router-link :to="'/setGoodsCategory?goodsId='+goodsInfo.goods.goodsId+'&goodsCategoryList='+goodsInfo.goodsCategoryIdList" class="jump">
-                    <div class="goods-item">
-                        <div class="row-title">商品分类</div>
-                        <div class="row-value value-after">{{formatGoodsClass(goodsInfo.goods.goodsClassNames)}}</div>
-                    </div>
-                </router-link>
-               <div class="goods-standard">
-                    <div class="standard-row">
-                        <div class="row-title">商品规格</div>
-                        <router-link to="/addGoodsSpecifications" class="standard-jump">添加规格</router-link>
-                    </div>
-                    <div v-if="standardObj">
-                        <div class="standard-content" v-for="(item,index) in standardObj" :key="index">
-                            <div class="standard-item">
-                                <div class="standard-index">规格{{index+1}}</div>
-                                <div class="standard-operation">
-                                    <router-link :to="'/addGoodsSpecifications?index='+index+'&item=' + JSON.stringify(item)"><button class="standard-btn update-standard-btn">修改</button></router-link>
-                                    <button class="standard-btn delete-standard-btn" @click="deleteStandardByIndex(index)">删除</button>
-                                </div>
-                            </div>
-                            <div class="standard-item-row">
-                                <div class="standard-key">规格名称：{{item.goodsSpecificationName}}</div>
-                            </div>
-                            <div class="standard-item-row">
-                                <div class="standard-key">价格：{{item.goodsSpecificationPrice}}</div>
-                                <div class="standard-value">库存：{{item.infiniteInventory?'无限':item.stock}}</div>
-                            </div>
-                            <div class="standard-item-row">
-                                <div class="standard-key">餐盒数量：{{item.boxesNumber}}</div>
-                                <div class="standard-value">餐盒价格：{{item.boxesMoney}}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="goods-standard">
-                    <div class="standard-row">
-                        <div class="row-title">商品属性</div>
-                        <router-link to="/goodsProperties" class="standard-jump">添加属性</router-link>
-                    </div>
-                    <div class="standard-content">
-                        <div class="standard-item">
-                            <div class="standard-index">属性1</div>
-                            <div class="standard-operation">
-                                <button class="standard-btn update-standard-btn">修改</button>
-                                <button class="standard-btn delete-standard-btn">删除</button>
-                            </div>
-                        </div>
-                        <div class="standard-item-row">
-                            <div class="standard-key">属性名称：甜度</div>
-                        </div>
-                        <div class="standard-item-row">
-                            <div class="goods-property">七分甜</div>
-                            <div class="goods-property">五分甜</div>
-                            <div class="goods-property">三分甜</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="goods-item">
-                    <div class="row-title">商品特色</div>
-                    <div class="row-value">
-                        <div class="goods-property">无</div>
-                        <div class="goods-property">招牌</div>
-                        <div class="goods-property">新品</div>
-                    </div>
-                </div>
-                <div class="goods-item">
-                    <div class="row-title">商品简介</div>
-                    <div class="row-value">
-                        <textarea class="goods-intro" placeholder="最多255字" name="" id="" maxlength="255" v-model="goodsInfo.goods.goodsContent"></textarea>
-                    </div>
-                </div>
-                <div class="save-goods" @click="updateGoods">保存</div>
-            </div>
-        </div> -->
         <div class="goodsDetail-content">
             <div class="content">
                 <div class="goods-item">
@@ -124,10 +31,6 @@
                         <div class="row-value value-after">{{goodsClassNames}}</div>
                     </div>
                 </router-link>
-                <!-- <div class="goods-item" @click="showGoodsCategoryPopup">
-                    <div class="row-title">商品分类</div>
-                    <div class="row-value value-after">{{goodsClassNames}}</div>
-                </div> -->
                 <div class="goods-standard">
                     <div class="standard-row">
                         <div class="row-title">商品规格</div>
@@ -777,6 +680,7 @@ export default {
     float: right;
 }
 .standard-btn{
+    font-size: 3.73vw;
     background-color: transparent;
     border: none;
     outline: none;
