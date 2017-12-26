@@ -52,7 +52,7 @@
                                     </div>
                                     <div v-if="item.orderType=='TAKEOUT'" class="operate-btn">
                                         <div class="order-row">
-                                            <button @click.prevent="printOrderBtn(item.orderId)" class="btn print-btn">订单补打</button>
+                                            <button @click.prevent="printOrderBtn(item.orderId)" class="btn print-btn">打印小票</button>
                                             <div class="inline-block" v-if="item.orderStatus=='PAYED'">
                                                 <button @click.prevent="cancelOrder(item.orderId)" class="btn danger">拒绝接单</button>
                                                 <button @click.prevent="acceptOrder(item.orderId,item.orderType)" class="btn deal-btn">&emsp;接单&emsp;</button>
@@ -274,24 +274,26 @@ export default {
             })
         },
         acceptOrder: function(orderId, orderType) {
-            this.$messagebox.confirm('确定接单?').then(action => {
+            var isConfirm = confirm('确定接单?');
+            if(isConfirm){
                 this.$indicator.open();
                 acceptOrderById(orderId).then(() => {
                     this.$toast({ message: '操作成功', duration: 1500 })
                     this.$indicator.close();
                     this.getOrders({ pageId: this.pageId, orderStatus: this.orderStatus })
                 })
-            }).catch(() => {});
+            }
         },
         finishOrder: function(orderId) {
-            this.$messagebox.confirm('确定完成预定订单?').then(action => {
+            var isConfirm = confirm('确定完成预定订单?');
+            if(isConfirm){
                 this.$indicator.open();
                 finishOrderById(orderId).then(() => {
                     this.$toast({ message: '操作成功', duration: 1500 })
                     this.$indicator.close();
                     this.getOrders({ pageId: this.pageId, orderStatus: this.orderStatus })
                 })
-            }).catch(() => {});
+            }
         },
         closePopup: function() {
             this.popupVisible3 = false;
@@ -314,15 +316,23 @@ export default {
             }
         },
         printOrderBtn: function(orderId){
-            this.$messagebox.confirm('确定补打该订单?').then(() => {
+            var isConfirm = confirm('确定补打该订单?');
+            if(isConfirm){
                 this.$indicator.open();
                 printOrder(orderId).then(() => {
                     this.$toast({ message: '操作成功', duration: 1500 })
                     this.$indicator.close();
                     this.getOrders({ pageId: this.pageId, orderStatus: this.orderStatus })
                 })
-            }).catch(() => {});
-            
+            }
+            // this.$messagebox.confirm('确定补打该订单?').then(() => {
+            //     this.$indicator.open();
+            //     printOrder(orderId).then(() => {
+            //         this.$toast({ message: '操作成功', duration: 1500 })
+            //         this.$indicator.close();
+            //         this.getOrders({ pageId: this.pageId, orderStatus: this.orderStatus })
+            //     })
+            // }).catch(() => {});
         }
     }
 }

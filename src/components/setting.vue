@@ -67,8 +67,8 @@ export default {
     },
     methods: {
         loginOut: function() {
-            this.$messagebox.confirm('确定退出登录?').then(action => {
-                // this.$indicator.open();
+            var isTrue = confirm('确定退出登录?');
+            if(isTrue){
                 logOut().then(() => {
                     localStorage.clear()
                     this.$toast({ message: '退出成功', duration: 1000 })
@@ -76,15 +76,17 @@ export default {
                         this.$router.push('/login')
                     }, 1300)
                 })
-            }).catch(() => {
-                // this.$toast({message:'已取消',duration: 1000})
-            });
+            }
         },
         cleanCache() {
             var ua = navigator.userAgent.toLocaleLowerCase();
             if(ua.indexOf('iphone') == -1){
                 //安卓
-                android.cleanCache()
+                try{
+                    android.cleanCache()                    
+                }catch(e){
+                    console.log(e)
+                }
             }else{
                 //ios
                 this.setupWebViewJavascriptBridge(function(bridge) {

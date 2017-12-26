@@ -56,14 +56,17 @@
 				})
 			},
 			deleteActivity: function(id){
-				this.$messagebox.confirm('确定删除该活动?').then(action => {
+				var isTrue = confirm('确定删除该活动?');
+				if(isTrue){
+					this.$indicator.open();
 					deleteActivityById(id).then(() => {
+						this.$indicator.close();
   						this.$toast({message:'删除成功',duration: 1000})
-						this.getActivityList()
+  						setTimeout(() => {
+							this.getActivityList()  						  
+  						}, 1500)
 					})
-				}).catch(() => {
-					this.$toast({message:'已取消',duration: 1000})
-				});
+				}
 			},
 			formatActivityType: function(type){
 				switch (type) {

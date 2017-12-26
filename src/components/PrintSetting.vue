@@ -28,7 +28,7 @@
                                     <span>{{item.copies}}份/</span>
                                     <span>{{formatStatus(item.printerStatus)}}</span>
                                 </span>
-                                <span class="delete-btn" @click.stop="deletePrinter(item.printerId,index)">删除设备</span>
+                                <span class="delete-btn" @click.stop="deletePrinter(item.printerId)">删除设备</span>
                             </p>
                         </div>
                     </li>
@@ -96,18 +96,16 @@
             toUpdatePrinter: function (printerId) {
                 this.$router.push('/updatePrinter?printerId=' + printerId);
             },
-            deletePrinter: function(id, index) {
-                this.$messagebox.confirm('确定删除该打印机?').then(action => {
-                    console.log(id, index);
-                    deletePrinterById(id, index).then(() => {
+            deletePrinter: function(id) {
+                var isTrue = confirm('确定删除该打印机?');
+                if(isTrue){
+                    deletePrinterById(id).then(() => {
                         this.$toast({ message: '删除成功', duration: 1000 });
                         this.pageId = 1;
                         this.getPrinterList({ pageId: this.pageId });
 
                     })
-                }).catch(() => {
-                    this.$toast({ message: '已取消', duration: 1000 })
-                });
+                }
             },
             formatStatus: function (status) {
                 switch (status){

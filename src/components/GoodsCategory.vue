@@ -50,14 +50,17 @@
 				})
 			},
 			deleteCategory: function(id){
-				this.$messagebox.confirm('确定删除该分类?').then(action => {
+				var isTrue = confirm('确定删除该分类?');
+				if(isTrue){
+					this.$indicator.open();
 					deleteGoodsCategoryById(id).then(() => {
+						this.$indicator.close();
   						this.$toast({message:'删除成功',duration: 1000})
-						this.getGoodsCategoryList()
+  						setTimeout(() => {
+							this.getGoodsCategoryList()  						
+  						}, 1500)
 					})
-				}).catch(() => {
-					this.$toast({message:'已取消',duration: 1000})
-				});
+				}
 			},
 			saveGoodsCategory: function(){
 				if(!this.goodsCategoryName){

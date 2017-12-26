@@ -61,16 +61,17 @@
 				})
 			},
 			deleteBonus: function(id){
-				this.$messagebox.confirm('确定删除该红包?').then(() => {
-        			this.$indicator.open();
+				var isTrue = confirm('确定删除该红包?');
+				if(isTrue){
+	    			this.$indicator.open();
 				    deleteBonusById(id).then(() => {
-        				this.$indicator.close();
+	    				this.$indicator.close();
 				        this.$toast({ message: '操作成功', duration: 1000 })
 				        setTimeout(() => {
 				            this.getBonusList()
 				        }, 1500)
 				    })
-				}).catch(() => {});
+				}
 			}
 		}
 	}
@@ -113,6 +114,7 @@
 		background-color: #fff;
 		margin: 2.66vw;
 		box-sizing: border-box;
+		font-size: 0;
 	}
 	.bonus-info{
 		width: 72.66vw;
@@ -176,6 +178,7 @@
 		float: right;
 		background-color: #ff3a2f;
 		color: #fff;
+		font-size: 3.73vw;
 	}
 	.link{
 		display: inline-block;

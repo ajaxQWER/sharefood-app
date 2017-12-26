@@ -21,7 +21,7 @@
 							<div class="goods-detail-wrap">
 								<div class="goods-image">
 									<!-- <img :src="UPLOADURL + item.goodsImgUrl" alt=""> -->
-									<img v-lazy="UPLOADURL + item.goodsImgUrl+'/goods.png'" alt="">
+									<img v-lazy="UPLOADURL + item.goodsImgUrl" alt="">
 								</div>
 								<div class="goods-info">
 									<h3 class="goods-name">{{item.goodsName}}</h3>
@@ -98,14 +98,13 @@
 				this.getGoods(id)
 			},
 			deleteGoods: function(id,index){
-				this.$messagebox.confirm('确定删除该商品?').then(action => {
+				var deleteConfirm = confirm('确定删除该商品?');
+				if(deleteConfirm){
 					deleteGoodsById(id).then(() => {
-							this.$toast({message:'操作成功',duration: 1000})
-							this.goodsList.splice(index,1)
-						})
-				}).catch(() => {
-					this.$toast({message:'已取消',duration: 1000})
-				});
+						this.$toast({message:'操作成功',duration: 1000})
+						this.goodsList.splice(index,1)
+					})
+				}
 			},
 			soldOut: function(id,index,status){
 				var soldStatus = this.formatStatus(status);
@@ -123,21 +122,6 @@
 						})
 					}
 				}
-				// this.$messagebox.confirm('确定'+soldStatus+'该商品?').then(action => {
-				// 	if(status==='PUTAWAY'){
-				// 		soldOutGoods([id]).then(() => {
-				// 			this.$toast({message:'操作成功',duration: 1000})
-				// 			this.goodsList[index].goodsStatus = 'SOLD_OUT'
-				// 		})
-				// 	}else if(status==='SOLD_OUT'){
-				// 		putAwayGoods([id]).then(() => {
-				// 			this.$toast({message:'操作成功',duration: 1000})
-				// 			this.goodsList[index].goodsStatus = 'PUTAWAY'
-				// 		})
-				// 	}
-				// }).catch(() => {
-				// 	this.$toast({message:'已取消',duration: 1000})
-				// });
 			}
 		}
 	}
