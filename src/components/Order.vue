@@ -316,7 +316,7 @@ export default {
             }
         },
         printOrderBtn: function(orderId){
-            var isConfirm = confirm('确定补打该订单?');
+            var isConfirm = confirm('确定打印该订单小票?');
             if(isConfirm){
                 this.$indicator.open();
                 printOrder(orderId).then(() => {

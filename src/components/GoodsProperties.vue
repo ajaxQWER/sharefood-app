@@ -110,8 +110,7 @@
 	    line-height: 13.06vw;
 	    position: fixed;
 	    bottom: 0;
-	    background: url(./../assets/images/help-navbar.jpg) repeat-y center center;
-	    background-size: contain;
+        background-color: #27bb43;
 	    text-align: center;
 	    color: #fff;
 	    font-size: 4.8vw;

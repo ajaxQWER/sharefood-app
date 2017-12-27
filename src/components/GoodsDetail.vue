@@ -41,7 +41,9 @@
                             <div class="standard-item">
                                 <div class="standard-index">规格{{index+1}}</div>
                                 <div class="standard-operation">
-                                    <router-link :to="'/addGoodsSpecifications?id='+item.goodsSpecificationId+'&index='+index+'&item=' + JSON.stringify(item)"><button class="standard-btn update-standard-btn">修改</button></router-link>
+                                    <router-link :to="'/addGoodsSpecifications?id='+item.goodsSpecificationId+'&index='+index+'&item=' + JSON.stringify(item)">
+                                        <button class="standard-btn update-standard-btn">修改</button>
+                                    </router-link>
                                     <button class="standard-btn delete-standard-btn" @click="deleteStandardByIndex(index)">删除</button>
                                 </div>
                             </div>
@@ -69,7 +71,9 @@
                             <div class="standard-item">
                                 <div class="standard-index">属性{{index+1}}</div>
                                 <div class="standard-operation">
-                                    <router-link :to="'/goodsProperties?index='+index+'&item=' + JSON.stringify(item)"><button class="standard-btn update-standard-btn">修改</button></router-link>
+                                    <router-link :to="'/goodsProperties?index='+index+'&item=' + JSON.stringify(item)">
+                                        <button class="standard-btn update-standard-btn">修改</button>
+                                    </router-link>
                                     <button class="standard-btn delete-standard-btn" @click="deletePropsByIndex(index)">删除</button>
                                 </div>
                             </div>
@@ -91,8 +95,10 @@
                 <div class="goods-item">
                     <div class="row-title">商品状态</div>
                     <div class="row-value">
-                        <label for="up"><input class="radio" type="radio" name="automatic" id="up" value="SOLD_OUT" v-model="newGoods.info.goodsStatus">下架</label>
-                        <label for="down"><input class="radio" type="radio" name="automatic" id="down" value="PUTAWAY" v-model="newGoods.info.goodsStatus">上架</label>
+                        <label for="up">
+                            <input class="radio" type="radio" name="automatic" id="up" value="SOLD_OUT" v-model="newGoods.info.goodsStatus">下架</label>
+                        <label for="down">
+                            <input class="radio" type="radio" name="automatic" id="down" value="PUTAWAY" v-model="newGoods.info.goodsStatus">上架</label>
                     </div>
                 </div>
                 <div class="goods-item">
@@ -120,7 +126,7 @@
                 <label for="change"></label> -->
             </div>
         </mt-popup>
-       <!--  <mt-popup v-model="goodsCategoryPopup" position="right" class="mint-popup-3" :modal="false">
+        <!--  <mt-popup v-model="goodsCategoryPopup" position="right" class="mint-popup-3" :modal="false">
             <div class="goodsDetail-header">
                 <div class="nav-bar help-navbar">
                     <div class="back" @click="closeGoodsCategoryPopup"><img src="../assets/images/white-back.png" alt=""></div>
@@ -165,15 +171,14 @@ export default {
             goodsCategoryList: [],
             standardObj: null,
             propObj: null,
-            updateStandardObj: [],
             deleteStandardObj: [],
             goodsFeatures: [{
                 label: '无',
                 value: ''
-            },{
+            }, {
                 label: '招牌',
                 value: ''
-            },{
+            }, {
                 label: '新品',
                 value: 'new'
             }]
@@ -188,6 +193,7 @@ export default {
         var goodsName;
         var goodsStatus;
         var goodsContent;
+        var deleteStandardObj;
 
         if (goodsId) {
             this.$indicator.open();
@@ -198,36 +204,41 @@ export default {
 
                 //规格
                 standardObj = JSON.parse(localStorage.getItem('standardObj')) || [];
-                if(standardObj.length){
+                if (standardObj.length) {
                     this.standardObj = standardObj;
-                }else{
+                } else {
                     this.standardObj = [].concat(standardObj, res.goods.goodsSpecifications);
                 }
                 localStorage.setItem('standardObj', JSON.stringify(this.standardObj))
 
                 //属性
                 propObj = JSON.parse(localStorage.getItem('propObj')) || [];
-                if(propObj.length){
+                if (propObj.length) {
                     this.propObj = propObj;
-                }else{
+                } else {
                     this.propObj = [].concat(propObj, res.goods.goodsPropertys);
                 }
                 localStorage.setItem('propObj', JSON.stringify(this.propObj))
 
                 //分类
                 goodsCategory = JSON.parse(localStorage.getItem('goodsCategory')) || [];
-                if(goodsCategory.length){
+                if (goodsCategory.length) {
                     this.goodsCategoryList = goodsCategory;
-                }else{
+                } else {
                     this.goodsCategoryList = [].concat(goodsCategory, res.goodsCategoryIdList);
                 }
                 localStorage.setItem('goodsCategory', JSON.stringify(this.goodsCategoryList))
 
+                //删除的规格
+                deleteStandardObj = JSON.parse(localStorage.getItem('deleteStandardObj')) || [];
+                this.deleteStandardObj = deleteStandardObj;
+                localStorage.setItem('deleteStandardObj', JSON.stringify(this.deleteStandardObj))
+
                 //图片
                 goodsImgUrl = localStorage.getItem('goodsImgUrl') || res.goods.goodsImgUrl;
-                if(goodsImgUrl){
+                if (goodsImgUrl) {
                     this.headerImage = this.UPLOADURL + goodsImgUrl;
-                }else{
+                } else {
                     this.headerImage = '';
                 }
                 this.newGoods.info.goodsImgUrl = goodsImgUrl;
@@ -247,7 +258,7 @@ export default {
                 goodsStatus = localStorage.getItem('goodsStatus') || res.goods.goodsStatus;
                 this.newGoods.info.goodsStatus = goodsStatus;
                 localStorage.setItem('goodsStatus', goodsStatus)
-                
+
 
                 this.newGoods = {
                     info: {
@@ -261,10 +272,8 @@ export default {
                     goodsCategoryIdList: this.goodsCategoryList
                 }
                 this.$indicator.close();
-            console.log(this.newGoods)
-
             })
-        }else{
+        } else {
             standardObj = JSON.parse(localStorage.getItem('standardObj')) || [];
             propObj = JSON.parse(localStorage.getItem('propObj')) || [];
             goodsCategory = JSON.parse(localStorage.getItem('goodsCategory')) || [];
@@ -280,7 +289,7 @@ export default {
             this.newGoods.addSpecs = standardObj;
             this.newGoods.goodsPropertys = propObj;
             this.newGoods.goodsCategoryIdList = goodsCategory;
-            if(goodsImgUrl){
+            if (goodsImgUrl) {
                 this.headerImage = this.UPLOADURL + goodsImgUrl;
             }
         }
@@ -288,7 +297,7 @@ export default {
         this.formatGoodsClassName()
     },
     watch: {
-        'newGoods.info.goodsStatus': function(newVal, oldVal){
+        'newGoods.info.goodsStatus': function(newVal, oldVal) {
             this.newGoods.info.goodsStatus = newVal;
             localStorage.setItem('goodsStatus', newVal)
         }
@@ -308,9 +317,9 @@ export default {
         });
     },
     methods: {
-        goodsGoBack: function(){
+        goodsGoBack: function() {
             var action = confirm('返回将导致该商品数据清空,请谨慎操作');
-            if(action){
+            if (action) {
                 this.removeGoodsInfo();
                 this.$router.isBack = true;
                 this.$router.back()
@@ -416,7 +425,7 @@ export default {
 
             fd.path = '/goods'
             uploadFiles(fd).then(data => {
-            this.$indicator.close();
+                this.$indicator.close();
                 console.log(data)
                 this.$toast({
                     message: '上传成功',
@@ -445,7 +454,7 @@ export default {
             this.url = '';
             this.$refs.uploads.value = '';
         },
-        formatGoodsClassName: function(){
+        formatGoodsClassName: function() {
             var currentGoodsCategory = JSON.parse(localStorage.getItem('goodsCategory')) || [];
             var storeGoodsCategoryList = JSON.parse(localStorage.getItem('goodsCategoryList')) || [];
             var tempGoodsCategoryIdList = {};
@@ -455,7 +464,7 @@ export default {
 
             var names = [];
             for (var goodsCategoryId in tempGoodsCategoryIdList) {
-                if(currentGoodsCategory.indexOf(parseInt(goodsCategoryId)) != -1){
+                if (currentGoodsCategory.indexOf(parseInt(goodsCategoryId)) != -1) {
                     names.push(tempGoodsCategoryIdList[goodsCategoryId]);
                 }
             }
@@ -479,22 +488,40 @@ export default {
 
             //编辑
             if (this.goodsId) {
-                // delete this.newGoods.addSpecs;
-                var updateSpecs = JSON.parse(localStorage.getItem('updateStandardObj')) || [];
-                var newStandardObj = JSON.parse(localStorage.getItem('newStandardObj')) || [];
-                this.newGoods.deleteSpecIds = this.deleteStandardObj;
-                this.newGoods.updateSpecs = updateSpecs;
-                this.newGoods.addSpecs = newStandardObj;
-                
+
                 if (this.newGoods.addSpecs.length == 0 && this.newGoods.deleteSpecIds.length != 0) {
                     this.$toast({ message: '请添加商品规格', duration: 1000 })
                     return;
                 }
 
-                console.log(this.newGoods)
+                var updateSpecs = [];
+                var addSpecs = [];
+                this.standardObj.forEach((item) => {
+                    if (item.goodsSpecificationId) {
+                        updateSpecs.push(item)
+                    } else {
+                        addSpecs.push(item)
+                    }
+                })
+                var params = {
+                    addSpecs: addSpecs,
+                    deleteSpecIds: this.deleteStandardObj,
+                    goodsCategoryIdList: this.newGoods.goodsCategoryIdList,
+                    goodsPropertys: this.newGoods.goodsPropertys,
+                    info: {
+                        goodsContent: this.newGoods.info.goodsContent,
+                        goodsImgUrl: this.newGoods.info.goodsImgUrl,
+                        goodsName: this.newGoods.info.goodsName,
+                        goodsStatus: this.newGoods.info.goodsStatus
+                    },
+                    updateSpecs: updateSpecs
+                }
+
+                console.log(params)
                 // return
+
                 this.$indicator.open();
-                updateGoodsById(this.goodsId, this.newGoods).then(() => {
+                updateGoodsById(this.goodsId, params).then(() => {
                     this.$toast({ message: '操作成功', duration: 1000 })
                     this.removeGoodsInfo();
                     this.$indicator.close();
@@ -527,35 +554,36 @@ export default {
         closeGoodscategoryPopup: function() {
             this.goodsCategoryPopup = false;
         },
-        closeGoodsCategoryPopup: function(){
+        closeGoodsCategoryPopup: function() {
             this.goodsCategoryPopup = false;
         },
-        deleteStandardByIndex: function(index){
+        deleteStandardByIndex: function(index) {
             var deleteProps = confirm('确定删除该规格?');
-            if(deleteProps){
-                if(this.standardObj[index]['goodsSpecificationId']){
+            if (deleteProps) {
+                if (this.standardObj[index]['goodsSpecificationId']) {
                     this.deleteStandardObj.push(this.standardObj[index]['goodsSpecificationId'])
+                    localStorage.setItem('deleteStandardObj', JSON.stringify(this.deleteStandardObj));
                 }
-                this.standardObj.splice(index,1);
-                localStorage.setItem('standardObj',JSON.stringify(this.standardObj));
+                this.standardObj.splice(index, 1);
+                localStorage.setItem('standardObj', JSON.stringify(this.standardObj));
                 this.$toast({ message: '删除成功', duration: 1000 })
             }
         },
-        deletePropsByIndex: function(index){
+        deletePropsByIndex: function(index) {
             var deleteProps = confirm('确定删除该属性?');
-            if(deleteProps){
-                this.propObj.splice(index,1);
-                localStorage.setItem('propObj',JSON.stringify(this.propObj));
+            if (deleteProps) {
+                this.propObj.splice(index, 1);
+                localStorage.setItem('propObj', JSON.stringify(this.propObj));
                 this.$toast({ message: '删除成功', duration: 1000 })
             }
         },
-        savaGoodsName: function(){
+        savaGoodsName: function() {
             localStorage.setItem('goodsName', this.newGoods.info.goodsName)
         },
-        savaGoodsIntro: function(){
+        savaGoodsIntro: function() {
             localStorage.setItem('goodsContent', this.newGoods.info.goodsContent)
         },
-        removeGoodsInfo: function(){
+        removeGoodsInfo: function() {
             localStorage.removeItem('standardObj');
             localStorage.removeItem('propObj');
             localStorage.removeItem('goodsCategory');
@@ -565,8 +593,7 @@ export default {
             localStorage.removeItem('goodsIntro');
             localStorage.removeItem('goodsStatus');
             localStorage.removeItem('goodsContent');
-            localStorage.removeItem('updateStandardObj');
-            localStorage.removeItem('newStandardObj');
+            localStorage.removeItem('deleteStandardObj');
         }
     }
 }
@@ -630,10 +657,12 @@ export default {
     font-size: 3.73vw;
     vertical-align: middle;
 }
-.goods-standard{
+
+.goods-standard {
     margin: 1.33vw 0;
 }
-.standard-row{
+
+.standard-row {
     padding: 2.66vw;
     overflow: hidden;
     zoom: 1;
@@ -641,7 +670,7 @@ export default {
     background-color: #fff;
 }
 
-.standard-jump{
+.standard-jump {
     display: block;
     font-size: 3.73vw;
     float: right;
@@ -650,7 +679,7 @@ export default {
     text-decoration: none;
 }
 
-.standard-jump:before{
+.standard-jump:before {
     content: '';
     display: inline-block;
     width: 3.6vw;
@@ -661,57 +690,69 @@ export default {
     margin-top: -0.8vw;
     margin-right: 1vw;
 }
-.standard-content{
+
+.standard-content {
     background-color: #fff;
 }
-.standard-item{
+
+.standard-item {
     padding: 2vw 2.66vw;
     background-color: #eef9f3;
     font-size: 3.73vw;
     overflow: hidden;
     zoom: 1;
 }
-.standard-index{
+
+.standard-index {
     display: inline-block;
     float: left;
 }
-.standard-operation{
+
+.standard-operation {
     display: inline-block;
     float: right;
 }
-.standard-btn{
+
+.standard-btn {
     font-size: 3.73vw;
     background-color: transparent;
     border: none;
     outline: none;
 }
-.update-standard-btn{
+
+.update-standard-btn {
     color: #05b645;
 }
-.delete-standard-btn{
+
+.delete-standard-btn {
     color: #e84747;
 }
-.standard-item-row{
+
+.standard-item-row {
     overflow: hidden;
     zoom: 1;
     padding: 2vw 2.66vw;
     font-size: 0;
     color: #999;
 }
-.standard-item-row:not(:last-child){
+
+.standard-item-row:not(:last-child) {
     border-bottom: 1px solid #f2f2f2;
 }
-.standard-key{
+
+.standard-key {
     display: inline-block;
     width: 50%;
     font-size: 3.73vw;
 }
-.standard-value{
+
+.standard-value {
     display: inline-block;
     width: 50%;
     font-size: 3.73vw;
 }
-.goods-property{
+
+.goods-property {
     display: inline-block;
     font-size: 3.73vw;
     /*width: 18vw;*/
@@ -745,15 +786,18 @@ export default {
     border: none;
     outline: none;
 }
-.row-value .radio{
+
+.row-value .radio {
     width: auto;
     margin: 0;
 }
-.row-value label{
+
+.row-value label {
     padding: 1vw;
     margin-left: 3vw;
     vertical-align: middle;
 }
+
 .goods-intro {
     width: 100%;
     height: 35vw;
@@ -789,6 +833,7 @@ export default {
     position: fixed;
     bottom: 0;
 }
+
 
 
 
@@ -906,4 +951,5 @@ export default {
     position: fixed;
     bottom: 0;
 }
+
 </style>

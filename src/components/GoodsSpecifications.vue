@@ -122,21 +122,15 @@
                 var index = this.$route.query.index || null;
                 var id = this.$route.query.id || null;
                 var standardObj = JSON.parse(localStorage.getItem('standardObj')) || [];
-                var updateStandardObj = JSON.parse(localStorage.getItem('updateStandardObj')) || [];
-                var newStandardObj = [];
+
                 if(id != null){
-                    updateStandardObj.push(this.standardObj)
-                    localStorage.setItem('updateStandardObj',JSON.stringify(updateStandardObj))
-                }else{
-                    newStandardObj.push(this.standardObj)
-                    localStorage.setItem('newStandardObj',JSON.stringify(newStandardObj))
-                }
-                if(index != null){
-                    standardObj[index] = this.standardObj;
+                    if(index != null){
+                        standardObj[index] = this.standardObj;
+                    }
                 }else{
                     standardObj.push(this.standardObj);
                 }
-
+                
                 localStorage.setItem('standardObj',JSON.stringify(standardObj))
                 this.$toast({ message: '操作成功', duration: 1000})
                 this.$router.isBack = true;
