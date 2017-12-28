@@ -90,32 +90,16 @@
                     this.$toast({ message: '请输入规格价格', duration: 1000})
                     return;
                 }
-                if(this.standardObj.goodsSpecificationPrice === 0){
-                    this.$toast({ message: '规格价格不能为0', duration: 1000})
-                    return;
-                }
                 if(!this.standardObj.infiniteInventory && this.standardObj.stock === ''){
                     this.$toast({ message: '请输入库存数量', duration: 1000})
-                    return;
-                }
-                if(!this.standardObj.infiniteInventory && this.standardObj.stock === 0){
-                    this.$toast({ message: '库存数量不能为0', duration: 1000})
                     return;
                 }
                 if(this.standardObj.boxesNumber === ''){
                     this.$toast({ message: '请输入餐盒数量', duration: 1000})
                     return;
                 }
-                if(this.standardObj.boxesNumber === 0){
-                    this.$toast({ message: '餐盒数量不能为0', duration: 1000})
-                    return;
-                }
                 if(this.standardObj.boxesMoney === ''){
                     this.$toast({ message: '请输入餐盒价格', duration: 1000})
-                    return;
-                }
-                if(this.standardObj.boxesMoney === 0){
-                    this.$toast({ message: '餐盒价格不能为0', duration: 1000})
                     return;
                 }
 
