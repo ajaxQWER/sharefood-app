@@ -112,14 +112,14 @@
         <div class="save-goods" @click="updateGoods">保存</div>
         <mt-popup v-model="popupVisible" position="bottom">
             <!-- 遮罩层 -->
-            <div class="container" v-show="panel">
+            <div class="container">
                 <div>
-                    <img id="image" :src="url" alt="Picture">
+                    <img id="image" :src="url">
                 </div>
                 <button type="button" id="buttonCancel" @click="cancel">取消</button>
                 <button type="button" id="button" @click="crop">确定</button>
             </div>
-            <div class="upload-wrap" v-if="panel">
+            <div class="upload-wrap">
                 <!-- <div class="close-popup" @click="closePopup">x</div>
                 <div class="upload-bg"></div>
                 <input class="upload-btn" type="file" id="change" @change="change" ref="uploads" accept="image/*">
@@ -153,7 +153,6 @@ export default {
             picValue: '',
             cropper: '',
             croppable: false,
-            panel: false,
             url: '',
             newGoods: {
                 info: {
@@ -340,7 +339,7 @@ export default {
             this.popupVisible = true;
             let files = e.target.files || e.dataTransfer.files;
             if (!files.length) return;
-            this.panel = true;
+
             this.picValue = files[0];
 
             this.url = this.getObjectURL(this.picValue);
@@ -348,21 +347,21 @@ export default {
             if (this.cropper) {
                 this.cropper.replace(this.url);
             }
-
         },
         crop() {
+            this.popupVisible = false;
             if (!this.croppable) {
                 return;
             }
-            // Crop  
-            var croppedCanvas = this.cropper.getCroppedCanvas();
+            // Crop
             // console.log(this.cropper)
-            // Round  
+            // Round
+
+            var croppedCanvas = this.cropper.getCroppedCanvas();
             var roundedCanvas = this.getRoundedCanvas(croppedCanvas);
-            this.popupVisible = false;
-            this.panel = false;
-            this.$indicator.open();
             this.headerImage = roundedCanvas.toDataURL('image/jpeg', 0.6);
+
+            //上传
             this.postImg()
 
         },
@@ -411,10 +410,10 @@ export default {
 
             //处理异常,将ascii码小于0的转换为大于0
             var ab = new ArrayBuffer(bytes.length);
-            var ia = new Uint8Array(ab);
-            for (var i = 0; i < bytes.length; i++) {
-                ia[i] = bytes.charCodeAt(i);
-            }
+            // var ia = new Uint8Array(ab);
+            // for (var i = 0; i < bytes.length; i++) {
+            //     ia[i] = bytes.charCodeAt(i);
+            // }
 
             var obj = new Blob([ab], { type: 'image/jpeg' })
 
@@ -424,17 +423,19 @@ export default {
             fd.append('file', obj, '*.jpg');
 
             fd.path = '/goods'
+            this.$indicator.open();
             uploadFiles(fd).then(data => {
                 this.$indicator.close();
                 console.log(data)
                 this.$toast({
-                    message: '上传成功',
+                    message: '图片上传成功',
                     duration: 1000
                 })
                 this.newGoods.info.goodsImgUrl = data.originalUrl;
                 localStorage.setItem('goodsImgUrl', data.originalUrl);
                 this.cancel()
             }).catch(err => {
+                this.$indicator.close();
                 console.log(err)
                 this.$toast({
                     message: err,
@@ -449,7 +450,6 @@ export default {
             this.cropper.destroy()
             this.popupVisible = false;
             this.croppable = false;
-            this.panel = false;
             this.picValue = '';
             this.url = '';
             this.$refs.uploads.value = '';
