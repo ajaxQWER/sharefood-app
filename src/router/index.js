@@ -91,6 +91,7 @@ const BonusList = r => require.ensure([],() => r(require('@/components/BonusList
 const AddBonus = r => require.ensure([],() => r(require('@/components/AddBonus.vue')), 'AddBonus'); //添加红包
 const GetBonus = r => require.ensure([],() => r(require('@/components/GetBonus.vue')), 'GetBonus'); //领取红包
 const DrawInvoice = r => require.ensure([],() => r(require('@/components/DrawInvoice.vue')), 'DrawInvoice'); //开票设置
+const OrderReceive = r => require.ensure([],() => r(require('@/components/OrderReceive.vue')), 'OrderReceive'); //接单设置
 
 let routes = [{
     path: '/',
@@ -280,6 +281,10 @@ let routes = [{
     path: '/goodsProperties',
     component: GoodsProperties,
     name: 'goodsProperties'
+},{
+    path: '/orderReceive',
+    component: OrderReceive,
+    name: 'orderReceive'
 },{
     path: '*',
     redirect: '/home'

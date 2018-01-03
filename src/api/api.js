@@ -335,6 +335,15 @@ export const printOrder = orderId => {
     return ajax.post('seller/order/print/' + orderId);
 };
 
+//设置自动接单
+export const autoReceiveOrder = () => {
+    return ajax.put('seller/shop/automaticAcceptOrder');
+};
+//设置手动接单
+export const handReceiveOrder = () => {
+    return ajax.delete('seller/shop/automaticAcceptOrder');
+};
+
 //文件上传 前台文件需要设置一个path属性
 export const uploadFiles = params => {
     return ajax.post('commons/upload' + params.path, params);
