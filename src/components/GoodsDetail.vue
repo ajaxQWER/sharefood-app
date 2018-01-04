@@ -410,12 +410,12 @@ export default {
 
             //处理异常,将ascii码小于0的转换为大于0
             var ab = new ArrayBuffer(bytes.length);
-            var ia = [];
+            var ia = new Uint8Array(ab);
             for (var i = 0; i < bytes.length; i++) {
-                ia.push(bytes.charCodeAt(i));
+                ia[i] = bytes.charCodeAt(i);
             }
 
-            var obj = new Blob([new Uint8Array(ia)], { type: 'image/jpeg' })
+            var obj = new Blob([ab], { type: 'image/jpeg' })
 
             var fd = new FormData();
 
