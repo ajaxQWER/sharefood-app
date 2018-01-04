@@ -106,15 +106,12 @@ export default {
 
 .setting-header {
     width: 100%;
-    position: fixed;
 }
 
 .setting-content {
-    box-sizing: border-box;
-    height: 100vh;
     overflow: hidden;
     zoom: 1;
-    padding: 13.06vw 0 14.39vw;
+    padding-top: 2.66vw;
 }
 
 .shopDetail-row {
