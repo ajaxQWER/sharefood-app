@@ -35,15 +35,12 @@
 </template>
 <script>
 import { getNoticeLists, deleteNoticeById } from '@/api/api';
-
-//import img
 import cancelOrder from "@/assets/images/cancelOrder.png";
 import finishedOrder from "@/assets/images/finishedOrder.png";
 import shippingOrder from "@/assets/images/shippingOrder.png";
 import deliveredOrder from "@/assets/images/deliveredOrder.png";
 import confirmOrder from "@/assets/images/confirmOrder.png";
 import createOrder from "@/assets/images/createOrder.png";
-
 export default {
     name: 'notice',
     data: function() {
