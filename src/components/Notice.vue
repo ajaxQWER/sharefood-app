@@ -12,7 +12,7 @@
                     <li class="notice-item" v-for="(item,index) in noticeList" :key="index">
                         <div class="notice-info">
                             <div class="notice-icon">
-                                <img src="../assets/images/notice.png" alt="">
+                                <img :src="formatImgType(item.contentType)" alt="">
                             </div>
                             <div class="info">
                                 <p class="name-time">
@@ -22,7 +22,7 @@
                                 <p class="desc">{{item.content}}</p>
                             </div>
                         </div>
-                        <div class="delete-btn" @click="deleteNotice(item.noticeId,index)">删除</div>
+                        <div class="delete-btn" @click="deleteNotice(item.noticeId)">删除</div>
                     </li>
                 </ul>
                 <div v-show="canLoad" class="loadmore" @click="loadBottom">点击加载</div>
@@ -35,6 +35,12 @@
 </template>
 <script>
 import { getNoticeLists, deleteNoticeById } from '@/api/api';
+import cancelOrder from "@/assets/images/cancelOrder.png";
+import finishedOrder from "@/assets/images/finishedOrder.png";
+import shippingOrder from "@/assets/images/shippingOrder.png";
+import deliveredOrder from "@/assets/images/deliveredOrder.png";
+import confirmOrder from "@/assets/images/confirmOrder.png";
+import createOrder from "@/assets/images/createOrder.png";
 export default {
     name: 'notice',
     data: function() {
@@ -85,20 +91,36 @@ export default {
             this.init = false;
             this.getNoticeList({ pageId: this.pageId })
         },
-        deleteNotice: function(id, index) {
-            this.$messagebox.confirm('确定删除该通知?').then(action => {
-                console.log(id, index);
-                deleteNoticeById(id, index).then(() => {
+        deleteNotice: function(id) {
+            var isTrue = confirm('确定删除该通知?');
+            if(isTrue){
+                deleteNoticeById(id).then(() => {
                     this.$toast({ message: '删除成功', duration: 1000 });
-                    this.noticeList.splice(index, 1);
                     this.pageId = 1;
                     this.getNoticeList({ pageId: this.pageId });
 
                 })
-            }).catch(() => {
-                this.$toast({ message: '已取消', duration: 1000 })
-            });
-        }
+            }
+        },
+
+        formatImgType: function(contentType) {
+            switch (contentType) {
+                case 'ORDER_FINISHED':
+                    return finishedOrder;
+                case 'ORDER_DELIVERED':
+                    return deliveredOrder;
+                case 'ORDER_SHIPPING':
+                    return shippingOrder;
+                case 'ORDER_CONFIRM':
+                    return confirmOrder;
+                case 'ORDER_CANCELLATION':
+                    return cancelOrder;
+                case 'ORDER_CREATE':
+                    return createOrder;
+            }
+        },
+
+
     }
 }
 

@@ -2,16 +2,16 @@
     <div id="goodsDetail">
         <div class="goodsDetail-header">
             <div class="nav-bar help-navbar">
-                <div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
+                <div class="back" @click="goodsGoBack"><img src="../assets/images/white-back.png" alt=""></div>
                 <div class="nav-title">编辑商品</div>
             </div>
         </div>
-        <div class="goodsDetail-content" v-if="goodsInfo">
+        <div class="goodsDetail-content">
             <div class="content">
                 <div class="goods-item">
                     <div class="row-title">商品图片</div>
                     <div class="row-value upload-img">
-                        <img class="goods-imgage" :src="headerImage?headerImage:UPLOADURL + goodsInfo.goods.goodsImgUrl" alt="商品图片">
+                        <img class="goods-imgage" :src="headerImage?headerImage:''" alt="">
                     </div>
                     <div class="row-value upload-img upload">
                         <div class="upload-bg"></div>
@@ -22,77 +22,89 @@
                 <div class="goods-item">
                     <div class="row-title">商品名称</div>
                     <div class="row-value">
-                        <input type="text" placeholder="请输入商品名称" v-model="goodsInfo.goods.goodsName" maxlength="12">
+                        <input type="text" placeholder="请输入商品名称" v-model="newGoods.info.goodsName" maxlength="12" @blur="savaGoodsName">
                     </div>
                 </div>
-                <router-link :to="'/setGoodsCategory?goodsId='+goodsInfo.goods.goodsId+'&goodsCategoryList='+goodsInfo.goodsCategoryIdList" class="jump">
+                <router-link :to="'/setGoodsCategory?goodsId='+goodsId+'&goodsCategoryList='+JSON.stringify(newGoods.goodsCategoryIdList)" class="jump">
                     <div class="goods-item">
                         <div class="row-title">商品分类</div>
-                        <div class="row-value value-after">{{formatGoodsClass(goodsInfo.goods.goodsClassNames)}}</div>
+                        <div class="row-value value-after">{{goodsClassNames}}</div>
                     </div>
                 </router-link>
-                <div class="goods-item">
-                    <div class="row-title">商品价格</div>
-                    <div class="row-value">
-                        <input type="number" placeholder="请输入商品价格" v-model.number="goodsInfo.goods.goodsPrice" min="0">
+                <div class="goods-standard">
+                    <div class="standard-row">
+                        <div class="row-title">商品规格</div>
+                        <router-link to="/addGoodsSpecifications" class="standard-jump">添加规格</router-link>
+                    </div>
+                    <div v-if="newGoods.addSpecs">
+                        <div class="standard-content" v-for="(item,index) in newGoods.addSpecs" :key="index">
+                            <div class="standard-item">
+                                <div class="standard-index">规格{{index+1}}</div>
+                                <div class="standard-operation">
+                                    <router-link :to="'/addGoodsSpecifications?id='+item.goodsSpecificationId+'&index='+index+'&item=' + JSON.stringify(item)">
+                                        <button class="standard-btn update-standard-btn">修改</button>
+                                    </router-link>
+                                    <button class="standard-btn delete-standard-btn" @click="deleteStandardByIndex(index)">删除</button>
+                                </div>
+                            </div>
+                            <div class="standard-item-row">
+                                <div class="standard-key">规格名称：{{item.goodsSpecificationName}}</div>
+                            </div>
+                            <div class="standard-item-row">
+                                <div class="standard-key">价格：{{item.goodsSpecificationPrice}}</div>
+                                <div class="standard-value">库存：{{item.infiniteInventory?'无限':item.stock}}</div>
+                            </div>
+                            <div class="standard-item-row">
+                                <div class="standard-key">餐盒数量：{{item.boxesNumber}}</div>
+                                <div class="standard-value">餐盒价格：{{item.boxesMoney}}</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="goods-item">
-                    <div class="row-title">餐盒费</div>
+                <div class="goods-standard">
+                    <div class="standard-row">
+                        <div class="row-title">商品属性</div>
+                        <router-link to="/goodsProperties" class="standard-jump">添加属性</router-link>
+                    </div>
+                    <div v-if="newGoods.goodsPropertys">
+                        <div class="standard-content" v-for="(item,index) in newGoods.goodsPropertys" :key="index">
+                            <div class="standard-item">
+                                <div class="standard-index">属性{{index+1}}</div>
+                                <div class="standard-operation">
+                                    <router-link :to="'/goodsProperties?index='+index+'&item=' + JSON.stringify(item)">
+                                        <button class="standard-btn update-standard-btn">修改</button>
+                                    </router-link>
+                                    <button class="standard-btn delete-standard-btn" @click="deletePropsByIndex(index)">删除</button>
+                                </div>
+                            </div>
+                            <div class="standard-item-row">
+                                <div class="standard-key">属性名称：{{item.goodsPropertyName}}</div>
+                            </div>
+                            <div v-if="item.goodsPropertyValueList.length" class="standard-item-row">
+                                <div class="goods-property" v-for="(prop,propIndex) in item.goodsPropertyValueList" :key="propIndex">{{prop.value}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="goods-item">
+                    <div class="row-title">商品特色</div>
                     <div class="row-value">
-                        <input type="number" placeholder="请输入餐盒费" v-model.number="goodsInfo.goods.feeMeals">
+                        <div class="goods-property" v-for="(item,index) in goodsFeatures" :key="index" @click="setGoodsFeature(item.value)">{{item.label}}</div>
+                    </div>
+                </div> -->
+                <div class="goods-item">
+                    <div class="row-title">商品状态</div>
+                    <div class="row-value">
+                        <label for="up">
+                            <input class="radio" type="radio" name="automatic" id="up" value="SOLD_OUT" v-model="newGoods.info.goodsStatus">下架</label>
+                        <label for="down">
+                            <input class="radio" type="radio" name="automatic" id="down" value="PUTAWAY" v-model="newGoods.info.goodsStatus">上架</label>
                     </div>
                 </div>
                 <div class="goods-item">
                     <div class="row-title">商品简介</div>
                     <div class="row-value">
-                        <textarea class="goods-intro" placeholder="最多255字" name="" id="" maxlength="255" v-model="goodsInfo.goods.goodsContent"></textarea>
-                    </div>
-                </div>
-                <div class="save-goods" @click="updateGoods">保存</div>
-            </div>
-        </div>
-        <div class="goodsDetail-content" v-else>
-            <div class="content">
-                <div class="goods-item">
-                    <div class="row-title">商品图片</div>
-                    <div class="row-value upload-img">
-                        <img class="goods-imgage" :src="headerImage?headerImage:''" alt="商品图片">
-                    </div>
-                    <div class="row-value upload-img upload">
-                        <div class="upload-bg"></div>
-                        <input class="upload-btn" type="file" id="change" @change="change" ref="uploads" accept="image/*">
-                        <label for="change"></label>
-                    </div>
-                </div>
-                <div class="goods-item">
-                    <div class="row-title">商品名称</div>
-                    <div class="row-value">
-                        <input type="text" placeholder="请输入商品名称" v-model="newGoods.goods.goodsName" maxlength="12">
-                    </div>
-                </div>
-                <div class="goods-item" @click="showGoodsCategoryPopup">
-                    <!-- <router-link to="/setGoodsCategory" class="jump"> -->
-                    <div class="row-title">商品分类</div>
-                    <div class="row-value value-after">{{newGoods.goods.goodsClassNames}}</div>
-                    <!-- </router-link> -->
-                </div>
-                <div class="goods-item">
-                    <div class="row-title">商品价格</div>
-                    <div class="row-value">
-                        <input type="number" placeholder="请输入商品价格" v-model.number="newGoods.goods.goodsPrice" min="0">
-                    </div>
-                </div>
-                <div class="goods-item">
-                    <div class="row-title">餐盒费</div>
-                    <div class="row-value">
-                        <input type="number" placeholder="请输入餐盒费" v-model.number="newGoods.goods.feeMeals" min="0">
-                    </div>
-                </div>
-                <div class="goods-item">
-                    <div class="row-title">商品简介</div>
-                    <div class="row-value">
-                        <textarea class="goods-intro" placeholder="最多255字" name="" id="" maxlength="255" v-model="newGoods.goods.goodsContent"></textarea>
+                        <textarea class="goods-intro" placeholder="最多255字" name="" id="" maxlength="255" v-model="newGoods.info.goodsContent" @blur="savaGoodsIntro"></textarea>
                     </div>
                 </div>
             </div>
@@ -100,21 +112,21 @@
         <div class="save-goods" @click="updateGoods">保存</div>
         <mt-popup v-model="popupVisible" position="bottom">
             <!-- 遮罩层 -->
-            <div class="container" v-show="panel">
+            <div class="container">
                 <div>
-                    <img id="image" :src="url" alt="Picture">
+                    <img id="image" :src="url">
                 </div>
                 <button type="button" id="buttonCancel" @click="cancel">取消</button>
                 <button type="button" id="button" @click="crop">确定</button>
             </div>
-            <div class="upload-wrap" v-if="panel">
+            <div class="upload-wrap">
                 <!-- <div class="close-popup" @click="closePopup">x</div>
                 <div class="upload-bg"></div>
                 <input class="upload-btn" type="file" id="change" @change="change" ref="uploads" accept="image/*">
                 <label for="change"></label> -->
             </div>
         </mt-popup>
-        <mt-popup v-model="goodsCategoryPopup" position="right" class="mint-popup-3" :modal="false">
+        <!--  <mt-popup v-model="goodsCategoryPopup" position="right" class="mint-popup-3" :modal="false">
             <div class="goodsDetail-header">
                 <div class="nav-bar help-navbar">
                     <div class="back" @click="closeGoodsCategoryPopup"><img src="../assets/images/white-back.png" alt=""></div>
@@ -126,7 +138,7 @@
                 </mt-checklist>
             </div>
             <div class="saveBusiness" @click="saveBusiness">保存</div>
-        </mt-popup>
+        </mt-popup> -->
     </div>
 </template>
 <script>
@@ -136,54 +148,158 @@ export default {
     name: 'goodsDetail',
     data: function() {
         return {
-            goodsInfo: null,
             popupVisible: false,
             headerImage: '',
             picValue: '',
             cropper: '',
             croppable: false,
-            panel: false,
             url: '',
             newGoods: {
-                goods: {
-                    feeMeals: '',
-                    goodsClassNames: "",
+                info: {
                     goodsContent: "",
                     goodsImgUrl: "",
                     goodsName: "",
-                    goodsPrice: '',
                     goodsStatus: "SOLD_OUT",
                 },
-                goodsCategoryIdList: []
+                goodsCategoryIdList: [],
+                goodsPropertys: [],
+                addSpecs: []
             },
-            goodsId: '',
-            goodsCategoryPopup: false,
+            goodsId: 0,
+            goodsClassNames: '',
             goodsCategoryList: [],
-            options: []
+            standardObj: null,
+            propObj: null,
+            deleteStandardObj: [],
+            goodsFeatures: [{
+                label: '无',
+                value: ''
+            }, {
+                label: '招牌',
+                value: ''
+            }, {
+                label: '新品',
+                value: 'new'
+            }]
         }
     },
     created: function() {
         var goodsId = this.$route.query.goodsId;
-        this.goodsId = goodsId;
+        var standardObj;
+        var propObj;
+        var goodsCategory;
+        var goodsImgUrl;
+        var goodsName;
+        var goodsStatus;
+        var goodsContent;
+        var deleteStandardObj;
+
         if (goodsId) {
             this.$indicator.open();
             getGoodsById(goodsId).then(res => {
                 console.log(res)
-                this.goodsInfo = res;
+                this.goodsId = res.goodsId;
+                this.goodsClassNames = res.goods.goodsClassNames;
+
+                //规格
+                standardObj = JSON.parse(localStorage.getItem('standardObj')) || [];
+                if (standardObj.length) {
+                    this.standardObj = standardObj;
+                } else {
+                    this.standardObj = [].concat(standardObj, res.goods.goodsSpecifications);
+                }
+                localStorage.setItem('standardObj', JSON.stringify(this.standardObj))
+
+                //属性
+                propObj = JSON.parse(localStorage.getItem('propObj')) || [];
+                if (propObj.length) {
+                    this.propObj = propObj;
+                } else {
+                    this.propObj = [].concat(propObj, res.goods.goodsPropertys);
+                }
+                localStorage.setItem('propObj', JSON.stringify(this.propObj))
+
+                //分类
+                goodsCategory = JSON.parse(localStorage.getItem('goodsCategory')) || [];
+                if (goodsCategory.length) {
+                    this.goodsCategoryList = goodsCategory;
+                } else {
+                    this.goodsCategoryList = [].concat(goodsCategory, res.goodsCategoryIdList);
+                }
+                localStorage.setItem('goodsCategory', JSON.stringify(this.goodsCategoryList))
+
+                //删除的规格
+                deleteStandardObj = JSON.parse(localStorage.getItem('deleteStandardObj')) || [];
+                this.deleteStandardObj = deleteStandardObj;
+                localStorage.setItem('deleteStandardObj', JSON.stringify(this.deleteStandardObj))
+
+                //图片
+                goodsImgUrl = localStorage.getItem('goodsImgUrl') || res.goods.goodsImgUrl;
+                if (goodsImgUrl) {
+                    this.headerImage = this.UPLOADURL + goodsImgUrl;
+                } else {
+                    this.headerImage = '';
+                }
+                this.newGoods.info.goodsImgUrl = goodsImgUrl;
+                localStorage.setItem('goodsImgUrl', goodsImgUrl)
+
+                //名称
+                goodsName = localStorage.getItem('goodsName') || res.goods.goodsName;
+                this.newGoods.info.goodsName = goodsName;
+                localStorage.setItem('goodsName', goodsName)
+
+                //备注
+                goodsContent = localStorage.getItem('goodsContent') || res.goods.goodsContent;
+                this.newGoods.info.goodsContent = goodsContent;
+                localStorage.setItem('goodsContent', goodsContent)
+
+                //状态
+                goodsStatus = localStorage.getItem('goodsStatus') || res.goods.goodsStatus;
+                this.newGoods.info.goodsStatus = goodsStatus;
+                localStorage.setItem('goodsStatus', goodsStatus)
+
+
+                this.newGoods = {
+                    info: {
+                        goodsContent: goodsContent,
+                        goodsImgUrl: goodsImgUrl,
+                        goodsStatus: goodsStatus,
+                        goodsName: goodsName
+                    },
+                    goodsPropertys: this.propObj,
+                    addSpecs: this.standardObj,
+                    goodsCategoryIdList: this.goodsCategoryList
+                }
                 this.$indicator.close();
             })
+        } else {
+            standardObj = JSON.parse(localStorage.getItem('standardObj')) || [];
+            propObj = JSON.parse(localStorage.getItem('propObj')) || [];
+            goodsCategory = JSON.parse(localStorage.getItem('goodsCategory')) || [];
+            goodsImgUrl = localStorage.getItem('goodsImgUrl') || '';
+            goodsName = localStorage.getItem('goodsName') || '';
+            goodsStatus = localStorage.getItem('goodsStatus') || 'SOLD_OUT';
+            goodsContent = localStorage.getItem('goodsContent') || '';
+
+            this.newGoods.info.goodsContent = goodsContent;
+            this.newGoods.info.goodsImgUrl = goodsImgUrl;
+            this.newGoods.info.goodsStatus = goodsStatus;
+            this.newGoods.info.goodsName = goodsName;
+            this.newGoods.addSpecs = standardObj;
+            this.newGoods.goodsPropertys = propObj;
+            this.newGoods.goodsCategoryIdList = goodsCategory;
+            if (goodsImgUrl) {
+                this.headerImage = this.UPLOADURL + goodsImgUrl;
+            }
         }
-        getGoodsCategoryLists().then(res => {
-            res.list.forEach((item) => {
-                this.options.push({
-                    label: item.goodsCategoryName,
-                    value: {
-                        id: item.goodsCategoryId,
-                        name: item.goodsCategoryName
-                    }
-                })
-            })
-        })
+
+        this.formatGoodsClassName()
+    },
+    watch: {
+        'newGoods.info.goodsStatus': function(newVal, oldVal) {
+            this.newGoods.info.goodsStatus = newVal;
+            localStorage.setItem('goodsStatus', newVal)
+        }
     },
     mounted: function() {
         var self = this;
@@ -200,6 +316,14 @@ export default {
         });
     },
     methods: {
+        goodsGoBack: function() {
+            var action = confirm('返回将导致该商品数据清空,请谨慎操作');
+            if (action) {
+                this.removeGoodsInfo();
+                this.$router.isBack = true;
+                this.$router.back()
+            }
+        },
         getObjectURL(file) {
             var url = null;
             if (window.createObjectURL != undefined) { // basic  
@@ -215,7 +339,7 @@ export default {
             this.popupVisible = true;
             let files = e.target.files || e.dataTransfer.files;
             if (!files.length) return;
-            this.panel = true;
+
             this.picValue = files[0];
 
             this.url = this.getObjectURL(this.picValue);
@@ -223,21 +347,21 @@ export default {
             if (this.cropper) {
                 this.cropper.replace(this.url);
             }
-
         },
         crop() {
+            this.popupVisible = false;
             if (!this.croppable) {
                 return;
             }
-            // Crop  
-            var croppedCanvas = this.cropper.getCroppedCanvas();
+            // Crop
             // console.log(this.cropper)
-            // Round  
+            // Round
+
+            var croppedCanvas = this.cropper.getCroppedCanvas();
             var roundedCanvas = this.getRoundedCanvas(croppedCanvas);
-            this.popupVisible = false;
-            this.panel = false;
-            this.$indicator.open();
             this.headerImage = roundedCanvas.toDataURL('image/jpeg', 0.6);
+
+            //上传
             this.postImg()
 
         },
@@ -296,23 +420,22 @@ export default {
             var fd = new FormData();
 
             //formdata对象第3个参数为文件名，不传则默认使用文件名，这里是blob对象所以需要加一个后缀
-            fd.append('file', obj, '*.jpg');
+            fd.append('file', obj, Date.now() + '.jpg');
 
             fd.path = '/goods'
+            this.$indicator.open();
             uploadFiles(fd).then(data => {
-            this.$indicator.close();
+                this.$indicator.close();
                 console.log(data)
                 this.$toast({
-                    message: '上传成功',
+                    message: '图片上传成功',
                     duration: 1000
                 })
-                if (this.goodsId) {
-                    this.goodsInfo.goods.goodsImgUrl = data.originalUrl;
-                } else {
-                    this.newGoods.goods.goodsImgUrl = data.originalUrl;
-                }
+                this.newGoods.info.goodsImgUrl = data.originalUrl;
+                localStorage.setItem('goodsImgUrl', data.originalUrl);
                 this.cancel()
             }).catch(err => {
+                this.$indicator.close();
                 console.log(err)
                 this.$toast({
                     message: err,
@@ -327,67 +450,103 @@ export default {
             this.cropper.destroy()
             this.popupVisible = false;
             this.croppable = false;
-            this.panel = false;
             this.picValue = '';
             this.url = '';
             this.$refs.uploads.value = '';
         },
+        formatGoodsClassName: function() {
+            var currentGoodsCategory = JSON.parse(localStorage.getItem('goodsCategory')) || [];
+            var storeGoodsCategoryList = JSON.parse(localStorage.getItem('goodsCategoryList')) || [];
+            var tempGoodsCategoryIdList = {};
+            storeGoodsCategoryList.forEach((item, index) => {
+                tempGoodsCategoryIdList[item.goodsCategoryId] = item.goodsCategoryName
+            })
+
+            var names = [];
+            for (var goodsCategoryId in tempGoodsCategoryIdList) {
+                if (currentGoodsCategory.indexOf(parseInt(goodsCategoryId)) != -1) {
+                    names.push(tempGoodsCategoryIdList[goodsCategoryId]);
+                }
+            }
+
+            this.goodsClassNames = names.join("、");
+        },
         updateGoods: function() {
+
+            if (this.newGoods.info.goodsImgUrl == '') {
+                this.$toast({ message: '请上传商品图片', duration: 1000 })
+                return;
+            }
+            if (this.newGoods.info.goodsName == '') {
+                this.$toast({ message: '请输入商品名称', duration: 1000 })
+                return;
+            }
+            if (this.newGoods.goodsCategoryIdList.length == 0) {
+                this.$toast({ message: '请选择商品分类', duration: 1000 })
+                return;
+            }
+
             //编辑
             if (this.goodsId) {
+
+                if (this.newGoods.addSpecs.length == 0 && this.newGoods.deleteSpecIds.length != 0) {
+                    this.$toast({ message: '请添加商品规格', duration: 1000 })
+                    return;
+                }
+
+                var updateSpecs = [];
+                var addSpecs = [];
+                this.standardObj.forEach((item) => {
+                    if (item.goodsSpecificationId) {
+                        updateSpecs.push(item)
+                    } else {
+                        addSpecs.push(item)
+                    }
+                })
+                var params = {
+                    addSpecs: addSpecs,
+                    deleteSpecIds: this.deleteStandardObj,
+                    goodsCategoryIdList: this.newGoods.goodsCategoryIdList,
+                    goodsPropertys: this.newGoods.goodsPropertys,
+                    info: {
+                        goodsContent: this.newGoods.info.goodsContent,
+                        goodsImgUrl: this.newGoods.info.goodsImgUrl,
+                        goodsName: this.newGoods.info.goodsName,
+                        goodsStatus: this.newGoods.info.goodsStatus
+                    },
+                    updateSpecs: updateSpecs
+                }
+
+                console.log(params)
+                // return
+
                 this.$indicator.open();
-                updateGoodsById(this.goodsInfo.goods.goodsId, this.goodsInfo).then(() => {
+                updateGoodsById(this.goodsId, params).then(() => {
                     this.$toast({ message: '操作成功', duration: 1000 })
+                    this.removeGoodsInfo();
                     this.$indicator.close();
+                    this.$router.isBack = true;
                     setTimeout(() => {
                         this.$router.back()
                     }, 1500)
                 })
             } else {
                 //新增
-                if (this.newGoods.goods.goodsImgUrl == '') {
-                    this.$toast({ message: '请上传商品图片', duration: 1000 })
-                    return;
-                }
-                if (this.newGoods.goods.goodsName == '') {
-                    this.$toast({ message: '请输入商品名称', duration: 1000 })
-                    return;
-                }
-                if (this.newGoods.goodsCategoryIdList.length == 0) {
-                    this.$toast({ message: '请选择商品分类', duration: 1000 })
-                    return;
-                }
-                if (this.newGoods.goods.goodsPrice === '') {
-                    this.$toast({ message: '请输入商品价格', duration: 1000 })
-                    return;
-                }
-                if (this.newGoods.goods.goodsPrice < 0 ) {
-                    this.newGoods.goods.goodsPrice = ''
-                    this.$toast({ message: '请输入正确的商品价格', duration: 1000 })
-                    return;
-                }
-                if (this.newGoods.goods.feeMeals === '') {
-                    this.$toast({ message: '请输入餐盒费', duration: 1000 })
-                    return;
-                }
-                if (this.newGoods.goods.feeMeals < 0) {
-                    this.newGoods.goods.feeMeals = ''
-                    this.$toast({ message: '请输入正确的餐盒费', duration: 1000 })
+                if (this.newGoods.addSpecs.length == 0) {
+                    this.$toast({ message: '请添加商品规格', duration: 1000 })
                     return;
                 }
                 this.$indicator.open();
                 addGoods(this.newGoods).then(() => {
                     this.$toast({ message: '操作成功', duration: 1000 })
                     this.$indicator.close();
-                    localStorage.removeItem('goodsCategoryList')
+                    this.removeGoodsInfo();
+                    this.$router.isBack = true;
                     setTimeout(() => {
                         this.$router.back()
                     }, 1500)
                 })
             }
-        },
-        formatGoodsClass: function(className) {
-            return className.replace(/,/g, '、')
         },
         showGoodsCategoryPopup: function() {
             this.goodsCategoryPopup = true;
@@ -395,30 +554,46 @@ export default {
         closeGoodscategoryPopup: function() {
             this.goodsCategoryPopup = false;
         },
-        saveBusiness: function() {
-            if (this.goodsCategoryList.length == 0) {
-                this.$toast({ message: '请选择分类', duration: 1000, className: 'goodscategory-toast' })
-                return;
-            }
-
-            console.log(this.goodsCategoryList)
-            var tempGoodsCategoryIdList = {};
-            this.goodsCategoryList.forEach((item, index) => {
-                tempGoodsCategoryIdList[item.id] = item.name
-            })
-
-            var names = [];
-            this.newGoods.goodsCategoryIdList = []
-            for (var id in tempGoodsCategoryIdList) {
-                names.push(tempGoodsCategoryIdList[id]);
-                this.newGoods.goodsCategoryIdList.push(+id)
-            }
-
-            this.newGoods.goods.goodsClassNames = names.join(",");
+        closeGoodsCategoryPopup: function() {
             this.goodsCategoryPopup = false;
         },
-        closeGoodsCategoryPopup: function(){
-            this.goodsCategoryPopup = false;
+        deleteStandardByIndex: function(index) {
+            var deleteProps = confirm('确定删除该规格?');
+            if (deleteProps) {
+                if (this.standardObj[index]['goodsSpecificationId']) {
+                    this.deleteStandardObj.push(this.standardObj[index]['goodsSpecificationId'])
+                    localStorage.setItem('deleteStandardObj', JSON.stringify(this.deleteStandardObj));
+                }
+                this.standardObj.splice(index, 1);
+                localStorage.setItem('standardObj', JSON.stringify(this.standardObj));
+                this.$toast({ message: '删除成功', duration: 1000 })
+            }
+        },
+        deletePropsByIndex: function(index) {
+            var deleteProps = confirm('确定删除该属性?');
+            if (deleteProps) {
+                this.propObj.splice(index, 1);
+                localStorage.setItem('propObj', JSON.stringify(this.propObj));
+                this.$toast({ message: '删除成功', duration: 1000 })
+            }
+        },
+        savaGoodsName: function() {
+            localStorage.setItem('goodsName', this.newGoods.info.goodsName)
+        },
+        savaGoodsIntro: function() {
+            localStorage.setItem('goodsContent', this.newGoods.info.goodsContent)
+        },
+        removeGoodsInfo: function() {
+            localStorage.removeItem('standardObj');
+            localStorage.removeItem('propObj');
+            localStorage.removeItem('goodsCategory');
+            localStorage.removeItem('goodsCategoryList');
+            localStorage.removeItem('goodsImgUrl');
+            localStorage.removeItem('goodsName');
+            localStorage.removeItem('goodsIntro');
+            localStorage.removeItem('goodsStatus');
+            localStorage.removeItem('goodsContent');
+            localStorage.removeItem('deleteStandardObj');
         }
     }
 }
@@ -483,6 +658,114 @@ export default {
     vertical-align: middle;
 }
 
+.goods-standard {
+    margin: 1.33vw 0;
+}
+
+.standard-row {
+    padding: 2.66vw;
+    overflow: hidden;
+    zoom: 1;
+    color: #4d4d4d;
+    background-color: #fff;
+}
+
+.standard-jump {
+    display: block;
+    font-size: 3.73vw;
+    float: right;
+    margin-top: 0.4vw;
+    color: #09b745;
+    text-decoration: none;
+}
+
+.standard-jump:before {
+    content: '';
+    display: inline-block;
+    width: 3.6vw;
+    height: 3.6vw;
+    background: url(../assets/images/edit-icon.png) no-repeat;
+    background-size: contain;
+    vertical-align: middle;
+    margin-top: -0.8vw;
+    margin-right: 1vw;
+}
+
+.standard-content {
+    background-color: #fff;
+}
+
+.standard-item {
+    padding: 2vw 2.66vw;
+    background-color: #eef9f3;
+    font-size: 3.73vw;
+    overflow: hidden;
+    zoom: 1;
+}
+
+.standard-index {
+    display: inline-block;
+    float: left;
+}
+
+.standard-operation {
+    display: inline-block;
+    float: right;
+}
+
+.standard-btn {
+    font-size: 3.73vw;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+.update-standard-btn {
+    color: #05b645;
+}
+
+.delete-standard-btn {
+    color: #e84747;
+}
+
+.standard-item-row {
+    overflow: hidden;
+    zoom: 1;
+    padding: 2vw 2.66vw;
+    font-size: 0;
+    color: #999;
+}
+
+.standard-item-row:not(:last-child) {
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.standard-key {
+    display: inline-block;
+    width: 50%;
+    font-size: 3.73vw;
+}
+
+.standard-value {
+    display: inline-block;
+    width: 50%;
+    font-size: 3.73vw;
+}
+
+.goods-property {
+    display: inline-block;
+    font-size: 3.73vw;
+    /*width: 18vw;*/
+    padding: 0 2vw;
+    height: 8vw;
+    line-height: 8vw;
+    text-align: center;
+    color: #4c4c4c;
+    background-color: #f5f5f5;
+    margin: 1.2vw;
+    border-radius: 1px;
+}
+
 .value-after:after {
     content: '';
     display: inline-block;
@@ -502,6 +785,17 @@ export default {
     box-sizing: border-box;
     border: none;
     outline: none;
+}
+
+.row-value .radio {
+    width: auto;
+    margin: 0;
+}
+
+.row-value label {
+    padding: 1vw;
+    margin-left: 3vw;
+    vertical-align: middle;
 }
 
 .goods-intro {
@@ -539,6 +833,7 @@ export default {
     position: fixed;
     bottom: 0;
 }
+
 
 
 
@@ -656,4 +951,5 @@ export default {
     position: fixed;
     bottom: 0;
 }
+
 </style>

@@ -26,33 +26,32 @@
 		data: function(){
 			return {
 				goodsCategoryList: [],
-				options: []
+				options: [],
+				goodsId: 0
 			}
 		},
 		created: function(){
-			var goodsId = this.$route.query.goodsId;
-			if(goodsId){
-				var categoryList = this.$route.query.goodsCategoryList;
-				var categoryArray = categoryList.split(',')
-				this.$indicator.open();
-				getGoodsCategoryLists().then(res => {
-					res.list.forEach((item) => {
-						if(categoryArray.indexOf(item.goodsCategoryId.toString()) != -1){
-							this.goodsCategoryList.push(item.goodsCategoryId)
-						}
-						this.options.push({
-							label: item.goodsCategoryName,
-							value: item.goodsCategoryId
-						})
+			var goodsId = parseInt(this.$route.query.goodsId);
+			this.goodsId = goodsId;
+			var categoryList = this.$route.query.goodsCategoryList || '[]';
+			var categoryArray = JSON.parse(categoryList)
+			this.$indicator.open();
+			getGoodsCategoryLists().then(res => {
+				localStorage.setItem('goodsCategoryList',JSON.stringify(res.list));
+				res.list.forEach((item) => {
+					if(categoryArray.indexOf(item.goodsCategoryId) != -1){
+						this.goodsCategoryList.push(item.goodsCategoryId)
+					}
+					this.options.push({
+						label: item.goodsCategoryName,
+						value: item.goodsCategoryId
 					})
-					this.$indicator.close();
 				})
-			}
+				this.$indicator.close();
+			})
 		},
 		methods: {
 			saveBusiness: function(){
-				console.log(this.goodsCategoryList)
-				// return
 				if(this.goodsCategoryList.length == 0){
 					this.$toast({
 						message: '请选择商品分类',
@@ -60,18 +59,27 @@
 					})
 					return;
 				}
-				this.$indicator.open();
-				updateGoodsCategory(this.$route.query.goodsId,this.goodsCategoryList).then(() => {
-					this.$indicator.close();
-					this.$toast({
-						message: '修改成功',
-						duration: 1000
-					})
+				if(this.goodsId === 0){
+					//新增
+					localStorage.setItem('goodsCategory', JSON.stringify(this.goodsCategoryList));
+					this.$toast({ message: '操作成功', duration: 1000})
 					this.$router.isBack = true;
-					setTimeout(() => {
-					   this.$router.back()
-					}, 1500)
-				})
+					setTimeout(() =>{
+					    this.$router.back();
+					},1500)
+				}else{
+					//修改
+					this.$indicator.open();
+					updateGoodsCategory(this.goodsId,this.goodsCategoryList).then(() => {
+						this.$indicator.close();
+						this.$toast({ message: '操作成功', duration: 1000 })
+						localStorage.setItem('goodsCategory', JSON.stringify(this.goodsCategoryList));
+						this.$router.isBack = true;
+						setTimeout(() => {
+						   this.$router.back()
+						}, 1500)
+					})
+				}
 			}
 		}
 	}

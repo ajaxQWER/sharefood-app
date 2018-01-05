@@ -6,14 +6,12 @@ import VueRouter from 'vue-router'
 import routes from './router'
 import moment from 'moment'
 import VueAMap from 'vue-amap'
-// import Scrollactive from 'vue-scrollactive'
 
 Vue.use(MintUI);
 Vue.use(VueRouter);
 Vue.use(VueAMap);
-// Vue.use(Scrollactive);
 
-// Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 // 初始化vue-amap
 VueAMap.initAMapApiLoader({
@@ -42,11 +40,6 @@ if (/Android/gi.test(navigator.userAgent)) {
 }
 
 
-//正式
-// Object.defineProperty(Vue.prototype, 'UPLOADURL', {value: 'http://uploads.gongxiangdiancan.com'});
-// Object.defineProperty(Vue.prototype, 'BASEURL', {value: 'http://api.gongxiangdiancan.com'});
-
-//测试
 Object.defineProperty(Vue.prototype, 'UPLOADURL', {value: process.env.UPLOAD_URL});
 Object.defineProperty(Vue.prototype, 'BASEURL', {value: process.env.BASE_URL});
 
@@ -54,13 +47,29 @@ Object.defineProperty(Vue.prototype, 'moment', {value: moment});
 
 Vue.prototype.back = function(){
 	router.isBack = true;
-	localStorage.removeItem('goodsCategoryList');
 	router.back()
 }
 
 window.goBack = function(){
-	router.isBack = true;
-	router.back()
+    router.isBack = true;
+    router.back()
+}
+window.goodsGoBack = function(){
+    var action = confirm('返回将导致该商品数据清空,请谨慎操作');
+    if(action == true){
+        localStorage.removeItem('standardObj');
+        localStorage.removeItem('propObj');
+        localStorage.removeItem('goodsCategory');
+        localStorage.removeItem('goodsCategoryList');
+        localStorage.removeItem('goodsImgUrl');
+        localStorage.removeItem('goodsName');
+        localStorage.removeItem('goodsIntro');
+        localStorage.removeItem('goodsStatus');
+        localStorage.removeItem('goodsContent');
+        localStorage.removeItem('deleteStandardObj');
+        router.isBack = true;
+        router.back()
+    }
 }
 
 //这是必须要写的，用来初始化一些设置

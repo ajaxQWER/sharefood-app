@@ -26,11 +26,6 @@
                     </router-link>
                 </div>
                 <div class="column flex">
-                    <router-link to="/onSales">
-                        <div class="column-item flex-1" @click="removeActivityId">
-                            <img src="../assets/images/bargain-goods.png" alt="">
-                        </div>
-                    </router-link>
                     <router-link to="/onDiscount">
                     <div class="column-item flex-1" @click="removeActivityId">
                         <img src="../assets/images/discount-goods.png" alt="">

@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="order-content">
-            <div v-if="!isEmpty">
+            <div class="order-wrap" v-if="!isEmpty">
                 <mt-loadmore :top-method="loadTop" ref="loadmore">
                     <div class="order-lists" v-if="orderList.length">
                         <ul>
@@ -52,29 +52,29 @@
                                     </div>
                                     <div v-if="item.orderType=='TAKEOUT'" class="operate-btn">
                                         <div class="order-row">
-                                            <button @click.prevent="printOrderBtn(item.orderId)" class="btn print-btn">订单补打</button>
-                                            <div v-if="item.orderStatus=='PAYED'">
+                                            <button @click.prevent="printOrderBtn(item.orderId)" class="btn print-btn">打印小票</button>
+                                            <div class="inline-block" v-if="item.orderStatus=='PAYED'">
                                                 <button @click.prevent="cancelOrder(item.orderId)" class="btn danger">拒绝接单</button>
                                                 <button @click.prevent="acceptOrder(item.orderId,item.orderType)" class="btn deal-btn">&emsp;接单&emsp;</button>
                                             </div>
-                                            <div v-if="item.orderStatus=='MERCHANT_CONFIRM_RECEIPT'">
+                                            <div class="inline-block" v-if="item.orderStatus=='MERCHANT_CONFIRM_RECEIPT'">
                                                 <button @click.prevent="cancelOrder(item.orderId)" class="btn danger">取消订单</button>
                                             </div>
-                                            <div v-if="item.orderStatus=='WAIT_PICKUP'">
+                                            <div class="inline-block" v-if="item.orderStatus=='WAIT_PICKUP'">
                                                 <button @click.prevent="cancelOrder(item.orderId)" class="btn danger">取消订单</button>
                                             </div>
-                                            <div v-if="item.orderStatus=='PICKUPING'">
+                                            <div class="inline-block" v-if="item.orderStatus=='PICKUPING'">
                                                 <button @click.prevent="cancelOrder(item.orderId)" class="btn danger">取消订单</button>
                                             </div>
                                         </div>
                                     </div>
                                     <div v-else class="operate-btn">
                                         <div class="order-row">
-                                            <div v-if="item.orderStatus=='PAYED'">
+                                            <div class="inline-block" v-if="item.orderStatus=='PAYED'">
                                                 <button @click.prevent="cancelOrder(item.orderId)" class="btn danger">拒绝接单</button>
                                                 <button @click.prevent="acceptOrder(item.orderId,item.orderType)" class="btn deal-btn">接单</button>
                                             </div>
-                                            <div v-if="item.orderStatus=='MERCHANT_CONFIRM_RECEIPT'">
+                                            <div class="inline-block" v-if="item.orderStatus=='MERCHANT_CONFIRM_RECEIPT'">
                                                 <button @click.prevent="finishOrder(item.orderId)" class="btn deal-btn">&emsp;完成&emsp;</button>
                                             </div>
                                         </div>
@@ -274,24 +274,26 @@ export default {
             })
         },
         acceptOrder: function(orderId, orderType) {
-            this.$messagebox.confirm('确定接单?').then(action => {
+            var isConfirm = confirm('确定接单?');
+            if(isConfirm){
                 this.$indicator.open();
                 acceptOrderById(orderId).then(() => {
                     this.$toast({ message: '操作成功', duration: 1500 })
                     this.$indicator.close();
                     this.getOrders({ pageId: this.pageId, orderStatus: this.orderStatus })
                 })
-            }).catch(() => {});
+            }
         },
         finishOrder: function(orderId) {
-            this.$messagebox.confirm('确定完成预定订单?').then(action => {
+            var isConfirm = confirm('确定完成预定订单?');
+            if(isConfirm){
                 this.$indicator.open();
                 finishOrderById(orderId).then(() => {
                     this.$toast({ message: '操作成功', duration: 1500 })
                     this.$indicator.close();
                     this.getOrders({ pageId: this.pageId, orderStatus: this.orderStatus })
                 })
-            }).catch(() => {});
+            }
         },
         closePopup: function() {
             this.popupVisible3 = false;
@@ -314,15 +316,23 @@ export default {
             }
         },
         printOrderBtn: function(orderId){
-            this.$messagebox.confirm('确定补打该订单?').then(() => {
+            var isConfirm = confirm('确定打印该订单小票?');
+            if(isConfirm){
                 this.$indicator.open();
                 printOrder(orderId).then(() => {
                     this.$toast({ message: '操作成功', duration: 1500 })
                     this.$indicator.close();
                     this.getOrders({ pageId: this.pageId, orderStatus: this.orderStatus })
                 })
-            }).catch(() => {});
-            
+            }
+            // this.$messagebox.confirm('确定补打该订单?').then(() => {
+            //     this.$indicator.open();
+            //     printOrder(orderId).then(() => {
+            //         this.$toast({ message: '操作成功', duration: 1500 })
+            //         this.$indicator.close();
+            //         this.getOrders({ pageId: this.pageId, orderStatus: this.orderStatus })
+            //     })
+            // }).catch(() => {});
         }
     }
 }
@@ -387,7 +397,9 @@ export default {
     /* padding-bottom: 13.06vw; */
     padding-top: 22.39vw;
 }
-
+.order-wrap{
+    height: 100%;
+}
 .order-lists {
     box-sizing: border-box;
     height: 100%;
@@ -678,5 +690,10 @@ a.telephone img {
     overflow: hidden;
     zoom: 1;
 }
-
+.inline-block{
+    display: inline-block;
+}
+.mint-loadmore{
+    min-height: 100%;
+}
 </style>

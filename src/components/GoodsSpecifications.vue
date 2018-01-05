@@ -1,52 +1,53 @@
 <template>
     <div id="specification">
-        <div class="specification-header">
-            <div class="nav-bar help-navbar">
-                <div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
+        <div class="nav-bar help-navbar">
+            <div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
                 <div class="nav-title">添加规格</div>
-            </div>
         </div>
         <div class="specification-content">
             <div class="shopDetail-row">
                 <div class="shopDetail-col">
-                    <div class="row-title"><span>*</span>规格名称</div>
+                    <div class="row-title standard-title">规格名称</div>
                     <div class="specification">
-                        <input type="number" placeholder="请输入商品名称">
+                        <input type="text" placeholder="请输入规格名称" v-model="standardObj.goodsSpecificationName">
                     </div>
                 </div>
                 <div class="shopDetail-col">
-                    <div class="row-title">价格</div>
+                    <div class="row-title standard-title">价格</div>
                     <div class="specification">
-                        <input type="number" placeholder="请输入商品价格">
+                        <input type="number" placeholder="请输入规格价格" v-model.number="standardObj.goodsSpecificationPrice" min="0">
                     </div>
                 </div>
                 <div class="shopDetail-col">
-                    <div class="row-title">库存无限</div>
+                    <div class="row-title standard-title">库存</div>
                     <div class="specification">
-                        <mt-switch v-model="value"></mt-switch>
+                        <mt-switch v-model="standardObj.infiniteInventory">
+                            <label v-text="formatVal(standardObj.infiniteInventory)"></label>
+                        </mt-switch>
                     </div>
                 </div>
-                <div class="shopDetail-col" v-if="!value">
-                    <div class="row-title">库存数量</div>
+                <div class="shopDetail-col" v-if="!standardObj.infiniteInventory">
+                    <div class="row-title standard-title">库存数量</div>
                     <div class="specification">
-                        <input type="number" placeholder="请输入库存数量">
-                    </div>
-                </div>
-                <div class="shopDetail-col">
-                    <div class="row-title"><span>*</span>餐盒数量</div>
-                    <div class="specification">
-                        <input type="number" placeholder="请输入餐盒数量">
+                        <input type="number" placeholder="请输入库存数量" v-model.number="standardObj.stock" min="0">
                     </div>
                 </div>
                 <div class="shopDetail-col">
-                    <div class="row-title"><span>*</span>餐盒价格</div>
+                    <div class="row-title standard-title">餐盒数量</div>
                     <div class="specification">
-                        <input type="number" placeholder="请输入餐盒价格">
+                        <input type="number" placeholder="请输入餐盒数量" v-model.number="standardObj.boxesNumber" min="0">
+                    </div>
+                </div>
+                <div class="shopDetail-col">
+                    <div class="row-title standard-title">餐盒价格</div>
+                    <div class="specification">
+                        <input type="number" placeholder="请输入餐盒价格" v-model.number="standardObj.boxesMoney" min="0">
                     </div>
                 </div>
             </div>
-            <button class="save">确认</button>
         </div>
+        <div class="save" @click="saveStandard">保存</div>
+        <!-- <button class="save" @click="saveStandard">保存</button> -->
     </div>
 </template>
 <script>
@@ -59,14 +60,68 @@
         name: 'specification',
         data: function() {
             return {
-                value: true
+                standardObj: {
+                    infiniteInventory: true,
+                    boxesMoney: '',
+                    boxesNumber: '',
+                    goodsSpecificationName: '',
+                    goodsSpecificationPrice: '',
+                    stock: ''
+                }
             }
         },
         created: function() {
-
+            var routeStandardObj = this.$route.query.item ? JSON.parse(this.$route.query.item) : null;
+            if(routeStandardObj){
+                this.standardObj = routeStandardObj
+            }
+            console.log(this.standardObj)
         },
         methods: {
+            formatVal: function(val){
+                return val ? '无限' : '有限'
+            },
+            saveStandard: function(){
+                if(this.standardObj.goodsSpecificationName === ''){
+                    this.$toast({ message: '请输入规格名称', duration: 1000})
+                    return;
+                }
+                if(this.standardObj.goodsSpecificationPrice === ''){
+                    this.$toast({ message: '请输入规格价格', duration: 1000})
+                    return;
+                }
+                if(!this.standardObj.infiniteInventory && this.standardObj.stock === ''){
+                    this.$toast({ message: '请输入库存数量', duration: 1000})
+                    return;
+                }
+                if(this.standardObj.boxesNumber === ''){
+                    this.$toast({ message: '请输入餐盒数量', duration: 1000})
+                    return;
+                }
+                if(this.standardObj.boxesMoney === ''){
+                    this.$toast({ message: '请输入餐盒价格', duration: 1000})
+                    return;
+                }
 
+                var index = this.$route.query.index || null;
+                var id = this.$route.query.id || null;
+                var standardObj = JSON.parse(localStorage.getItem('standardObj')) || [];
+
+                if(id != null){
+                    if(index != null){
+                        standardObj[index] = this.standardObj;
+                    }
+                }else{
+                    standardObj.push(this.standardObj);
+                }
+                
+                localStorage.setItem('standardObj',JSON.stringify(standardObj))
+                this.$toast({ message: '操作成功', duration: 1000})
+                this.$router.isBack = true;
+                setTimeout(() =>{
+                    this.$router.back();
+                },1500)
+            }
         }
     }
 
@@ -75,19 +130,13 @@
     #specification {
         min-height: 100%;
         background-color: #f2f2f2;
+        overflow: hidden;
     }
-
-    .specification-header {
-        width: 100%;
-        position: fixed;
-    }
-
     .specification-content {
         box-sizing: border-box;
         height: 100vh;
-        overflow: hidden;
+        overflow: scroll;
         zoom: 1;
-        padding: 13.06vw 0 14.39vw;
     }
 
     .shopDetail-row {
@@ -103,6 +152,7 @@
     }
 
     .shopDetail-col {
+        /*height: 12vw;*/
         padding: 2vw 2.66vw;
         overflow: hidden;
         zoom: 1;
@@ -114,10 +164,12 @@
     }
 
     .row-title {
+        /*height: 8vw;*/
         font-size: 4.26vw;
         display: inline-block;
         float: left;
-        line-height: 6.66vw;
+        vertical-align: middle;
+        /*line-height: 8vw;*/
     }
 
     .row-value {
@@ -132,28 +184,24 @@
         border: none;
     }
 
-    .row-title{
-        float: left;
-        vertical-align: middle;
-        line-height: 8vw;
-    }
-
     .specification {
         display: inline-block;
         float: right;
-        margin: 0 2.66vw;
+        /*margin: 0 2.66vw;*/
     }
 
     .specification input {
         display: block;
         width: 64.66vw;
-        height: 6vw;
+        /*height: 8vw;*/
+        /*line-height: 8px;*/
         font-size: 3.72vw;
         text-align: right;
-        padding-right: 2.66vw;
+        /*padding-right: 2.66vw;*/
         border-radius: 3px;
         outline: none;
         border: none;
+        /*vertical-align: middle;*/
     }
 
     input::placeholder,
@@ -199,6 +247,7 @@
     .save {
         width: 100%;
         height: 10.66vw;
+        text-align: center;
         line-height: 10.66vw;
         font-size: 4.26vw;
         color: #fff;
@@ -208,10 +257,13 @@
         border: none;
         outline: none;
     }
-
-    .row-title span {
+    .standard-title:before{
+        content: '*';
+        display: inline-block;
         color: #ff0000;
-        margin-right: 1.33vw;
+        vertical-align: middle;
+        margin-right: 1vw;
+        margin-top: 1vw;
     }
 
 </style>

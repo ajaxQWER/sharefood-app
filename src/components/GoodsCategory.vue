@@ -1,10 +1,8 @@
 <template>
 	<div id="goodsCategory">
-		<div class="goodsCategory-header">
-			<div class="nav-bar help-navbar">
-		  		<div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
-		  		<div class="nav-title">商品分类</div>
-			</div>
+		<div class="nav-bar help-navbar">
+	  		<div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
+	  		<div class="nav-title">商品分类</div>
 		</div>
 		<div class="goodsCategory-content">
 			<ul class="goodsCategory-lists" v-if="!isEmpty">
@@ -52,14 +50,17 @@
 				})
 			},
 			deleteCategory: function(id){
-				this.$messagebox.confirm('确定删除该分类?').then(action => {
+				var isTrue = confirm('确定删除该分类?');
+				if(isTrue){
+					this.$indicator.open();
 					deleteGoodsCategoryById(id).then(() => {
+						this.$indicator.close();
   						this.$toast({message:'删除成功',duration: 1000})
-						this.getGoodsCategoryList()
+  						setTimeout(() => {
+							this.getGoodsCategoryList()  						
+  						}, 1500)
 					})
-				}).catch(() => {
-					this.$toast({message:'已取消',duration: 1000})
-				});
+				}
 			},
 			saveGoodsCategory: function(){
 				if(!this.goodsCategoryName){
@@ -83,16 +84,11 @@
 	background-color: #f2f2f2;
 	overflow: hidden;
 }
-.goodsCategory-header{
-	width: 100%;
-	position: fixed;
-}
 .goodsCategory-content{
   	box-sizing: border-box;
-	padding-top: 11.73vw;
 	height: 100vh;
 	overflow: scroll;
-	padding-bottom: 10.66vw;
+	padding-bottom: 22.39vw;
 }
 .goodsCategory-add-wrap{
 	width: 100%;

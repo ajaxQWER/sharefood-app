@@ -11,7 +11,7 @@
 		<div class="goods-content">
 			<div class="goods-type">
 				<ul>
-					<li :class="item.isActiveItem?'goods-type-item current-goods-type':'goods-type-item'" v-for="(item,index) in goodsCategoryLists" @click="getGoodsById(item.goodsCategoryId,index)" :key="index">{{item.goodsCategoryName}}</li>
+					<li :class="activeIndex==index?'goods-type-item current-goods-type':'goods-type-item'" v-for="(item,index) in goodsCategoryLists" @click="getGoodsById(item.goodsCategoryId,index)" :key="index">{{item.goodsCategoryName}}</li>
 				</ul>
 			</div>
 			<div class="goods-details-lists">
@@ -21,7 +21,7 @@
 							<div class="goods-detail-wrap">
 								<div class="goods-image">
 									<!-- <img :src="UPLOADURL + item.goodsImgUrl" alt=""> -->
-									<img v-lazy="UPLOADURL + item.goodsImgUrl+'/goods.png'" alt="">
+									<img v-lazy="UPLOADURL + item.goodsImgUrl" alt="">
 								</div>
 								<div class="goods-info">
 									<h3 class="goods-name">{{item.goodsName}}</h3>
@@ -53,26 +53,21 @@
 			return {
 				goodsCategoryLists: null,
 				goodsList: null,
+				activeIndex: 0,
 				isEmpty: false
 			}
 		},
 		created: function(){
-			console.log(this.UPLOADURL)
 			this.$indicator.open();
 			getGoodsCategoryLists({params: {pageSize: 999999}}).then(res => {
 				console.log(res)
 				if(res.list.length){
 					this.getGoods(res.list[0].goodsCategoryId)
 					this.goodsCategoryLists = res.list;
-					this.goodsCategoryLists.forEach(function(item,index){
-						item['isActiveItem'] = false;
-						if(index == 0){
-							item['isActiveItem'] = true
-						}
-					})
 				}else{
 					this.isEmpty = true;
 				}
+				console.log(this.goodsCategoryLists)
 				this.$indicator.close();
 			})
 		},
@@ -99,27 +94,22 @@
 			},
 			getGoodsById: function(id,index){
 				this.$indicator.open();
-				this.goodsCategoryLists.forEach(function(item,current){
-					item['isActiveItem'] = false;
-					if(index == current){
-						item['isActiveItem'] = true;
-					}
-				})
+				this.activeIndex = index;
 				this.getGoods(id)
 			},
 			deleteGoods: function(id,index){
-				this.$messagebox.confirm('确定删除该商品?').then(action => {
+				var deleteConfirm = confirm('确定删除该商品?');
+				if(deleteConfirm){
 					deleteGoodsById(id).then(() => {
-							this.$toast({message:'操作成功',duration: 1000})
-							this.goodsList.splice(index,1)
-						})
-				}).catch(() => {
-					this.$toast({message:'已取消',duration: 1000})
-				});
+						this.$toast({message:'操作成功',duration: 1000})
+						this.goodsList.splice(index,1)
+					})
+				}
 			},
 			soldOut: function(id,index,status){
 				var soldStatus = this.formatStatus(status);
-				this.$messagebox.confirm('确定'+soldStatus+'该商品?').then(action => {
+				var isTrue = confirm('确定'+soldStatus+'该商品?');
+				if(isTrue){
 					if(status==='PUTAWAY'){
 						soldOutGoods([id]).then(() => {
 							this.$toast({message:'操作成功',duration: 1000})
@@ -131,9 +121,7 @@
 							this.goodsList[index].goodsStatus = 'PUTAWAY'
 						})
 					}
-				}).catch(() => {
-					this.$toast({message:'已取消',duration: 1000})
-				});
+				}
 			}
 		}
 	}

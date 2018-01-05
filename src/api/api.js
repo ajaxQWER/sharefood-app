@@ -280,13 +280,17 @@ export const updateActivity = (id, params) => {
 export const getActivityGoods = id => {
     return ajax.get('seller/activityGoods/' + id);
 };
-//特价商品
-export const setSalesActivityGoods = (id,params) => {
-    return ajax.put('seller/activity/specialsGoods/' + id, params);
-};
-//打折商品
-export const setDiscountActivityGoods = (id,params) => {
-    return ajax.put('seller/activity/discountGoods/' + id, params);
+// //特价商品
+// export const setSalesActivityGoods = (id,params) => {
+//     return ajax.put('seller/activity/specialsGoods/' + id, params);
+// };
+// //打折商品
+// export const setDiscountActivityGoods = (id,params) => {
+//     return ajax.put('seller/activity/discountGoods/' + id, params);
+// };
+//添加活动商品
+export const setActivityGoods = (id,params) => {
+    return ajax.put('seller/activity/goods/' + id, params);
 };
 
 
@@ -329,6 +333,15 @@ export const getPhoneCode = phoneNumber => {
 //订单补打
 export const printOrder = orderId => {
     return ajax.post('seller/order/print/' + orderId);
+};
+
+//设置自动接单
+export const autoReceiveOrder = () => {
+    return ajax.put('seller/shop/automaticAcceptOrder');
+};
+//设置手动接单
+export const handReceiveOrder = () => {
+    return ajax.delete('seller/shop/automaticAcceptOrder');
 };
 
 //文件上传 前台文件需要设置一个path属性

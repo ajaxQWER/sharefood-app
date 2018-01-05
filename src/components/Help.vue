@@ -2,10 +2,10 @@
     <div id="help">
         <div class="nav-bar help-navbar">
             <div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div>
-            <div class="nav-title">登录遇到问题</div>
+            <div class="nav-title" v-if="title">{{title}}</div>
         </div>
         <div class="help-lists">
-            <router-link v-for="(item,index) in articleLists" :to="'/helpDetail?id='+ item.articleId" :key="index" class="list-item">
+            <router-link v-for="(item,index) in articleLists" :to="'/helpDetail?id='+ item.articleId+'&title='+title" :key="index" class="list-item">
                 <div class="list-title">{{item.articleTitle}}</div>
             </router-link>
         </div>
@@ -17,7 +17,8 @@ export default {
     name: 'help',
     data: function() {
         return {
-            articleLists: []
+            articleLists: [],
+            title: ''
         }
     },
     methods: {
@@ -25,6 +26,8 @@ export default {
     },
     created: function() {
         var articleCategoryId = this.$route.query.id;
+        var title = this.$route.query.title;
+        this.title = title;
         getArticleListByCategoryId({ params: { articleCategoryId: articleCategoryId } }).then(res => {
             console.log(res)
             this.articleLists = res.list

@@ -259,7 +259,7 @@
         float: right;
     }
     .setBonus-name input[type='text'], .setBonus-name input[type='number']{
-        width: 64.66vw;
+        width: 60vw;
         height: 6vw;
         font-size: 3.72vw;
         text-align: right;

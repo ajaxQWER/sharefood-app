@@ -52,7 +52,7 @@
     </div>
 </template>
 <script>
-import { getGoodsLists, setSalesActivityGoods,setDiscountActivityGoods } from '@/api/api'
+import { getGoodsLists, setActivityGoods } from '@/api/api'
 export default {
     name: 'goodsManager',
     data: function() {
@@ -197,37 +197,20 @@ export default {
                 return;
             }
             console.log(params)
-        	if(this.type == 'sales'){
-            	this.$indicator.open();
-        		setSalesActivityGoods(id,params).then(res => {
-        			console.log(res)
-            		this.$indicator.open();
-            		this.$toast({
-            		    message: '操作成功',
-            		    duration: 1000
-            		})
-            		localStorage.setItem('activityId',id)
-            		setTimeout(() => {
-                        this.$router.isBack = true;
-                        this.$router.back()
-                    }, 1500)
+        	this.$indicator.open();
+    		setActivityGoods(id,params).then(res => {
+    			console.log(res)
+        		this.$indicator.open();
+        		this.$toast({
+        		    message: '操作成功',
+        		    duration: 1000
         		})
-        	}else{
-		    	this.$indicator.open();
-				setDiscountActivityGoods(id,params).then(res => {
-					console.log(res)
-		    		this.$indicator.open();
-		    		this.$toast({
-		    		    message: '操作成功',
-		    		    duration: 1000
-		    		})
-		    		localStorage.setItem('activityId',id)
-		    		setTimeout(() => {
-		                this.$router.isBack = true;
-		                this.$router.back()
-		            }, 1500)
-				})
-        	}
+        		localStorage.setItem('activityId',id)
+        		setTimeout(() => {
+                    this.$router.isBack = true;
+                    this.$router.back()
+                }, 1500)
+    		})
         }
     }
 }

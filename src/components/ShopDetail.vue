@@ -52,6 +52,14 @@
 				</router-link>
 			</div>
             <div class="shopDetail-row">
+                <router-link class="jump" :to="'/orderReceive?automaticAcceptOrder='+shopDetail.automaticAcceptOrder">
+                    <div class="shopDetail-col">
+                        <div class="row-key row-title">接单设置</div>
+                        <div class="row-value row-value-after">{{shopDetail.automaticAcceptOrder?'自动':'手动'}}</div>
+                    </div>
+                </router-link>
+            </div>
+            <div class="shopDetail-row">
                 <router-link :to="'/setMinDeliveryPrice?minDeliveryPrice='+shopDetail.minDeliveryPrice" class="jump">
                     <div class="shopDetail-col shop-after">
                         <div class="row-key row-title">最低配送金额</div>
