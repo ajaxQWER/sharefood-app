@@ -288,6 +288,10 @@ export default {
 .link {
     color: #000;
     text-decoration: none;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 4vw 0;
 }
 
 .column-wrap {
@@ -304,7 +308,6 @@ export default {
 
 .column-item {
     width: 33.06vw;
-    padding: 4vw 0;
     margin: 1px;
     text-align: center;
     background-color: #fff;
