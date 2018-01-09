@@ -5,7 +5,9 @@ var ajax = axios.create({
     baseURL: process.env.BASE_URL, //测试
 	// baseURL : 'http://127.0.0.1:8080',
 	// baseURL: 'http://api.gongxiangdiancan.com', //正式服
-    headers: {},
+    headers: {
+        'SHOP-ID': JSON.parse(localStorage.getItem('shopId'))
+    },
     // timeout: 10000,
     withCredentials: true, //cookie
     crossDomain: true //跨域
@@ -156,7 +158,7 @@ export const getCarrierById = orderId => {
 
 //获取店铺信息
 export const getShopDetail = () => {
-    return ajax.get('seller/shopDetail');
+    return ajax.get('seller/shop');
 };
 //获取店铺信息
 export const updatePwd = params => {
@@ -182,23 +184,23 @@ export const commentReply = params => {
 
 //营业状态-营业
 export const setBusinessOpen = () => {
-    return ajax.put('seller/shopDetail/operatingState');
+    return ajax.put('seller/shop/operatingState');
 };
 //营业状态-歇业
 export const setBusinessClose = () => {
-    return ajax.delete('seller/shopDetail/operatingState');
+    return ajax.delete('seller/shop/operatingState');
 };
 //设置营业时间
 export const setBusinessTime = params => {
-    return ajax.put('seller/shopDetail/busTime', params);
+    return ajax.put('seller/shop/busTime', params);
 };
 //设置联系电话
 export const setBusinessPhoneNumber = phoneNumber => {
-    return ajax.put('seller/shopDetail/takeOutPhone/' + phoneNumber);
+    return ajax.put('seller/shop/takeOutPhone/' + phoneNumber);
 };
 //设置起送金额
 export const setMinDeliveryPrice = minDeliveryPrice => {
-    return ajax.put('seller/shopDetail/updateMinDeliveryPrice/' + minDeliveryPrice);
+    return ajax.put('seller/shop/updateMinDeliveryPrice/' + minDeliveryPrice);
 };
 
 
@@ -318,11 +320,11 @@ export const updateBonusById = (id,params) => {
 //发票设置
 //设置允许开票
 export const setCanDrawInvoice = () => {
-    return ajax.put('seller/shopDetail/drawInvoice');
+    return ajax.put('seller/shop/drawInvoice');
 };
 //设置不允许开票
 export const setNoCanDrawInvoice = () => {
-    return ajax.delete('seller/shopDetail/drawInvoice');
+    return ajax.delete('seller/shop/drawInvoice');
 };
 
 

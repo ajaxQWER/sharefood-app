@@ -44,6 +44,9 @@
 // import GetBonus from '@/components/GetBonus.vue'  //领取红包
 // import DrawInvoice from '@/components/DrawInvoice.vue'  //开票设置
 // import GoodsProperties from '@/components/GoodsProperties.vue' //添加属性
+// import SettlementList from '@/components/SettlementList.vue' //结算明细
+// import SettlementDetail from '@/components/SettlementDetail.vue' //结算明细详情
+// import ShopList from '@/components/ShopList.vue' //选择店铺列表
 
 const Login = r => require.ensure([],() => r(require('@/components/Login.vue')), 'Login'); //登录
 const Regist = r => require.ensure([],() => r(require('@/components/Regist.vue')), 'Regist'); //注册
@@ -92,6 +95,9 @@ const AddBonus = r => require.ensure([],() => r(require('@/components/AddBonus.v
 const GetBonus = r => require.ensure([],() => r(require('@/components/GetBonus.vue')), 'GetBonus'); //领取红包
 const DrawInvoice = r => require.ensure([],() => r(require('@/components/DrawInvoice.vue')), 'DrawInvoice'); //开票设置
 const OrderReceive = r => require.ensure([],() => r(require('@/components/OrderReceive.vue')), 'OrderReceive'); //接单设置
+const SettlementList = r => require.ensure([],() => r(require('@/components/SettlementList.vue')), 'SettlementList'); //结算明细
+const SettlementDetail = r => require.ensure([],() => r(require('@/components/SettlementDetail.vue')), 'SettlementDetail'); //结算明细详情
+const ShopList = r => require.ensure([],() => r(require('@/components/ShopList.vue')), 'ShopList'); //选择店铺列表
 
 let routes = [{
     path: '/',
@@ -285,6 +291,18 @@ let routes = [{
     path: '/orderReceive',
     component: OrderReceive,
     name: 'orderReceive'
+},{
+    path: '/settlementList',
+    component: SettlementList,
+    name: 'settlementList'
+},{
+    path: '/settlementDetail',
+    component: SettlementDetail,
+    name: 'settlementDetail'
+},{
+    path: '/shopList',
+    component: ShopList,
+    name: 'shopList'
 },{
     path: '*',
     redirect: '/home'

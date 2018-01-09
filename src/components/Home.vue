@@ -6,7 +6,7 @@
                 <img :src="UPLOADURL+'/shopLogo/'+loginShopId+'.png/shopLogo.png'" alt="" class="admin-icon">
                 <div class="admin-shop">
                     <h3 class="shop-name">{{loginUser}}</h3>
-                    <router-link to="/shopDetail" class="shop-detail">点击查看门店详情</router-link>
+                    <router-link to="/shopList" class="shop-detail">点击更换其他门店</router-link>
                 </div>
                 <div class="admin-shop-status" v-if="shopSalesData">
                     <div class="shop-status">
@@ -106,14 +106,15 @@
                         <div class="column-name">桌号</div>
                     </div>
                 </router-link> -->
-                <!-- <router-link to="/bills" class="link">
-                    <div class="column-item flex-1">
-                        <img src="../assets/images/shop-item10.png" alt="">
-                        <div class="column-name">对账单</div>
-                    </div>
-                </router-link> -->
+                
             </div>
             <div class="column flex">
+                <div class="column-item flex-1">
+                    <router-link to="/settlementList" class="link">
+                        <img src="../assets/images/shop-item10.png" alt="">
+                        <div class="column-name">对账单</div>
+                    </router-link>
+                </div>
                 <div class="column-item flex-1">
                     <router-link to="/printSetting" class="link">
                         <img src="../assets/images/shop-item14.png" alt="">
@@ -126,7 +127,7 @@
                         <div class="column-name">红包</div>
                     </router-link>
                 </div>
-                <div class="column-item flex-1 column-null"></div>
+                <!-- <div class="column-item flex-1 column-null"></div> -->
             </div>
         </div>
     </div>

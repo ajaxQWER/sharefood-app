@@ -2,18 +2,9 @@
   <div id="login">
 	<div class="top-bg">
 		<div class="nav-bar">
-			<!-- <div class="back" @click="back"><img src="../assets/images/white-back.png" alt=""></div> -->
 		</div>
 		<div class="login-logo"><img src="../assets/images/login-logo.png" alt=""></div>
 	</div>
-	<!-- <div class="login-tabs">
-		<div class="tab" @click="toggleLoginType">
-			<div :class="[isMessageCodeLogin?'active-type':'', 'login-type']">手机验证码登录</div>
-		</div>
-		<div class="tab" @click="toggleLoginType">
-			<div :class="[isMessageCodeLogin?'':'active-type', 'login-type ']">账号密码登录</div>
-		</div>
-	</div> -->
 	<div class="login-input-contain" v-if="isMessageCodeLogin">
 		<div class="login-input">
 			<input type="text" class="input-item" placeholder="请输入手机号" maxlength="11" v-model="sellerName">
@@ -26,20 +17,8 @@
             <label for="protocol"><input type="checkbox" id="protocol" class="protocol-checkbox" v-model="checked">我已阅读并已同意<router-link to="/agreement" class="link">《共享点餐商家入驻告知书》</router-link></label>
         </div>
 	</div>
-	<!-- <div class="login-input-contain" v-if="!isMessageCodeLogin">
-		<div class="login-input">
-			<input type="text" class="input-item" placeholder="请输入账号" maxlength="11" v-model="sellerName">
-		</div>
-		<div class="login-input">
-			<input type="password" class="input-item" placeholder="请输入密码" v-model="secretkey">
-		</div>
-	</div> -->
 	<div class="login-btn-contain">
 		<input type="button" value="立即登录" class="login-btn" @click="userLogin">
-	</div>
-	<div class="jump-row">
-		<!-- <router-link to="/regist" class="jump-item regist">新用户注册</router-link> -->
-		<!-- <router-link to="/forgetPwd" class="jump-item forget-pwd">忘记密码?</router-link> -->
 	</div>
 	<p class="help-row">
 		<router-link to="/help?id=32&title=登录遇到问题" class="help-item">登录遇到问题?</router-link>
@@ -121,8 +100,6 @@ export default {
 		    	params.ios = false;
 		    	params.cid = android.getCid()
 
-	            // alert(android.getCid())
-	            // alert(params.ios)
 		    	this.$indicator.open();
 		    	loginByCode(params).then(res=>{
 		    		this.$indicator.close();
@@ -130,6 +107,7 @@ export default {
 		    		localStorage.setItem('jwt',res.jwt)
 		    		localStorage.setItem('seller',JSON.stringify(res.seller))
 		    		localStorage.setItem('shopName',res.shopName)
+		    		localStorage.setItem('shopId', JSON.stringify(res.seller.shopList[0]))
 		    		this.$router.push('/home')
 		    	}).catch(err=>{
 		    		this.$indicator.close();
@@ -145,19 +123,16 @@ export default {
 	    	try {
 		    	_this.setupWebViewJavascriptBridge(function(bridge) {
 		    		bridge.callHandler('getCid', null, function(response) {
-		    			// alert(response)
 		                params.cid = response;
 		                params.ios = true;
 		                _this.$indicator.open();
-		                // alert(loginByCode)
 	        	    	loginByCode(params).then(res=>{
 	        	    		_this.$indicator.close();
-	        	    		// alert(params.cid)
-		              //   	alert(params.ios)
 	        	    		console.log(res)
 	        	    		localStorage.setItem('jwt',res.jwt)
 	        	    		localStorage.setItem('seller',JSON.stringify(res.seller))
 	        	    		localStorage.setItem('shopName',res.shopName)
+	        	    		localStorage.setItem('shopId', JSON.stringify(res.seller.shopList[0]))
 	        	    		_this.$router.push('/home')
 	        	    	}).catch(err=>{
 	        	    		_this.$indicator.close();
@@ -168,51 +143,6 @@ export default {
 	    		alert(err)
 	    	}
 	    }
-//	     loginByCode(params).then(res=>{
-//	     	this.$indicator.close();
-//	     	console.log(res)
-//	     	localStorage.setItem('jwt',res.jwt)
-//	     	localStorage.setItem('seller',JSON.stringify(res.seller))
-//	     	this.$router.push('/home')
-//	     }).catch(err=>{
-//	     	this.$indicator.close();
-//	     })
-
-
-		// if(this.isMessageCodeLogin){
-		// 	if(!this.sellerName){
-		// 		this.$toast('请输入手机号');
-		// 		return
-		// 	}
-		// 	if(!this.code){
-		// 		this.$toast('请输入验证码');
-		// 		return
-		// 	}
-		// 	this.$indicator.open();
-		// 	loginByCode(params).then(res=>{
-		// 		this.$indicator.close();
-		// 		console.log(res)
-		// 		sessionStorage.setItem('jwt',res.jwt)
-		// 		sessionStorage.setItem('seller',JSON.stringify(res.seller))
-		// 		this.$router.push('/home')
-		// 	}).catch(err=>{
-		// 		this.$indicator.close();
-		// 	})
-		// }else{
-		// 	if(!this.sellerName){
-		// 		this.$toast('请输入账号');
-		// 		return
-		// 	}
-		// 	if(!this.secretkey){
-		// 		this.$toast('请输入密码');
-		// 		return
-		// 	}
-		// 	this.$indicator.open();
-		// 	loginBySecretKey(params).then(res=>{
-		// 		this.$indicator.close();
-		// 		console.log(res)
-		// 	})
-		// }
 	}
   }
 }

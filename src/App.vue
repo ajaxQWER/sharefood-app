@@ -32,6 +32,7 @@ body,
 html {
     height: 100%;
     background-color: #fafafa;
+    -webkit-touch-callout: none;
     -webkit-overflow-scrolling: touch;
     -webkit-user-select: none;
     -moz-user-select: none;
