@@ -11,12 +11,10 @@
 						<router-link :to="'/settlementDetail?orderId=' + item.orderId" class="link">
 							<div class="order-num">订单号：{{item.order.orderNum}}</div>
 							<div class="order-content">
-								<div class="order-name-content">
-									<div class="order-name">{{item.order.orderName}}</div>
-									<div class="order-time">{{moment(item.recordTime).format('YYYY-MM-DD HH:mm')}}</div>
-								</div>
+								<div class="order-name">{{item.order.orderName}}</div>
 								<div class="order-price">￥{{item.sellerAmount}}</div>
 							</div>
+							<div class="order-time">{{moment(item.recordTime).format('YYYY-MM-DD HH:mm')}}</div>
 						</router-link>
 					</li>
 				</ul>
@@ -122,22 +120,22 @@
 }
 .order-num{
 	color: #999;
-	line-height: 2.6;
+	padding: 1.33vw 0;
 	border-bottom: 1px solid #f7f7f7;
 	font-size: 3.46vw;
 }
 .order-content{
+	box-sizing: border-box;
+	padding: 1.33vw 0;
 	overflow: hidden;
 	zoom: 1;
-	background-color: #fff;
-	padding: 1.33vw 0;
-}
-.order-name-content{
-	width: 68vw;
-	box-sizing: border-box;
 	color: #4c4c4c;
 	font-size: 4vw;
+	line-height: 1.5;
+}
+.order-name{
 	float: left;
+	width: 68vw;
 }
 .order-price{
 	width: 25vw;
