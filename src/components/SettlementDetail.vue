@@ -6,75 +6,54 @@
 		  		<div class="nav-title">明细详情</div>
 			</div>
 		</div>
-		<div class="order-content">
+		<div class="order-content" v-if="settlementDetail">
             <ul class="order-lists">
                 <li>
                     <div class="top-wrap">
-                        <div class="top-row">流水号：20180108110123506</div>
-                        <div class="top-row">订单号：20180108110123506</div>
-                        <div class="top-row">结算时间：2018-01-08 10:42</div>
+                        <div class="top-row">流水号：{{settlementDetail.serialNumber}}</div>
+                        <div class="top-row">订单号：{{settlementDetail.orderNum}}</div>
+                        <div class="top-row">结算时间：{{moment(settlementDetail.recordTime).format('YYYY-MM-DD HH:mm')}}</div>
                     </div>
                 </li>
-                <!-- <li>
+                <li>
                     <div class="order-row">
                         <div class="order-item">商品列表</div>
                     </div>
-                    <div class="order-row" v-for="(item,index) in orderDetail.orderGoods" :key="index">
+                    <div class="order-row" v-for="(item,index) in settlementDetail.order.orderGoods" :key="index">
                         <div class="order-item goods-name">{{item.goodsName}}</div>
                         <div class="goods-number"><span>x{{item.goodsCount}}</span><span>￥{{item.amount}}</span></div>
                     </div>
                     <div class="order-row">
-                        <div class="order-item goods-name">饭盒费</div>
-                        <div class="goods-number"><span>￥{{orderDetail.orderTakeout.mealFee}}</span></div>
+                        <div class="order-item goods-name">餐盒费</div>
+                        <div class="goods-number"><span>￥{{settlementDetail.order.orderTakeout.mealFee}}</span></div>
                     </div>
                     <div class="order-row">
                         <div class="order-item goods-name">配送费</div>
-                        <div class="goods-number"><span>￥{{orderDetail.orderTakeout.shippingFee}}</span></div>
+                        <div class="goods-number"><span>￥{{settlementDetail.distributionFee}}</span></div>
                     </div>
-                    <div class="order-row" v-for="(item,index) in orderDetail.orderActivitys" :key="index">
+                    <div class="order-row" v-for="(item,index) in settlementDetail.order.orderActivitys" :key="index">
                         <div class="order-item goods-name">{{item.activityContent}}</div>
                         <div class="goods-number"><span class="discount">￥-{{item.activityReduced}}</span></div>
-                    </div>
-                </li> -->
-                <li>
-                    <div class="order-row">
-                        <div class="order-item">商品列表</div>
-                    </div>
-                    <div class="order-row" v-for="n in 6">
-                        <div class="order-item goods-name">青椒肉丝套饭</div>
-                        <div class="goods-number"><span>x1</span><span>￥16</span></div>
-                    </div>
-                    <div class="order-row">
-                        <div class="order-item goods-name">饭盒费</div>
-                        <div class="goods-number"><span>￥2</span></div>
-                    </div>
-                    <div class="order-row">
-                        <div class="order-item goods-name">配送费</div>
-                        <div class="goods-number"><span>￥4</span></div>
-                    </div>
-                    <div class="order-row">
-                        <div class="order-item goods-name">【8.8】清凉一夏</div>
-                        <div class="goods-number"><span class="discount">￥-8.8</span></div>
                     </div>
                 </li>
                 <li>
                     <div class="order-row">
                         <div class="order-item goods-name">订单总额</div>
-                        <div class="goods-number"><span class="color-green">￥16</span></div>
+                        <div class="goods-number"><span class="color-green">￥{{settlementDetail.orderAmount}}</span></div>
                     </div>
                     <div class="order-row">
                         <div class="order-item goods-name">扣除运费后的总价</div>
-                        <div class="goods-number"><span>￥16</span></div>
+                        <div class="goods-number"><span>￥{{settlementDetail.orderAmount-settlementDetail.distributionFee}}</span></div>
                     </div>
                     <div class="order-row">
                         <div class="order-item goods-name">平台扣点</div>
-                        <div class="goods-number"><span class="discount">-￥8.8</span></div>
+                        <div class="goods-number"><span class="discount">-￥{{settlementDetail.platformAmount}}</span></div>
                     </div>
                 </li>
                 <li>
                     <div class="order-row">
                         <div class="order-item goods-name">商家实得</div>
-                        <div class="goods-number"><span class="color-green">￥8.8</span></div>
+                        <div class="goods-number"><span class="color-green">￥{{settlementDetail.sellerAmount}}</span></div>
                     </div>
                 </li>
             </ul>
@@ -82,23 +61,29 @@
 	</div>
 </template>
 <script>
-	// import {getOrderById, getCarrierById, getPositionById} from '@/api/api'
+	import {getSettlementByOrderId} from '@/api/api'
 	export default {
 		data: function(){
 			return {
-				orderId: '',
-				orderDetail: null,
+				orderId: null,
+				settlementDetail: null,
 			}
 		},
 		created: function(){
 			var orderId = this.$route.query.orderId;
 			this.orderId = orderId;
 			if(orderId){
-				// this.getOrderInfo(orderId);
+				this.getSettlementDetail(orderId);
 			}
 		},
 		methods: {
-
+            getSettlementDetail: function(){
+                this.$indicator.open();
+                getSettlementByOrderId(this.orderId).then(res =>{
+                    this.$indicator.close();
+                    this.settlementDetail = res;
+                })
+            }
 		}
 	}
 </script>

@@ -5,20 +5,23 @@
 	  		<div class="nav-title">结算明细</div>
 		</div>
 		<div class="wrap-content">
-			<ul class="order-lists" v-if="!isEmpty">
-				<li class="order-item" v-for="n in 10">
-					<router-link to="settlementDetail" class="link">
-						<div class="order-num">订单号：2018010810222890</div>
-						<div class="order-content">
-							<div class="order-name-content">
-								<div class="order-name">鸭血粉丝汤 等2件商品</div>
-								<div class="order-time">2018-01-08 10:20</div>
+			<div class="order-lists" v-if="!isEmpty">
+				<ul>
+					<li class="order-item" v-for="(item, index) in orderLists">
+						<router-link :to="'/settlementDetail?orderId=' + item.orderId" class="link">
+							<div class="order-num">订单号：{{item.order.orderNum}}</div>
+							<div class="order-content">
+								<div class="order-name-content">
+									<div class="order-name">{{item.order.orderName}}</div>
+									<div class="order-time">{{moment(item.recordTime).format('YYYY-MM-DD HH:mm')}}</div>
+								</div>
+								<div class="order-price">￥{{item.sellerAmount}}</div>
 							</div>
-							<div class="order-price">￥33.2</div>
-						</div>
-					</router-link>
-				</li>
-			</ul>
+						</router-link>
+					</li>
+				</ul>
+				<div v-show="canLoad" class="loadmore" @click="loadBottom">点击加载</div>
+			</div>
 			<div v-else class="empty">
 				<img src="../assets/images/empty-img.png" alt="">
 			</div>
@@ -26,31 +29,58 @@
 	</div>
 </template>
 <script>
-	// import {getGoodsCategoryLists,deleteGoodsCategoryById,addGoodsCategory} from '@/api/api'
+	import {getSettlementLists} from '@/api/api'
 	export default {
 		data: function(){
 			return {
 				orderLists: null,
-				isEmpty: false
+				init: true,
+	            allLoaded: false,
+	            current: 1,
+	            pageId: 1,
+	            counts: 0,
+	            canLoad: false,
+	            isEmpty: false
 			}
 		},
 		created: function(){
-			// this.getGoodsCategoryList()
+			this.getSettlementList()
 		},
 		methods: {
-			getGoodsCategoryList: function(){
+			getSettlementList: function(){
 				this.$indicator.open();
-				getGoodsCategoryLists({params:{pageSize:99999999}}).then(res=>{
+				getSettlementLists({pageSize: 10, pageId: this.pageId}).then(res=>{
 					console.log(res)
-					if(res.count == 0){
-						this.isEmpty = true
-					}else{
-						this.isEmpty = false
-					}orderLists
-					this.orderLists = res.list;
 					this.$indicator.close();
+					this.counts = res.count;
+
+					if (this.init) {
+					    this.orderLists = res.list;
+					} else {
+					    this.orderLists = [].concat.apply(this.orderLists, res.list);
+					}
+
+					if (res.count == 0) {
+					    this.allLoaded = true;
+					    this.isEmpty = true
+					} else {
+					    this.canLoad = true;
+					    this.isEmpty = false
+					}
+
+					if (Math.ceil(this.counts / 10) == this.pageId) {
+					    this.allLoaded = true;
+					    this.canLoad = false;
+					    return;
+					}
 				})
-			}
+			},
+			loadBottom: function() {
+	            this.allLoaded = false;
+	            this.pageId += 1;
+	            this.init = false;
+	            this.getSettlementList()
+	        }
 		}
 	}
 </script>
@@ -73,11 +103,14 @@
 .order-lists{
 	box-sizing: border-box;
 	height: 100%;
-	padding: 0;
-	margin: 0;
 	list-style: none;
-	background-color: #fff;
 	overflow: scroll;
+}
+.order-lists ul{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	background-color: #fff;
 }
 .order-item{
 	overflow: hidden;
@@ -89,7 +122,7 @@
 }
 .order-num{
 	color: #999;
-	line-height: 8.66vw;
+	line-height: 2.6;
 	border-bottom: 1px solid #f7f7f7;
 	font-size: 3.46vw;
 }
@@ -100,16 +133,16 @@
 	padding: 1.33vw 0;
 }
 .order-name-content{
-	width: 80vw;
+	width: 68vw;
 	box-sizing: border-box;
 	color: #4c4c4c;
 	font-size: 4vw;
 	float: left;
 }
 .order-price{
-	width: 14.68vw;
+	width: 25vw;
 	float: right;
-	text-align: center;
+	text-align: right;
 }
 .order-time{
 	font-size: 2.93vw;
@@ -119,5 +152,9 @@
 	display: block;
 	text-decoration: none;
 	color: #000;
+}
+.loadmore {
+    text-align: center;
+    padding: 2.66vw;
 }
 </style>

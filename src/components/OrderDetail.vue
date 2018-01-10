@@ -67,7 +67,7 @@
                                 <div class="goods-number"><span>x{{item.goodsCount}}</span><span>￥{{item.amount}}</span></div>
                             </div>
                             <div class="order-row">
-                                <div class="order-item goods-name">饭盒费</div>
+                                <div class="order-item goods-name">餐盒费</div>
                                 <div class="goods-number"><span>￥{{orderDetail.orderTakeout.mealFee}}</span></div>
                             </div>
                             <div class="order-row">

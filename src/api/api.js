@@ -342,9 +342,18 @@ export const handReceiveOrder = () => {
     return ajax.delete('seller/shop/automaticAcceptOrder');
 };
 
+//20180110
 //获取店铺列表
 export const getShopLists = () => {
     return ajax.get('seller/shopList');
+}
+//获取结算列表
+export const getSettlementLists = params => {
+    return ajax.get('seller/record', params);
+}
+//获取结算详情
+export const getSettlementByOrderId = orderId => {
+    return ajax.get('seller/record/' + orderId);
 }
 
 //文件上传 前台文件需要设置一个path属性
