@@ -2,13 +2,8 @@ import MintUI from 'mint-ui'
 import axios from 'axios';
 
 var ajax = axios.create({
-    baseURL: process.env.BASE_URL, //测试
-	// baseURL : 'http://127.0.0.1:8080',
-	// baseURL: 'http://api.gongxiangdiancan.com', //正式服
-    headers: {
-        'SHOP-ID': JSON.parse(localStorage.getItem('shopId'))
-    },
-    // timeout: 10000,
+    baseURL: process.env.BASE_URL, //根据环境自动设置url
+    headers: {},
     withCredentials: true, //cookie
     crossDomain: true //跨域
 });
@@ -17,6 +12,7 @@ ajax.interceptors.request.use(function(config) {
     //在请求发出之前进行一些操作
     if (localStorage.getItem('jwt')) {
         config.headers.TOKEN = localStorage.getItem('jwt');
+        config.headers['SHOP-ID'] = localStorage.getItem('shopId');
     }
     return config;
 }, function(err) {
@@ -345,6 +341,11 @@ export const autoReceiveOrder = () => {
 export const handReceiveOrder = () => {
     return ajax.delete('seller/shop/automaticAcceptOrder');
 };
+
+//获取店铺列表
+export const getShopLists = () => {
+    return ajax.get('seller/shopList');
+}
 
 //文件上传 前台文件需要设置一个path属性
 export const uploadFiles = params => {

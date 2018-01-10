@@ -5,54 +5,57 @@
 	  		<div class="nav-title">门店选择</div>
 		</div>
 		<div class="wrap-content">
-			<ul class="shop-lists">
-				<li :class="['shop-item',n==currentShopIndex?'active-shop':'']" v-for="(n,i) in 10" :key="i">
-					<img src="http://kaidian.test.gongxiangdiancan.com/static/images/shop-icon1.png" alt="" class="shop-logo">
+			<ul class="shop-lists" v-if="shopLists">
+				<li :class="['shop-item',item.shopId == currentShopId?'active-shop':'']" v-for="(item,index) in shopLists" :key="index">
+					<img :src="UPLOADURL + '/shopLogo/' + item.shopId + '.png/shopLogo.png'" alt="" class="shop-logo">
 					<div class="shop-info">
-						<div class="shop-name">周大侠龙虾盖浇饭</div>
-						<div class="shop-address">成都市高新区天府二街1122号1栋3单元</div>
+						<div class="shop-name">{{item.shopName}}</div>
+						<div class="shop-address">{{item.provinceName}}{{item.cityName}}{{item.areaName}}{{item.address}}</div>
 					</div>
-					<button v-if="n!=currentShopIndex" class="change-btn" @click="changeShop(n)">更换</button>
+					<button class="change-btn" @click="changeShop(item)">{{btnWord}}</button>
 				</li>
 			</ul>
 		</div>
 	</div>
 </template>
 <script>
-	// import {getGoodsCategoryLists,deleteGoodsCategoryById,addGoodsCategory} from '@/api/api'
+	import {getShopLists} from '@/api/api'
 	export default {
 		data: function(){
 			return {
-				orderLists: null,
-				currentShopIndex: 0
+				shopLists: null,
+				currentShopId: null,
+				btnWord: '更换'
 			}
 		},
 		created: function(){
-			// this.getShopLists()
+			this.getShopList();
+			var btnWord = this.$route.query.from;
+			if(btnWord == 'login'){
+				this.btnWord = '登录'
+			}
 		},
 		methods: {
-			getShopLists: function(){
+			getShopList: function(){
 				this.$indicator.open();
-				// getGoodsCategoryLists({params:{pageSize:99999999}}).then(res=>{
-				// 	console.log(res)
-				// 	if(res.count == 0){
-				// 		this.isEmpty = true
-				// 	}else{
-				// 		this.isEmpty = false
-				// 	}orderLists
-				// 	this.orderLists = res.list;
-				// 	this.$indicator.close();
-				// })
+				getShopLists().then(res=>{
+					console.log(res)
+					this.shopLists = res;
+					this.currentShopId = +localStorage.getItem('shopId');
+					this.$indicator.close();
+				})
 			},
-			changeShop: function(shopId){
-				var sure = confirm('确定要切换到该店铺？');
+			changeShop: function(item){
+				var text = this.btnWord == '登录' ? '登录' : '切换'
+				var sure = confirm('确定要' + text + '到该店铺？');
 				console.log(sure)
 				if(sure){
-					this.$toast({
-						message: '操作成功',
-						duration: 1500
-					})
-					this.currentShopIndex = shopId;
+					var shopId = item.shopId;
+					var shopName = item.shopName;
+					this.currentShopId = shopId;
+					localStorage.setItem('shopId', shopId)
+		    		localStorage.setItem('shopName', shopName)
+					this.$router.push('/home')
 				}
 			}
 		}
@@ -109,6 +112,9 @@
 .shop-name{
 	color: #333;
 	font-size: 4.26vw;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .shop-address{
 	color: #adadad;

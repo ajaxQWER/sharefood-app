@@ -98,7 +98,7 @@ export default {
 		    try {
 
 		    	params.ios = false;
-		    	params.cid = android.getCid()
+		    	// params.cid = android.getCid()
 
 		    	this.$indicator.open();
 		    	loginByCode(params).then(res=>{
@@ -106,9 +106,7 @@ export default {
 		    		console.log(res)
 		    		localStorage.setItem('jwt',res.jwt)
 		    		localStorage.setItem('seller',JSON.stringify(res.seller))
-		    		localStorage.setItem('shopName',res.shopName)
-		    		localStorage.setItem('shopId', JSON.stringify(res.seller.shopList[0]))
-		    		this.$router.push('/home')
+		    		this.$router.push('/shopList?from=login')
 		    	}).catch(err=>{
 		    		this.$indicator.close();
 		    	})
@@ -131,9 +129,7 @@ export default {
 	        	    		console.log(res)
 	        	    		localStorage.setItem('jwt',res.jwt)
 	        	    		localStorage.setItem('seller',JSON.stringify(res.seller))
-	        	    		localStorage.setItem('shopName',res.shopName)
-	        	    		localStorage.setItem('shopId', JSON.stringify(res.seller.shopList[0]))
-	        	    		_this.$router.push('/home')
+	        	    		_this.$router.push('/shopList?from=login')
 	        	    	}).catch(err=>{
 	        	    		_this.$indicator.close();
 	        	    	})

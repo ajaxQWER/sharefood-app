@@ -22,9 +22,11 @@
                     <div class="sales-title-small">昨日{{formatMoney(shopSalesData.yesterdayTurnover)}}</div>
                 </div>
                 <div class="flex-1 sales-item">
-                    <div class="sales-title">今日订单</div>
-                    <div class="sales-money">{{shopSalesData.todayOrderQuantity}}</div>
-                    <div class="sales-title-small">昨日{{shopSalesData.yesterdayOrderQuantity}}</div>
+                    <router-link to="/order?today=true" class="link">
+                        <div class="sales-title">今日订单</div>
+                        <div class="sales-money">{{shopSalesData.todayOrderQuantity}}</div>
+                        <div class="sales-title-small">昨日{{shopSalesData.yesterdayOrderQuantity}}</div>
+                    </router-link>
                 </div>
                 <div class="flex-1 sales-item">
                     <div class="sales-title">可用余额</div>
@@ -106,7 +108,6 @@
                         <div class="column-name">桌号</div>
                     </div>
                 </router-link> -->
-                
             </div>
             <div class="column flex">
                 <div class="column-item flex-1">
@@ -138,7 +139,7 @@ export default {
     name: 'home',
     data: function() {
         return {
-            loginShopId: JSON.parse(localStorage.getItem('seller')).shopId,
+            loginShopId: localStorage.getItem('shopId'),
             loginUser: localStorage.getItem('shopName'),
             shopSalesData: null,
             shopStatusImg: '',

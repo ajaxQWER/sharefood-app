@@ -149,11 +149,21 @@ export default {
             isEmpty: false,
             popupVisible3: false,
             orderId: 0,
-            cancelContent: ''
+            cancelContent: '',
+            orderTimeBeginTime: '',
+            orderTimeEndTime: ''
         }
     },
     created: function() {
-        this.getOrders({ pageId: this.pageId, orderStatus: this.orderStatus })
+        var today = Boolean(this.$route.query.today) || null;
+        if(today){
+            var now = new Date();
+            var start = now.setHours(0, 0, 0, 0);
+            var end = now.setHours(23, 59, 59, 999)
+            this.orderTimeBeginTime = start;
+            this.orderTimeEndTime = end;
+        }
+        this.getOrders()
     },
     methods: {
         loadTop() {
@@ -161,11 +171,11 @@ export default {
             this.canLoad = true;
             this.isEmpty = false;
             this.pageId = 1;
-            this.getOrders({ pageId: this.pageId, orderStatus: this.orderStatus })
+            this.getOrders()
         },
-        getOrders: function(order) {
+        getOrders: function() {
             this.$indicator.open();
-            getOrderList({ params: { pageSize: 10, pageId: order.pageId, orderStatus: order.orderStatus } }).then(res => {
+            getOrderList({ params: { pageSize: 10, pageId: this.pageId, orderStatus: this.orderStatus, orderTimeBeginTime: this.orderTimeBeginTime, orderTimeEndTime: this.orderTimeEndTime } }).then(res => {
                 console.log(res.list)
                 this.$refs.loadmore.onTopLoaded();
                 if (this.init) {
