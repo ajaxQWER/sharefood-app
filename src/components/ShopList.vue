@@ -37,18 +37,18 @@
 		},
 		methods: {
 			getShopList: function(){
-				this.$indicator.open();
-				getShopLists().then(res=>{
-					console.log(res)
-					this.shopLists = res;
-					this.currentShopId = +localStorage.getItem('shopId');
-					this.$indicator.close();
-				})
+				var shopLists = [];
+				try{
+					shopLists =  JSON.parse(localStorage.getItem('shopLists'));
+				}catch(e){
+					console.error(e)
+				}
+				this.shopLists = shopLists;
+				this.currentShopId = +localStorage.getItem('shopId');
 			},
 			changeShop: function(item){
 				var text = this.btnWord == '登录' ? '登录' : '切换'
 				var sure = confirm('确定要' + text + '到该店铺？');
-				console.log(sure)
 				if(sure){
 					var shopId = item.shopId;
 					var shopName = item.shopName;
