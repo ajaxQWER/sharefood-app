@@ -30,7 +30,7 @@ ajax.interceptors.response.use(function(res) {
         MintUI.Indicator.close();
         if(res.data.errorCode == 401){
             console.log('请登录')
-            // location.href = '/login'
+            location.href = '/login'
         }
         throw new Error(res.data.message);
     }
