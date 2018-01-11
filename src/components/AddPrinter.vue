@@ -19,7 +19,7 @@
                 <div class="shopDetail-col">
                     <div class="row-title">设备编号</div>
                     <div class="update-name">
-                        <input type="text" placeholder="请输入设备编号" v-model="printer.deviceId">
+                        <input type="text" placeholder="请输入设备编号" v-model.trim="printer.deviceId">
                     </div>
                 </div>
                 <div class="shopDetail-col">
