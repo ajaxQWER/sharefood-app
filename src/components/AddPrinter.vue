@@ -107,7 +107,9 @@
             },
             save: function() {
                 console.log(this.printer);
-                
+                var reg = /\s/g;
+                var ss= this.printer.deviceSecretKey.replace(reg, "");
+                this.printer.deviceSecretKey=ss;
                 console.log('========');
                 addPrinter(this.printer).then(res => {
                     console.log(res);
