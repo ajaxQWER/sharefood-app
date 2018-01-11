@@ -25,7 +25,7 @@
                 <div class="shopDetail-col">
                     <div class="row-title">设备密钥</div>
                     <div class="update-name">
-                        <input type="text" placeholder="请输入设备密钥" v-model="printer.deviceSecretKey">
+                        <input type="text" placeholder="请输入设备密钥" v-model.trim="printer.deviceSecretKey">
                     </div>
                 </div>
                 <div class="shopDetail-col">
@@ -107,6 +107,7 @@
             },
             save: function() {
                 console.log(this.printer);
+                
                 console.log('========');
                 addPrinter(this.printer).then(res => {
                     console.log(res);
