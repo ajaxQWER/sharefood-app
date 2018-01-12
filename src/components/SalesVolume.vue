@@ -210,7 +210,7 @@ export default {
 }
 .chart-info{
 	width: 100vw;
-	height: 104vw;
+	/*height: 104vw;*/
 	background-color: #fff;
 }
 .column{
@@ -245,7 +245,7 @@ tr td:last-child{
 .tip{
 	font-size: 4.26vw;
 	color: #777;
-	padding: 2.67vw 0 0 4.67vw;
+	padding: 2.67vw 4.67vw;
 }
 .search-content{
 	padding: 2vw 4vw;

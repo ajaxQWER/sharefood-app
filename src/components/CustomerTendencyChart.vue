@@ -25,10 +25,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="tip">
-                    Tips:
-                    <br> 新客户：第一次在本店进行下单的客户
-                </div>
+                <div class="tip">Tips:<br> 新客户：第一次在本店进行下单的客户</div>
             </div>
         </div>
     </div>
@@ -166,7 +163,7 @@ export default {
 
 .chart-info {
     width: 100vw;
-    height: 90vw;
+    /*height: 90vw;*/
     overflow: hidden;
     background-color: #fff;
 }
@@ -209,7 +206,7 @@ tr td:last-child {
 .tip {
     font-size: 4.26vw;
     color: #777;
-    padding: 2.67vw 0 0 4.67vw;
+    padding: 2.67vw 4.67vw;
 }
 
 </style>

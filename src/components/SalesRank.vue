@@ -49,8 +49,8 @@
 		created: function(){
 			//最大日期和最小日期限制在当年
 			var thisYear = new Date().getFullYear();
-			var thisStartDate = thisYear + '-01-01';
-			var thisEndDate = thisYear + '-12-31';
+			var thisStartDate = thisYear - 2 + '-01-01';
+			var thisEndDate = thisYear + 2 + '-12-31';
 			this.startDate = new Date(thisStartDate);
 			this.endDate = new Date(thisEndDate);
 			this.dateNow = this.moment(Date.now()).format('YYYY-MM-DD');
@@ -91,8 +91,8 @@
 }
 .chart-info{
 	width: 100vw;
-	height: 106vw;
-	overflow: hidden;
+	height: 100vh;
+	overflow: auto;
 	background-color: #fff;
 }
 .column{
@@ -110,6 +110,9 @@
 }
 .date-num{
 	width: 100%;
+	height: auto;
+	box-sizing: border-box;
+	overflow: auto;
 }
 tbody tr{
 	height: 7.33vw;
@@ -146,7 +149,8 @@ tr td:last-child{
 }
 .table-body{
 	margin-top: 2vw;
-	height: 90vw;
+	height: auto;
+	/*box-sizing: border-box;*/
 	overflow: auto;
 }
 </style>
