@@ -38,6 +38,17 @@ if (/Android/gi.test(navigator.userAgent)) {
         }
     })
 }
+router.beforeEach((to, from, next) => {
+    let jwt = localStorage.getItem('jwt');
+    if(to.path == '/login'){
+        localStorage.clear()
+    }
+    if (!jwt && to.path != '/login') {
+        next({ path: '/login' })
+    } else {
+        next()
+    }
+})
 
 
 Object.defineProperty(Vue.prototype, 'UPLOADURL', {value: process.env.UPLOAD_URL});

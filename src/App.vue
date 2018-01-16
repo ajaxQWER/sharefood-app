@@ -21,6 +21,9 @@ export default {
             } else {
                 this.transitionName = 'slide-left'
             }
+            if(to.path == '/login'){
+                this.transitionName = 'trans-zoom'
+            }
             this.$router.isBack = false
         }
     }
@@ -163,21 +166,39 @@ body {
     top: 0;
     width: 100%;
     height: 100%;
-    transition: all .4s ease;
+    -webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    -o-transition: all .5s ease;
+    transition: all .5s ease;
 }
 
 .slide-left-enter,
 .slide-right-leave-active {
     opacity: 1;
-    -webkit-transform: translate(100vw, 0);
-    transform: translate(100vw, 0);
+    -webkit-transform: translateX(100vw);
+    -moz-transform: translateX(100vw);
+    -ms-transform: translateX(100vw);
+    -o-transform: translateX(100vw);
+    transform: translateX(100vw);
 }
 
 .slide-left-leave-active,
 .slide-right-enter {
     opacity: 1;
-    -webkit-transform: translate(-100vw, 0);
-    transform: translate(-100vw, 0);
+    -webkit-transform: translateX(-100vw);
+    -moz-transform: translateX(-100vw);
+    -ms-transform: translateX(-100vw);
+    -o-transform: translateX(-100vw);
+    transform: translateX(-100vw);
+}
+.trans-zoom-enter-active, .trans-zoom-leave-active {
+    -webkit-transition: opacity .5s;
+    -moz-transition: opacity .5s;
+    -o-transition: opacity .5s;
+    transition: opacity .5s;
+}
+.trans-zoom-enter, .trans-zoom-leave-to  {
+    opacity: 0;
 }
 
 img[lazy=error] {

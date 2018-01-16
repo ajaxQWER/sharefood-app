@@ -44,7 +44,7 @@
                 </router-link>
                 <div class="shopDetail-col">
                     <div class="row-title">当前版本</div>
-                    <div class="row-key">2.0.1</div>
+                    <div class="row-key">2.0.2</div>
                 </div>
                 <div class="shopDetail-col" @click="cleanCache">
                     <div class="row-title">清理缓存</div>
