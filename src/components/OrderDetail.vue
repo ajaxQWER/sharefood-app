@@ -63,7 +63,7 @@
                                 <div class="order-item">商品列表</div>
                             </div>
                             <div class="order-row" v-for="(item,index) in orderDetail.orderGoods" :key="index">
-                                <div class="order-item goods-name">{{item.goodsName}}</div>
+                                <div class="order-item goods-name">{{item.goodsName}}<br><span class="goods-props">{{item.goodsContent}}</span></div>
                                 <div class="goods-number"><span>x{{item.goodsCount}}</span><span>￥{{item.amount}}</span></div>
                             </div>
                             <div class="order-row">
@@ -342,6 +342,10 @@
 		color: #808080;
 		margin-left: 6.66vw;
 	}
+    .order-item .goods-props{
+        font-size: 3.73vw;
+        margin-left: 0;
+    }
 	.order-money span{
 		color: #0bb745;
 	}
@@ -395,7 +399,7 @@
 		display: inline-block;
 	}
 	.goods-number span{
-		margin-left: 12vw;
+		margin-left: 10vw;
 		font-size: 3.73vw;
 		color: #808080;
 		text-align: right;
