@@ -40,12 +40,12 @@
 				this.$indicator.open();
 				getGoodsCategoryLists({params:{pageSize:99999999}}).then(res=>{
 					console.log(res)
-					if(res.count == 0){
+					if(res.length == 0){
 						this.isEmpty = true
 					}else{
 						this.isEmpty = false
 					}
-					this.goodsCategoryList = res.list;
+					this.goodsCategoryList = res;
 					this.$indicator.close();
 				})
 			},

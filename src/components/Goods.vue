@@ -61,9 +61,9 @@
 			this.$indicator.open();
 			getGoodsCategoryLists({params: {pageSize: 999999}}).then(res => {
 				console.log(res)
-				if(res.list.length){
-					this.getGoods(res.list[0].goodsCategoryId)
-					this.goodsCategoryLists = res.list;
+				if(res.length){
+					this.getGoods(res[0].goodsCategoryId)
+					this.goodsCategoryLists = res;
 				}else{
 					this.isEmpty = true;
 				}
