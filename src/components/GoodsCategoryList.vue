@@ -37,8 +37,8 @@
 			var categoryArray = JSON.parse(categoryList)
 			this.$indicator.open();
 			getGoodsCategoryLists().then(res => {
-				localStorage.setItem('goodsCategoryList',JSON.stringify(res.list));
-				res.list.forEach((item) => {
+				localStorage.setItem('goodsCategoryList',JSON.stringify(res));
+				res.forEach((item) => {
 					if(categoryArray.indexOf(item.goodsCategoryId) != -1){
 						this.goodsCategoryList.push(item.goodsCategoryId)
 					}

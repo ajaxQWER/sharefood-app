@@ -44,7 +44,7 @@
                 </router-link>
                 <div class="shopDetail-col">
                     <div class="row-title">当前版本</div>
-                    <div class="row-key">2.0.2</div>
+                    <div class="row-key">2.0.3</div>
                 </div>
                 <div class="shopDetail-col" @click="cleanCache">
                     <div class="row-title">清理缓存</div>
@@ -71,13 +71,21 @@ export default {
         loginOut: function() {
             var isTrue = confirm('确定退出登录?');
             if(isTrue){
-                logOut().then(() => {
+                try {
+                    logOut().then(() => {
+                        localStorage.clear()
+                        this.$toast({ message: '退出成功', duration: 1000 })
+                        setTimeout(() => {
+                            this.$router.push('/login')
+                        }, 1300)
+                    })
+                } catch (e){
                     localStorage.clear()
                     this.$toast({ message: '退出成功', duration: 1000 })
                     setTimeout(() => {
                         this.$router.push('/login')
                     }, 1300)
-                })
+                }
             }
         },
         cleanCache() {
